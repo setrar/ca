@@ -1,0 +1,5 @@
+# MASTER-ONLY: DO NOT MODIFY THIS FILE
+
+*.o
+*.so
+.*.swp
