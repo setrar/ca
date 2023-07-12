@@ -178,10 +178,10 @@ $ git config user.email "EMAIL"
 
 # Shell configuration
 
-## How can I avoid having to source the `/packages/LabSoC/bin/ca_functions` script every time I open a new terminal?
+## How can I avoid having to source the `/packages/LabSoC/bin/labs-functions` script every time I open a new terminal?
 
-When you source the `/packages/LabSoC/bin/ca_functions` script the `rars` and `c2rv` definitions will work only in the current tab of the current terminal.
-If you open a new terminal or tab you will need to source again the `/packages/LabSoC/bin/ca_functions` script.
+When you source the `/packages/LabSoC/bin/labs-functions` script the `rars` and `c2rv` definitions will work only in the current tab of the current terminal.
+If you open a new terminal or tab you will need to source again the `/packages/LabSoC/bin/labs-functions` script.
 On Eurecom's GNU/Linux computers you can make the definitions permanent by adding the following lines at the end of the `~/.bashrc+` file:
 
 ```bash

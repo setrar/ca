@@ -57,14 +57,14 @@ Labs of CompArch course
 
 ## GitLab and git set-up
 
-To help with the GitLab and git set-up a helper `bash` script is available: `/packages/LabSoC/bin/ca_init`.
+To help with the GitLab and git set-up a helper `bash` script is available: `/packages/LabSoC/bin/labs-init`.
 
 > Using the default configuration is warmly recommended but the helper script is configurable so, if you know what you are doing and you do not like the defaults, you can copy it somewhere, edit it and adapt the variable declarations near the top to your own preferences (ssh key to use, path to the clone of the git repository, path of the RARS java archive and path to the directory containing the RISC-V toolchain binaries).
 
 Log on a Eurecom GNU/Linux desktop computer (in lab rooms 52 or 53), open a terminal, source the helper script (or your modified copy) and if you are asked questions answer them:
 
 ```bash
-$ source /packages/LabSoC/bin/ca_init
+$ source /packages/LabSoC/bin/labs-init ca
 ...
 ```
 
@@ -72,11 +72,11 @@ If there were errors please ask for help and indicate the error message.
 
 ## Define helper bash functions
 
-To simplify the use of the tools there is another helper `bash` script: `/packages/LabSoC/bin/ca_functions`.
+To simplify the use of the tools there is another helper `bash` script: `/packages/LabSoC/bin/labs-functions`.
 Source it to define two `bash` functions:
 
 ```bash
-$ source /packages/LabSoC/bin/ca_functions
+$ source /packages/LabSoC/bin/labs-functions
 ```
 
 If there were errors please ask for help and indicate the error message.
