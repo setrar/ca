@@ -1,7 +1,7 @@
 <!-- MASTER-ONLY: DO NOT MODIFY THIS FILE
 
-Copyright (C) Telecom Paris
-Copyright (C) Renaud Pacalet (renaud.pacalet@telecom-paris.fr)
+Copyright © Telecom Paris
+Copyright © Renaud Pacalet (renaud.pacalet@telecom-paris.fr)
 
 This file must be used under the terms of the CeCILL. This source
 file is licensed as described in the file COPYING, which you should
@@ -14,8 +14,8 @@ https://cecill.info/licences/Licence_CeCILL_V2.1-en.html
 
 This folder contains documentation resources for the course.
 
-- [The RISC-V assembly cheatsheet](./data/RISC-V-cheatsheet.pdf)
-- [One-page memento of the most useful GNU/Linux commands](./data/command_memento.pdf)
-- [One-page memento of the most useful GNU/Linux commands (French version)](./data/command_memento_fr.pdf)
+- [The RISC-V assembly cheatsheet](data/RISC-V-cheatsheet.pdf)
+- [One-page memento of the most useful GNU/Linux commands](data/command_memento.pdf)
+- [One-page memento of the most useful GNU/Linux commands (French version)](data/command_memento_fr.pdf)
 
 <!-- vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab textwidth=0: -->
