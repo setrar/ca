@@ -1,0 +1,73 @@
+# Adapt the following variable declarations to your own situation. If you do
+# not understand please leave the default.
+
+# Path of RARS java archive
+declare rars_jar=/packages/LabSoC/bin/rars.jar
+# Path of java runtime
+declare java_rte=/usr/java/bin/java
+# Path to directory containing RISC-V cross-compilation toolchain binaries
+declare riscv_bin=/packages/LabSoC/riscv/bin
+# RISC-V C cross-compiler
+declare riscv_gcc="riscv32-unknown-linux-gnu-gcc"
+# Default bash configuration file
+declare bash_config=~/.bashrc+
+
+# Do not modify anything below this line... unless you know what you do, of course
+
+# RISC-V cross-compilation toolchain
+if ! [[ -x "$riscv_bin/$riscv_gcc" ]]; then
+    printf '%s' "\
+ERROR: $riscv_bin/$riscv_gcc: not found
+This script must be sourced on computers in the GNU/Linux lab rooms of Eurecom.
+If you are sourcing the script on one of these computers, this is an error,
+please ask for help. If you want to work on a different computer, please
+configure manually. Aborting.
+"
+    return 1
+fi
+eval "c2rv() { $riscv_bin/$riscv_gcc -march=rv32im -mabi=ilp32 -S \"\$@\"; }"
+
+# RARS jar archive
+if ! [[ -r "$rars_jar" ]]; then
+    printf '%s' "\
+ERROR: $rars_jar: not found
+This script must be sourced on computers in the GNU/Linux lab rooms of Eurecom.
+If you are sourcing the script on one of these computers, this is an error,
+please ask for help. If you want to work on a different computer, please
+configure manually. Aborting.
+"
+    return 1
+elif ! [[ -x "$java_rte" ]]; then
+    printf '%s' "\
+ERROR: $java_rte: not found
+This script must be sourced on computers in the GNU/Linux lab rooms of Eurecom.
+If you are sourcing the script on one of these computers, this is an error,
+please ask for help. If you want to work on a different computer, please
+configure manually. Aborting.
+"
+    return 1
+fi
+eval "rars() { $java_rte -jar $rars_jar & }"
+
+# Print success message and short help
+printf '%s' "\
+
+If there were no errors this terminal is now ready for the labs.
+
+Type 'rars' to launch the RARS RISC-V Assembler and Runtime Simulator (select
+Exit in the File menu to quit when you're done). Type 'c2rv FILE.c' to
+cross-compile a C source file named FILE.c to RISC-V assembly; the result is
+stored in FILE.s.
+
+To make this configuration permanent and avoid having to source this script in
+each new terminal or tab, please add the following at the end of your bash
+configuration file ('$bash_config' on Eurecom GNU/Linux computers):
+
+############################### CUT HERE ###############################
+c2rv() { $riscv_bin/$riscv_gcc -march=rv32im -mabi=ilp32 -S \"\$@\"; }
+rars() { $java_rte -jar $rars_jar & }
+############################### CUT HERE ###############################
+
+"
+
+# vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab textwidth=0 syntax=bash:
