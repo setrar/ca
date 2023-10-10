@@ -1,6 +1,6 @@
 # Report
 
-## :o: Install RARS
+## :gear: Install RARS
 
 <img src=images/java-rars.png width='75%' height='75%' > </img>
 
