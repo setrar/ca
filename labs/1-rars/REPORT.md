@@ -19,9 +19,11 @@
 \end{gather}
 ```
 
+## :a: Number representations
+
 ```math
 \begin{gather}
-a + b = 2^{32} + c \quad ( overflow)
+a + b = 2^{32} + c \quad ( overflow) \\
   \begin{cases}
   a - c = 2^{32} - b > 0  & \quad ( b \in [ 0, \dots, 2^{32}-1 ] ) \\
   and \\
