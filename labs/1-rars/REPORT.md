@@ -1,7 +1,7 @@
 ```math
 \begin{gather}
 \\
-[ a_31, a_30, .. , a_0]
+[ a_31, a_30, \dots , a_0]
 \\
 {\color{Salmon}u} = \sum_{i=0}^{32} a_i * 2^i \quad \left.\in[ 0, \dots, 2^{32}-1 ]\right|2^{32}
 \\
