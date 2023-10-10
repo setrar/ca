@@ -29,6 +29,11 @@ a + b = 2^{32} + c \quad ( overflow) \qquad \qquad \\
   and \\
   b - c = 2^{32} - a > 0  & \quad ( a \in [ 0, \dots, 2^{32}-1 ] )
   \end{cases}
+  \\
+  \begin{cases}
+  c < a \\
+  c < b
+  \end{cases}
 \end{gather}
 ```
 
