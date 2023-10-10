@@ -318,14 +318,14 @@ There are 5 special values:
   These two values can be used to represent 0.
   They are also a way to represent numbers with a too small magnitude to fit on 32 bits.
 
-- If `E` = 255 and `M` = 0, the represented number is +$`\infty`$ or -$`\infty`$, depending on `S`.
+- If `E` = 255 and `M` = 0, the represented number is + or - $`\infty`$, depending on `S`.
 
 - If `E` = 255 and `M` is not equal to 0, the value is a NaN (Not-a-Number).
   NaN is a way to represent the result of invalid computations (e.g., the square root of a negative number).
   `M` can be used to provide information about what was wrong (kind of error codes).
 
 1. Open the floating point companion tool of RARS (`[Tools -> Floating Point Representation]`).
-   Modify the binary representation to represent successively +0, -0, +$`\infty`$, -$`\infty`$ and any NaN.
+   Modify the binary representation to represent successively + and - 0, + and - $`\infty`$, and any NaN.
    After each value change hit the <kbd>Enter</kbd> key to display the floating point value.
 
 1. Modify the binary representation to represent as accurately as possible the real number $`1/3`$.
