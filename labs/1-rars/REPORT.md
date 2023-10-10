@@ -4,7 +4,7 @@
 
 <img src=images/java-rars.png width='75%' height='75%' > </img>
 
-## :abacus: Number representations
+## :bulb: Number representations
 
 ```math
 \begin{gather}
