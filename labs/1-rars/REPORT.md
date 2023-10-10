@@ -21,7 +21,11 @@
 
 ```math
 \begin{gather}
-a + b = 2^{32} + c ( overflow)
+a + b = 2^{32} + c \quad ( overflow)
+  \begin{cases}
+  a - c = 2^{32} - b > 0  & \quad \text{if } n \text{ is even}\\
+    -(n+1)/2  & \quad \text{if } n \text{ is odd}
+  \end{cases}
 \end{gather}
 ```
 
