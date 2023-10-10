@@ -33,7 +33,7 @@
   \begin{cases}
   c < a \\
   c < b
-  \end{cases} \qquad \\qquad
+  \end{cases} \qquad \qquad
 \end{gather}
 ```
 
