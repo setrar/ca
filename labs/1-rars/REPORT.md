@@ -42,7 +42,7 @@
 
 ```math
 \begin{gather}
-  a + b = c \quad ( no overflow) \qquad \qquad \\
+  a + b = c \quad \text{ ( no overflow) } \qquad \qquad \\
   \\
   \begin{cases}
   c \geq a \\
