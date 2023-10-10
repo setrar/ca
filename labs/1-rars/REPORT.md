@@ -43,11 +43,10 @@
 ```math
 \begin{gather}
   a + b = c \quad \text{ ( no overflow) } \qquad \qquad \\
-  \\
   \begin{cases}
   c \geq a \\
   c \geq b
-  \end{cases} \qquad \qquad
+  \end{cases}
 \end{gather}
 ```
 
