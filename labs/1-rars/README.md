@@ -274,6 +274,18 @@ If we shift a number the result has thus the same sign.
 When using right shifts to divide numbers by powers of 2 the instruction to use depends on the numbers: `slli` for unsigned numbers and `srai` for signed numbers.
 Note that using `srai` for unsigned numbers would be also wrong because, for instance, `0xffffffff` shifted right by one position with `srai` would give... `0xffffffff`, not the half of `u(0xffffffff)`.
 
+## Controlling overflows
+
+In the first part about integer computations we saw several overflow situations.
+Some ISA specify that these situations shall raise exceptions (we will see later in the course what hardware exceptions are and how they are handled).
+RV32IM does not raise exceptions on integer overflows.
+
+1. Find a way to compute additions of unsigned numbers and to detect overflows, for instance by setting a second result register to a non-zero value.
+   Use as few instructions as possible.
+
+1. Same with subtractions of unsigned numbers, and with additions or subtractions of signed numbers.
+   Use as few instructions as possible.
+
 ## Floating point numbers
 
 RARS implements the RV32I ISA, plus extension M (multiplications and divisions), plus extension F (floating point numbers).
@@ -347,17 +359,7 @@ We will not explore the different rounding modes, always use `rne` (Round to Nea
 Controlling the accuracy of floating point computations is complicated, especially in critical applications.
 Among the various aspects that must absolutely be considered there is this surprising fact that the associativity of addition does not hold.
 
-## Bonus questions
-
-In the first part about integer computations we saw several overflow situations.
-Some ISA specify that these situations shall raise exceptions (we will see later in the course what hardware exceptions are and how they are handled).
-RV32IM does not raise exceptions on integer overflows.
-
-1. Find a way to compute additions of unsigned numbers and to detect overflows, for instance by setting a second result register to a non-zero value.
-   Use as few instructions as possible.
-
-1. Same with subtractions of unsigned numbers, and with additions or subtractions of signed numbers.
-   Use as few instructions as possible.
+### Floating point special values
 
 1. Write some assembly code implementing floating point computations which final result is +$`\infty`$, -$`\infty`$ and NaN.
 
