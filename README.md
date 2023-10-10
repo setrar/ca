@@ -66,6 +66,7 @@ Labs of CompArch course
 ## GitLab and git set-up
 
 To help with the GitLab and git set-up a helper `bash` script is available: `/packages/LabSoC/bin/labs-init`.
+The script is also available in the [`scripts` subdirectory] of the git repository.
 
 > Using the default configuration is warmly recommended but the helper script is configurable so, if you know what you are doing and you do not like the defaults, you can copy it somewhere, edit it and adapt the variable declarations near the top to your own preferences (ssh key to use, path to the clone of the git repository, path of the RARS java archive and path to the directory containing the RISC-V toolchain binaries…).
 
@@ -81,6 +82,7 @@ If there were errors please ask for help and indicate the error message.
 ## Define helper bash functions
 
 To simplify the use of the tools there is another helper `bash` script: `/packages/LabSoC/bin/labs-functions`.
+The script is also available in the [`scripts` subdirectory] of the git repository.
 Source it to define two `bash` functions:
 
 ```bash
@@ -190,5 +192,6 @@ A [PDF version](doc/data/RISC-V-cheatsheet.pdf) is available in the `doc/data` s
 [Markdown syntax]: https://www.markdowntutorial.com/
 [Ubuntu Linux command line tutorial for beginners]: https://ubuntu.com/tutorials/command-line-for-beginners
 [FAQ]: FAQ.md
+[`scripts` subdirectory]: https://gitlab.eurecom.fr/renaud.pacalet/ca/-/tree/master/scripts
 
 <!-- vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab textwidth=0: -->
