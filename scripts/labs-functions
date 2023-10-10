@@ -1,0 +1,128 @@
+# Adapt the following variable declarations to your own situation. If you do
+# not understand please leave the default.
+
+# Path of RARS java archive
+declare rars_jar=/packages/LabSoC/bin/rars.jar
+# Path of java runtime
+declare java_rte=/usr/java/bin/java
+# Path to directory containing RISC-V cross-compilation toolchain binaries
+declare riscv_bin=/packages/LabSoC/riscv/bin
+# RISC-V C cross-compiler
+declare riscv_gcc="riscv32-unknown-linux-gnu-gcc"
+# Default bash configuration file
+declare bash_config=~/.bashrc+
+
+# Do not modify anything below this line... unless you know what you do, of course
+
+# base conversions
+s2i() {
+	local usage="\
+usage: ${FUNCNAME[0]} STR
+
+  STR is either a bit string (maximum 32 bits) or, if prefixed with '0x', an
+  hexadecimal string (maximum 8 hexits). STR is first extended to 32 bits by
+  adding zeros on the left and the result is considered as an unsigned number
+  (U), a signed number in sign and magnitude (SM), and a signed number in 2's
+  complement (TC). U is printed in bases 2, 10 and 16, SM and TC are printed in
+  base 10.
+"
+	local n
+	local -i i
+	local -a v=()
+
+	n="${1^^}"
+    if (( $# != 1 )); then
+        printf '%s' "$usage"
+        return 1
+    fi
+	if [[ "$n" =~ ^0X[0-9A-F]+$ ]]; then
+		i=16
+		n="${n:2}"
+        if (( "${#n}" > 8 )); then
+            printf '%s: invalid string (maximum 8 hexits)\n' "$1"
+            printf '%s' "$usage"
+            return 1
+        fi
+	elif [[ "$n" =~ ^[0-1]+$ ]]; then
+		i=2
+		n="${n:2}"
+        if (( "${#n}" > 32 )); then
+		    printf '%s: invalid string (maximum 32 bits)\n' "$1"
+            printf '%s' "$usage"
+		    return 1
+        fi
+    else
+		printf '%s: invalid string\n' "$1"
+        printf '%s' "$usage"
+		return 1
+	fi
+	mapfile -t v < <(printf 'ibase=%s\nn=%s\nn\nobase=2\nn\n' "$i" "$n" | bc)
+	printf -v v[1] '%+32s' "${v[1]}"
+    v[1]="${v[1]// /0}"
+    if (( v[0] >= 2**31 )); then
+        (( v[2] = 2**31 - v[0] ))
+        (( v[3] = v[0] - 2**32 ))
+    else
+        (( v[2] = v[0] ))
+        (( v[3] = v[0] ))
+    fi
+	printf 'U (base 2):   %s\nU (base 10):  %d\nU (base 16):  %08X\nSM (base 10): %d\nTC (base 10): %d\n' "$( sed -E 's/(....)/\1 /g' <<< "${v[1]}" )" "${v[0]}" "${v[0]}" "${v[2]}" "${v[3]}"
+	return 0
+}
+
+# RISC-V cross-compilation toolchain
+if ! [[ -x "$riscv_bin/$riscv_gcc" ]]; then
+    printf '%s' "\
+ERROR: $riscv_bin/$riscv_gcc: not found
+This script must be sourced on computers in the GNU/Linux lab rooms of Eurecom.
+If you are sourcing the script on one of these computers, this is an error,
+please ask for help. If you want to work on a different computer, please
+configure manually. Aborting.
+"
+    return 1
+fi
+eval "c2rv() { $riscv_bin/$riscv_gcc -march=rv32im -mabi=ilp32 -S \"\$@\"; }"
+
+# RARS jar archive
+if ! [[ -r "$rars_jar" ]]; then
+    printf '%s' "\
+ERROR: $rars_jar: not found
+This script must be sourced on computers in the GNU/Linux lab rooms of Eurecom.
+If you are sourcing the script on one of these computers, this is an error,
+please ask for help. If you want to work on a different computer, please
+configure manually. Aborting.
+"
+    return 1
+elif ! [[ -x "$java_rte" ]]; then
+    printf '%s' "\
+ERROR: $java_rte: not found
+This script must be sourced on computers in the GNU/Linux lab rooms of Eurecom.
+If you are sourcing the script on one of these computers, this is an error,
+please ask for help. If you want to work on a different computer, please
+configure manually. Aborting.
+"
+    return 1
+fi
+eval "rars() { $java_rte -jar $rars_jar & }"
+
+# Print success message and short help
+printf '%s' "\
+
+If there were no errors this terminal is now ready for the labs.
+
+Type 'rars' to launch the RARS RISC-V Assembler and Runtime Simulator (select
+Exit in the File menu to quit when you're done). Type 'c2rv FILE.c' to
+cross-compile a C source file named FILE.c to RISC-V assembly; the result is
+stored in FILE.s. Type 's2i STR' to convert string 'STR' to integer.
+
+To make this configuration permanent and avoid having to source this script in
+each new terminal or tab, please add the following at the end of your bash
+configuration file ('$bash_config' on Eurecom GNU/Linux computers):
+
+############################### CUT HERE ###############################
+source /packages/LabSoC/bin/labs-functions
+############################### CUT HERE ###############################
+
+"
+
+# vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab textwidth=0 syntax=bash:

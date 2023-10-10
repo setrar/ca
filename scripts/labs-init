@@ -1,0 +1,137 @@
+# Adapt the following variable declarations to your own situation. If you do
+# not understand please leave the default.
+
+# ssh key to use for authentication on GitLab
+declare ssh_key=~/.ssh/id_ed25519
+# Where to clone the repository
+declare where_to_clone=~/Documents
+
+# Do not modify anything below this line... unless you know what you do, of course
+
+# Get name of gitlab project and check
+if (( $# != 1 )); then
+    printf '\nusage: source %s PROJECT_NAME\n' "$BASH_SOURCE"
+    return 1
+fi
+declare -A projects=(["ca"]=1 ["ia"]=1 ["ds"]=1 ["hwsec"]=1)
+if ! [[ -v projects[$1] ]]; then
+    printf '\nERROR: %s: Unknown project. Please ask for help.\n' "$1"
+    return 1
+fi
+declare gitlab_project="$1"
+declare gitlab_project_url="git@gitlab.eurecom.fr:renaud.pacalet/$gitlab_project.git"
+declare clone_path="$where_to_clone/$gitlab_project"
+declare user="${USER,,}"
+declare -i status
+
+# unset init_yes_or_no on RETURN
+trap 'unset -f init_yes_or_no' RETURN
+
+# Get yes or no response, default yes
+init_yes_or_no() {
+    declare resp=""
+
+    while read -r -p "$1" resp; do
+        resp="${resp,}"
+        if [[ "$resp" == "n" ]]; then
+            return 1
+        elif [[ "$resp" == "y" ]] || [[ "$resp" == "" ]]; then
+            return 0
+        fi
+    done
+}
+
+printf '
+Hi! I am the configuration script and I will try to configure everything for
+you. If there is an error please do not forget to indicate what the error
+message was when reporting it.
+'
+
+# Generate ssh key pair if needed
+printf '\nCheck ssh key pair for GitLab authentication...\n'
+if [[ -f "$ssh_key" ]] && [[ -f "$ssh_key.pub" ]]; then
+    printf '...looks OK\n'
+else
+    printf '...not found, let me generate one for you...\n'
+    if ! ssh-keygen -t ed25519 -f "$ssh_key" -N '' -q; then
+        printf 'ERROR: Could not generate the ED25519 ssh key pair\n'
+        if ! init_yes_or_no 'You should ask for help. Do you want to continue anyway (Y/n)? '; then
+            return 1
+        fi
+    fi
+    printf '...done. Your ssh public key is:\n\n'
+    cat "$ssh_key.pub"
+    printf '\nCopy it (the full line) in the clipboard, open your web browser, visit
+https://gitlab.eurecom.fr/-/profile/keys (log in with your LDAP-Eurecom
+credentials if asked to), paste your ssh public key in the "Key" text box and
+click on the "Add Key" button.\n'
+    read -p 'Once done type Enter to continue...'
+fi
+
+# Launch ssh agent, add ssh key
+printf '\nCheck ssh agent...\n'
+ssh-add -l &> /dev/null
+status=$?
+if (( status != 2 )); then
+    printf '...looks OK\n'
+else
+    printf '...not found, let me launch one...\n'
+    if ! eval $(ssh-agent -s); then
+        printf 'ERROR: Could not launch ssh agent\n'
+        if ! init_yes_or_no 'You should ask for help. Do you want to continue anyway (Y/n)? '; then
+            return 1
+        fi
+    fi
+    printf '...done.\n'
+fi
+
+# Add ssh key to ssh agent
+if [[ -f "$ssh_key" ]] && [[ -f "$ssh_key.pub" ]]; then
+    if ! ssh-add -T "$ssh_key" &> /dev/null && ! ssh-add "$ssh_key" &> /dev/null; then
+        printf '\nERROR: Could not add private ssh key %s to ssh agent\n' "$ssh_key"
+        if ! init_yes_or_no 'You should ask for help. Do you want to continue anyway (Y/n)? '; then
+            return 1
+        fi
+    fi
+fi
+
+# Clone repository
+printf '\nCheck clone of remote git repository... '
+if [[ -d "$clone_path" ]]; then
+    printf '...looks OK\n'
+else
+    printf '\n...not found, let me clone it in %s...\n' "$where_to_clone"
+    if ! mkdir -p "$where_to_clone"; then
+        printf 'ERROR: Could not create %s directory\n' "$where_to_clone"
+        return 1
+    fi
+    printf '\n'
+    if ! git clone "$gitlab_project_url" "$clone_path"; then
+        printf '\nERROR: Could not clone %s remote in %s\n' "$gitlab_project_url" "$where_to_clone"
+        return 1
+    fi
+    if ! cd "$clone_path"; then
+        printf 'ERROR: Could not cd to %s\n' "$clone_path"
+        return 1
+    fi
+    if ! git checkout "$user"; then
+        printf 'ERROR: Could not checkout branch %s\n' "$user"
+        if ! init_yes_or_no 'You should ask for help. Do you want to continue anyway (Y/n)? '; then
+            return 1
+        fi
+    fi
+    if ! git pull; then
+        printf 'ERROR: Could not pull from remote\n'
+        if ! init_yes_or_no 'You should ask for help. Do you want to continue anyway (Y/n)? '; then
+            return 1
+        fi
+    fi
+    if ! git merge origin/master; then
+        printf 'ERROR: Could not merge origin/master in branch %s\n' "$user"
+        if ! init_yes_or_no 'You should ask for help. Do you want to continue anyway (Y/n)? '; then
+            return 1
+        fi
+    fi
+fi
+
+# vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab textwidth=0 syntax=bash:
