@@ -2,7 +2,7 @@
 
 ## Install RARS
 
-<img src=images/java-rars.png width='' height='' > </img>
+<img src=images/java-rars.png width='75%' height='75%' > </img>
 
 
 ```math
