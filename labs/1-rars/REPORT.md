@@ -19,6 +19,12 @@
 \end{gather}
 ```
 
+```math
+\begin{gather}
+a + b = 2^{32} + c ( overflow)
+\end{gather}
+```
+
 # References
 
 - [ ] [sm: Sign Magnitude notation](https://www.tutorialspoint.com/sign-magnitude-notation)
