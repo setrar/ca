@@ -21,6 +21,8 @@
 
 ## :a: Number representations
 
+- [ ] Overflow
+
 ```math
 \begin{gather}
   a + b = 2^{32} + c \quad ( overflow) \qquad \qquad \\
@@ -33,6 +35,18 @@
   \begin{cases}
   c < a \\
   c < b
+  \end{cases} \qquad \qquad
+\end{gather}
+```
+- [ ] No Overflow
+
+```math
+\begin{gather}
+  a + b = c \quad ( no overflow) \qquad \qquad \\
+  \\
+  \begin{cases}
+  c \geq a \\
+  c \geq b
   \end{cases} \qquad \qquad
 \end{gather}
 ```
