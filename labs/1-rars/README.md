@@ -363,8 +363,10 @@ We will not explore the different rounding modes, always use `rne` (Round to Nea
    Assemble, execute and check the result.
    Can you explain what happened?
 
-Controlling the accuracy of floating point computations is complicated, but sometimes critical.
+Controlling the accuracy of floating point computations is complicated
 Among the various aspects that must absolutely be considered there is this surprising fact that the associativity of addition does not hold.
+Still, it can also be critical like, for instance, in aerospace or transportation.
+Some critical software do not use floating point numbers at all to avoid issues with the computations but this solution is not always possible.
 
 ### Floating point special values
 
