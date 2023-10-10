@@ -83,7 +83,7 @@ If there were errors please ask for help and indicate the error message.
 
 To simplify the use of the tools there is another helper `bash` script: `/packages/LabSoC/bin/labs-functions`.
 The script is also available in the [`scripts` subdirectory] of the git repository.
-Source it to define two `bash` functions:
+Source it to define some helper `bash` functions:
 
 ```bash
 $ source /packages/LabSoC/bin/labs-functions
