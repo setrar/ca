@@ -54,7 +54,7 @@
 # addition
 add t2,t0,t1
 
-# set if less than unsigned ???
+# set if less than unsigned unsigned compare between registerrs1 and registerrs2
 sltu t3,t2,t0 
 ```
 
