@@ -281,11 +281,13 @@ Some ISA specify that these situations shall raise exceptions (we will see later
 RV32IM does not raise exceptions on integer overflows.
 
 1. Find a way to compute additions of unsigned numbers and to detect overflows, for instance by setting a second result register to a non-zero value.
-   Add label `uaddsafe` and the instructions to safely add the unsigned numbers in `t0` and `t1`, store the result in `t2` and store zero in `t3` if there was no overflow, else store one in `t3`.
+   Add label `uaddsafe` and the instructions to safely add the unsigned numbers in `t0` and `t1`, store the result in `t2` and store zero in `t3` if there was no overflow (that is, if `u(t2) = u(t0) + u(t1)`, else store one in `t3`.
    Use as few instructions as possible.
    Assemble, put a breakpoint on the first instruction after label `uaddsafe`, execute, use the register panel to force test values in `t0` and `t1`, continue the execution and check that your safe addition works as expected.
 
-1. Do the same with subtractions of unsigned numbers after label `usubsafe`.
+1. Add label `usubsafe` and the instructions to safely subtract the unsigned number in `t1` from the unsigned number in `t0`, store the result in `t2` and store zero in `t3` if there was no overflow (that is, if `u(t2) = u(t0) - u(t1)`, else store one in `t3`.
+   Use as few instructions as possible.
+   Assemble, and test.
 
 1. Do the same and with additions of signed numbers after label `saddsafe`.
 
