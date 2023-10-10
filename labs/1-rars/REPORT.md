@@ -22,4 +22,4 @@
 # References
 
 - [ ] [sm: Sign Magnitude notation](https://www.tutorialspoint.com/sign-magnitude-notation)
-
+- [ ] [Emojis](https://github.com/yodamad/gitlab-emoji)
