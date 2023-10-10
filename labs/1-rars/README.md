@@ -250,7 +250,7 @@ Note: when coding immediate operands in your code you can also use the decimal f
 1. Add label `m1` and instructions to subtract 1 from `t2` (add -1).
    Assemble and execute.
    What is the new `tc(t2)`?
-   This is a last kind of overflow situation: the result of the addition of 2 negative numbers is wrong because it does not fit on 32 bits.
+   This is another kind of overflow situation: the result of the addition of 2 negative numbers is positive because it does not fit on 32 bits.
 
 ### Right shifts as a way to divide by powers of 2
 
