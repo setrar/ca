@@ -1,3 +1,3 @@
 ```math
-\frac{1}{2}
+{\color{Cyan}\frac{1}{2}}
 ```
