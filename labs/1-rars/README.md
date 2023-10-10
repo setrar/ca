@@ -254,7 +254,7 @@ Note: when coding immediate operands in your code you can also use the decimal f
 
 ### Right shifts as a way to divide by powers of 2
 
-1. Add label `rs` and instructions to store store again the smallest negative number in `t2`, and shift it to the right by one position with the `srli` instruction to divide it by 2.
+1. Add label `rs` and instructions to store again the smallest negative number in `t2`, and shift it to the right by one position with the `srli` instruction to divide it by 2.
    Assemble and execute.
    What is the new `tc(t2)`?
    Is it half the smallest negative number?
@@ -265,10 +265,10 @@ Note: when coding immediate operands in your code you can also use the decimal f
    What is the new `tc(t2)`?
    Is it half the smallest negative number?
 
-`srli` means `s`hift-`r`ight-`l`ogical by `i`mmediate shift amount.
+`srli` means Shift-Right-Logical by Immediate shift amount.
 The bits entering on the left are zeros.
-If we shift a negative number the result becomes thus positive.
-`srai` means `s`hift-`r`ight-`a`rithmetic by `i`mmediate shift amount.
+If we shift a negative number the result thus becomes positive.
+`srai` means Shift-Right-Arithmetic by Immediate shift amount.
 The bits entering on the left depend on the shifted value: if it is negative they are ones, else zeros.
 If we shift a number the result has thus the same sign.
 When using right shifts to divide numbers by powers of 2 the instruction to use depends on the numbers: `slli` for unsigned numbers and `srai` for signed numbers.
