@@ -1,12 +1,12 @@
 ```math
 \begin{gather}
 \\
-\begin{bmatrix}
+\begin{matrix}
     a_31 \\
     a_30 \\
     .. \\
     a_0
-\end{bmatrix}
+\end{matrix}
 \\
 {\color{Salmon}u} = \sum_{i=0}^{32} a_i * 2^i \quad \left.\in[ 0, \dots, 2^{32}-1 ]\right|2^{32}
 \\
