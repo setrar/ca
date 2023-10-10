@@ -211,7 +211,7 @@ Note: you can execute backward step-by-step with `[Run -> Backstep]`.
 
 1. Use `s2i` and note `u(t2)` before and after this sign change.
    Use a calculator to check that the second value, if considered as unsigned, is correct.
-   Because it is, we could recover the value before the sign change by shifting `t2` to the right with the `slli` (shift-left-logical) instruction, which is the same as dividing by 2.
+   Because it is, we could recover the value before the sign change by shifting `t2` to the right with the `srli` (shift-right-logical) instruction, which is the same as dividing by 2.
 
 1. Add `t2` to itself one more time after the sign change.
    Is the new `u(t2)` still correct?
