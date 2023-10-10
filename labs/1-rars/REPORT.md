@@ -23,11 +23,15 @@
 \begin{gather}
 a + b = 2^{32} + c \quad ( overflow)
   \begin{cases}
-  a - c = 2^{32} - b > 0  & \quad \text{if } n \text{ is even}\\
+  a - c = 2^{32} - b > 0  & \quad ( b \in [ 0, \dots, 2^{32}-1 ] ) \\
+  and \\
+  b - c = 2^{32} - a > 0  & \quad ( a \in [ 0, \dots, 2^{32}-1 ]
     -(n+1)/2  & \quad \text{if } n \text{ is odd}
   \end{cases}
 \end{gather}
 ```
+
+## 
 
 # References
 
