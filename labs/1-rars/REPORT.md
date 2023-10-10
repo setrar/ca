@@ -1,3 +1,10 @@
+# Report
+
+## Install RARS
+
+<img src=images/java-rars.png width='' height='' > </img>
+
+
 ```math
 \begin{gather}
 \\
