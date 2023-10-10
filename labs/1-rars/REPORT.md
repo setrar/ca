@@ -23,7 +23,7 @@
 
 ```math
 \begin{gather}
-a + b = 2^{32} + c \quad ( overflow) \qquad \qquad \\
+  a + b = 2^{32} + c \quad ( overflow) \qquad \qquad \\
   \begin{cases}
   a - c = 2^{32} - b > 0  & \quad ( b \in [ 0, \dots, 2^{32}-1 ] ) \\
   and \\
@@ -33,7 +33,7 @@ a + b = 2^{32} + c \quad ( overflow) \qquad \qquad \\
   \begin{cases}
   c < a \\
   c < b
-  \end{cases}
+  \end{cases} \qquad \\qquad
 \end{gather}
 ```
 
