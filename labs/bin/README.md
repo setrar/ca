@@ -25,5 +25,7 @@ java -jar ./rars1_6.jar
 - [ ] [Get Hands-On Experience with RISC-V, Using ESP32-C3!](https://www.espressif.com/en/media_overview/news/risc-v-with-esp32-c3)
 - [ ] [RARS -- RISC-V Assembler and Runtime Simulator](https://github.com/TheThirdOne/rars)
 - [ ] [DIGITAL SYSTEMS, HARDWARE - SOFTWARE INTEGRATION](https://www.eurecom.fr/en/course/digitalsystems-2024spring)
-- [ ] [:octocat: s5project](https://gitlab.eurecom.fr/renaud.pacalet/s5project)
+- [ ] [:pushpin: s5project](https://gitlab.eurecom.fr/renaud.pacalet/s5project)
+- [ ] [gitlab MD](https://docs.gitlab.com/ee/user/markdown.html)
+
 
