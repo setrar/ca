@@ -1,6 +1,6 @@
 # Q&A
 
-## :cat:GPT in RISC-V what is the difference between add and addi instructions?
+## :round_pushpin: GPT in RISC-V what is the difference between add and addi instructions?
 
 In the RISC-V instruction set architecture (ISA), "add" and "addi" are both used for addition operations, but they have different purposes and formats:
 
