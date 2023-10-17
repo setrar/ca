@@ -1,0 +1,29 @@
+# Installing RARS
+
+- [ ] [RARS -- RISC-V Assembler and Runtime Simulator](https://github.com/TheThirdOne/rars)
+
+- Download the latest RARS `jar`, current version `1.6`
+
+```
+wget https://github.com/TheThirdOne/rars/releases/download/v1.6/rars1_6.jar
+```
+
+- Check your running `java` version
+
+```
+sdk use java 17.0.8.1-tem
+```
+
+- Run the `jar` binary
+
+```
+java -jar ./rars1_6.jar 
+```
+
+# References
+
+- [ ] [Get Hands-On Experience with RISC-V, Using ESP32-C3!](https://www.espressif.com/en/media_overview/news/risc-v-with-esp32-c3)
+- [ ] [RARS -- RISC-V Assembler and Runtime Simulator](https://github.com/TheThirdOne/rars)
+- [ ] [DIGITAL SYSTEMS, HARDWARE - SOFTWARE INTEGRATION](https://www.eurecom.fr/en/course/digitalsystems-2024spring)
+- [ ] [:octocat: s5project](https://gitlab.eurecom.fr/renaud.pacalet/s5project)
+
