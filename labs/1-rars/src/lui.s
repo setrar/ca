@@ -1,0 +1,2 @@
+lui t0, 0xfedcc
+addi t0, t0,  0xfffffa98 # 0xa98
