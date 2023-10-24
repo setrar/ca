@@ -357,7 +357,7 @@ We will not explore the different rounding modes, always use `rne` (Round to Nea
 ### Floating point erasure
 
 1. Add label `assoc` and instructions to compute `ft2 + (ft3 - ft3)` and store the result in `ft4`, without modifying the content of `ft2` and `ft3`.
-   Assemble, execute and check that the result is exactly `ft3`.
+   Assemble, execute and check that the result is exactly `ft2`.
 
 1. Add instructions to compute `(ft2 + ft3) - ft3` and store the result in `ft5`.
    Assemble, execute and check the result.
