@@ -157,3 +157,56 @@ TC (base 10): -1073741824
 
 Using srai instead of srli we found the correct halved negative number.
 !!Attention if we are dealing with signed or unsigned numbers!!
+
+$ Controlling Overflows$
+1) 
+uaddsafe:
+add t2, t0, t1
+control_add:
+bltu t2, t1, ovf_1
+bltu t2, t0, ovf_1
+addi t3, zero, 0
+jal zero, uaddsafe_end
+ovf_1: 
+addi t3, zero, 1
+uaddsafe_end:
+#jalr ra, t0, 0
+
+(I'm not use about this jalr ----> ask)
+
+2)
+usubsafe:
+sub t2, t0, t1
+control_sub:
+bltu t0, t1, ovf_2
+addi t3, zero, 0
+jal zero, usubsafe_end
+ovf_2:
+addi t3, zero, 1
+usubsafe_end:
+#jalr ra, t0, 0
+
+saddsafe:
+add t2, t0, t1
+control_add_s:
+blt t2, t1, ovf_1_s
+blt t2, t0, ovf_1_s
+addi t3, zero, 0
+jal zero, saddsafe_end
+ovf_1_s: 
+addi t3, zero, 1
+saddsafe_end:
+#jalr ra, t0, 0
+ssubsafe:
+sub t2, t0, t1
+control_sub_s:
+blt t0, t1, ovf_2_s
+addi t3, zero, 0
+jal zero, ssubsafe_end
+ovf_2_s:
+addi t3, zero, 1
+ssubsafe_end:
+#jalr ra, t0, 0
+
+
+(control again but it should be correct ---> using the blt also the sign is considered, so the condition should be the same as before)
