@@ -92,7 +92,7 @@ Unless otherwise stated use only the temporary registers for your experiments (`
 
 ## Launch RARS, settings, help, registers
 
-Launch RARS (just and type `rars` in your terminal), open the `Settings` menu and configure it according the following picture:
+Launch RARS (just type `rars` in your terminal), open the `Settings` menu and configure it according the following picture:
 
 ![RARS settings](../../doc/data/rars-settings-no-pseudo.png)
 
