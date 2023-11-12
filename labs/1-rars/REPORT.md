@@ -119,3 +119,24 @@ Yes, as it can be represented by 2^(-1) which is a power of 2
 With the tool, the number obtained is 0 01111110 00000000000000000000000 = 0.5
 
 ## Floating point instructions
+1. Add label inv3 at the end of your source file, instructions to initialize ft0 with value 3, compute the inverse and store the result in ft1. Assemble, execute and check that the final content of ft1 is the same as the one you found with the floating point companion tool.
+To compute the inverse we can store into a normal register the representation of 1.0. Move this representation into ft1 and add its value three times to store it into ft2. The inverse of 3 can then be calculated by the division of ft1/ft2 which equals as expected 0.33333334
+This number corresponds to the one obtained in the companion tool as it is the closest we can get to 1/3 with float precission
+
+2. Thanks to the variable exponent of the floating point representation we can represent very small and very large numbers. Use the companion tool to find the hexadecimal representation of 42, and 2302^{30}230. Add label finit and instructions to initialize ft2 to 424242, and ft3 to 230=10737418242^{30} = 1073741824230=1073741824 (hint: you can initialize a general purpose register and copy its content as is to a floating point register with instruction fmv.s.x or after conversion to a real value with fcvt.s.w). Assemble, execute and check the content of ft2 and ft3 (use the Hexadecimal Values radio button to display their content in hexadecimal or in decimal scientific notation).
+Using the method described of loading the representation first into a normal register, the obtained values are the ones expected:
+ft2 = 0x42280000 = 42.0
+ft3 = 0x4e800000 = 1.07374182E9
+
+## Floating point erasure
+1. Add label assoc and instructions to compute ft2 + (ft3 - ft3) and store the result in ft4, without modifying the content of ft2 and ft3. Assemble, execute and check that the result is exactly ft2.
+The result is ft2 as the previous operation (ft3 - ft3) results in 0 (both numbers have the same magnitude so no information is lost)
+
+2. Add instructions to compute (ft2 + ft3) - ft3 and store the result in ft5. Assemble, execute and check the result. Can you explain what happened?
+The result is 0. This can be explained as when we compute (ft2 + ft3) we lose the data of ft2 because its magnitude is way lower than ft3 and so we don't have enough bits for representing that many decimal places
+
+## Floating point special values
+1. Write some assembly code implementing floating point computations which final result is +$\infty,−, -,−\infty$ and NaN
++Infinity corresponds to S=0 E=255 M=0 => 0x7F800000
+-Infinity corresponds to S=1 E=255 M=0 => 0xFF800000
+NaN corresponds to S=0 E=255 M=1 => 0x7F800001 

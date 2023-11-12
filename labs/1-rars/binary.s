@@ -119,3 +119,62 @@ ssubsafe:
 	sub t2, t0, t1
 	# If the result is greater than than t0 or t1 we know it overflowed
 	slt t3, t1, t2
+
+# Floating point instructions
+inv3: 
+	# Store 1.0 into t1 using float representation
+	addi t1, zero, 0x3F8
+	slli t1, t1, 20
+	# Move float representation into ft1
+	fmv.s.x ft1, t1
+	# Store 3 into ft2
+	fadd.s ft2, ft1, ft1
+	fadd.s ft2, ft2, ft1
+	# Compute the inverse of 3
+	fdiv.s ft1, ft1, ft2
+finit: 
+	# Store 0x42280000 into t1 which corresponds to a number of 42.0
+	addi t1, zero, 0x42
+	slli t1, t1, 8
+	addi t1, t1, 0x28
+	slli t1, t1, 16
+	# Load 42.0 into ft2
+	fmv.s.x ft2, t1
+	# Store 0x4E800000 into t1 which corresponds to a number of 2^30
+	addi t1, zero, 0x4E8
+	slli t1, t1, 20
+	# Load 2^30 into ft2
+	fmv.s.x ft3, t1
+
+# Floating point erasure
+assoc:
+	# Compute  ft2 + (ft3 - ft3)
+	fsub.s ft4, ft3, ft3
+	fadd.s ft4, ft4, ft2 # The result is ft2 as (ft3 - ft3) results in 0
+	
+	# Compute (ft2 + ft3) - ft3
+	fadd.s ft4, ft2, ft3
+	fsub.s ft4, ft4, ft4 # The result is 0! Because when we compute (ft2 + ft3) we lose the data of ft2 because its magnitude is way lower than ft3 and so we don't have enough bits for representing
+	
+# Floating point special values
+	
+infinity:
+	# Store 0x7F800000 into t1 which corresponds to +Infinity
+	addi t1, zero, 0x7F8
+	slli t1, t1, 20
+	fmv.s.x ft5, t1
+minus_infinity:
+	# Store 0xFF800000 into t1 which corresponds to +Infinity
+	addi t1, zero, 0xFF
+	slli t1, t1, 4
+	addi t1, t1, 0x8
+	slli t1, t1, 20
+	fmv.s.x ft5, t1
+nan:
+	# Store 0x7F800001 into t1 which corresponds to NaN
+	addi t1, zero, 0x7F8
+	slli t1, t1, 20
+	addi t1, t1, 1
+	fmv.s.x ft5, t1
+	
+	
