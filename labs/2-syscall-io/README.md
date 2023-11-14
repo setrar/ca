@@ -95,6 +95,27 @@ This can be done in different ways:
 When a special ASCII code is used to signal the end of a string it is usually `NUL` (ASCII code 0).
 The `PrintString` system call that we will use later to print text strings expects a `NUL` at the end of the string.
 
+## The assembler
+
+The A letter in RARS stands for Assembler.
+This is a software that resembles a compiler: it takes the textual assembly source code of our application and produces a binary version of it, ready to be executed by the computer, that we call the _executable_ for short.
+On real computer systems the executable is usually stored in a file and it is this file that you invoke by clicking on its icon or by typing its name in the command line interface when you want to execute the application.
+In our small simulated RISC-V computer the executable is not stored in a file but the principle is the same.
+
+The executable is a representation of the memory layout; in order to run the application the executable is parsed, _segments_ of it are loaded at specified addresses into the computer's memory, and the computer's program counter is set to the address of the first instruction.
+In this lab we will focus on two segments: the data segment that contains our application's data and the code segment that contains its instructions.
+**Important**: the code segment is also sometimes called the _text_ segment for historical reasons; do not mix up with text strings.
+With RARS by default the data segment starts at address `0x10010000` in memory and the code segment starts at address `0x00400000`.
+
+The assembler can be seen as a kind of dual track recorder where one track would be the data segment and the other would be the code segment.
+It parses our source code and progressively adds items to one or the other of the segments until they are complete.
+Only one of the two segments can be updated at a time: the _current_ segment; at the beginning of the assembling the current segment is the code segment.
+While parsing our source code the assembler manages 2 internal variables, `vcode` (initialized with `0x00400000`) and `vdata` (initialized with `0x10010000`); they are the recording heads of the dual track recorder and they always point to the next available free memory address in their respective segment.
+The assembler reads our assembly source code line by line and depending of what was read it can either:
+- change the current segment (`.text` and `.data` directives),
+- store the current memory address, that is, the current value of `vcode` or `vdata` depending on the current segment, and give it a name for later reuse (label declarations),
+- add an item to the current segment and increment the corresponding `vcode` or `vdata` variable accordingly (almost everything else).
+
 ## Launch RARS, settings, help
 
 Launch RARS (just type `rars` in your terminal), open the `Settings` menu and configure it according the following picture:
