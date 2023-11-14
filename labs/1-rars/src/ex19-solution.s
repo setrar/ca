@@ -18,3 +18,11 @@ acc_loop:
    addi t1, t1, 1        # i <- i + 1
    bne t0, t1, acc_loop  # iterate if not done
    jalr zero, 0(ra)      # return
+   
+.text
+.globl _start
+_start:
+
+    # Exit the program
+    li a7, 10  # System call for exit
+    ecall
