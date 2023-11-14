@@ -365,6 +365,128 @@ Where `PATH-TO-RARS-JAR` is the path to the RARS jar archive you installed and `
 
 If you are using a different command line interface read its documentation.
 
+# The RV32IM ISA and its ILP32 ABI
+
+## How to write functions and call them in assembly code?
+
+In assembly language, just like in most programming languages, structuring the source code is essential.
+Functions are the basis of code structuring; they provide modularity, encapsulation of implementation details and code reuse.
+A function optionally takes input parameters, returns output results, uses local variables, calls other functions.
+At the end of the execution of a function the caller program resumes with the instruction that follows the function call.
+All these aspects are apparently simple in high level programming languages.
+Example of a factorial function in the C language:
+
+```c
+// compute and return n! = 1*2*3*...*n
+unsigned factorial(unsigned n) {
+  unsigned result;
+
+  if(n < 3) result = n;
+  else result = factorial(n - 1) * n;
+  return result;
+}
+```
+
+Example of call of the factorial function from another function:
+
+```c
+...
+var = factorial(5);
+...
+```
+
+In assembly language things are more complicated because all the low level details that are normally handled automatically by the compiler must be handled manually.
+We must decide how the input parameters and output results are passed between the calling program (the _caller_) and the called function (the _callee_), where the local variables of the function are stored, how to return to the caller at the end of the function and how other functions can be called from the function itself.
+Of course, all this must be consistent between the caller and the callee: if the caller passes an input parameter in register `x2` but the callee expects it to be passed in register `x3`, things will not work as expected.
+As caller and callee functions can be written by different programmers, or compiled from different source files, we need a global convention; this is what the "Application Binary Interface" (ABI) provides.
+See [What is the ILP32 ABI for the RV32IM ISA?](#what-is-the-ilp32-abi-for-the-rv32im-isa) to learn more about the "Integer, Long and Pointers 32 bits" (ILP32) ABI for the RV32IM "Instruction Set Architecture" (ISA).
+
+## What is the ILP32 ABI for the RV32IM ISA?
+
+The "Integer, Long and Pointers 32 bits" (ILP32) ABI for the RV32IM "Instruction Set Architecture" (ISA) is named so because it targets 32 bits architectures.
+It contains, among other things, conventions about the use of the general purpose registers, the memory and function calls.
+
+The RV32IM general purpose registers are named `x0` to `x31`.
+The ILP32 ABI gives them a second meaningful name corresponding to their given role in the ABI conventions:
+
+| Register  | Name     | Description                          | Saved  |
+| :---      | :---     | :---                                 | :---   |
+| `x0`      | `zero`   | Constant 0                           | -      |
+| `x1`      | `ra`     | Return address                       | No     |
+| `x2`      | `sp`     | Stack pointer                        | No     |
+| `x3`      | `gp`     | Global pointer (don't touch)         | Yes    |
+| `x4`      | `tp`     | Thread pointer (don't touch)         | Yes    |
+| `x5-x7`   | `t0-t2`  | Temporary registers                  | No     |
+| `x8`      | `s0/fp`  | Saved register or frame pointer      | Yes    |
+| `x9`      | `s1`     | Saved register                       | Yes    |
+| `x10-x11` | `a0-a1`  | Function arguments and return values | No     |
+| `x12-x17` | `a2-a7`  | Function arguments                   | No     |
+| `x18-x27` | `s2-s11` | Saved registers                      | Yes    |
+| `x28-x31` | `t3-t6`  | Temporary registers                  | No     |
+
+In your assembly coding prefer the meaningful names.
+Ignore and don't use the `gp` (`x3`) and `tp` (`x4`) registers; we don't have time to discuss their role in this course.
+The conventions about these registers and function calls are the following:
+
+- The input parameters of functions are passed in registers `a0` to `a7`; if the function has only one 32 bits input parameter it is passed in `a0`, if it has two 32 bits input parameters they are passed in `a0` and `a1`, etc.
+- The output results of functions are passed in registers `a0` and `a1`.
+- Register `ra` is used to store the return address of functions:
+  * Before jumping at the first instruction of the callee the caller must store the `pc+4` return address in register `ra` (where `pc` is the address of the jump instruction itself).
+    In order to do this the caller can call the callee with the `jalr ra,...` or `jal ra,...` basic instructions, or the equivalent `call label` pseudo instruction.
+  * At the end the callee shall jump back at the address it received in register `ra`.
+    This can be achieved with, for instance, the `jalr zero,ra,0` basic instruction, or the equivalent `ret` pseudo instruction.
+- Registers `sp`, `gp`, `tp` and `s0-s11` are the _saved_ registers: their content must absolutely be preserved by the callee because they can be in use by the caller at the time of the function call.
+  If the callee needs to use these registers it **must** save them _somewhere_ before modifying their content, and it **must** restore the original content before returning to the caller.
+- Registers `ra`, `t0-t6` and `a0-a7` are the _non-saved_ registers: they may be freely modified by the callee because the caller does not expect their content to be preserved across function calls.
+  If the caller has valuable data stored in these registers it **must** save them _somewhere_ before calling any function.
+
+These conventions are not sufficient to solve all potential issues.
+Where is the _somewhere_ where the caller or the callee are supposed to save the content of registers when they need to do so?
+If the callee uses a lot of local variables, more than the number of non-saved registers, where will it store them?
+If the callee must itself call another function, it must pass it the return address in register `ra`, overriding its own return address; where shall it save its own return address?
+For the answers to all these questions see [What are the stack, the stack frames and the stack pointer?](#what-are-the-stack-the-stack-frames-and-the-stack-pointer).
+
+## What are the stack, the stack frames and the stack pointer?
+
+The stack is a region of the memory where functions can store information when they cannot do it with the available registers.
+As shown in the figure below the stack grows towards low addresses, shrinks towards high addresses and its lowest address is always in the `sp` register.
+
+![The stack](doc/data/stack.png)
+
+When a function needs some storage space, say `N` bytes, it allocates a _stack frame_ on the stack by subtracting `N` from register `sp`.
+Once this is done it can store data in this stack frame up to the allocated `N` bytes.
+A recommended practice is to do this at the very beginning of the function, before any other action, and then to save the `ra` register in the stack frame, plus all saved registers that the function will modify.
+Saving `ra` is recommended even if, in the current version, the function does not modify it, because the code could be updated at a later stage and function calls could be added.
+The new value of `sp` is used as base address for all these store operations.
+During execution the function can also use its stack frame to store extra data, like local variables.
+At the end of its execution, before returning, the function restores `ra` from the stack frame, plus all saved registers that have been modified.
+Then, it deallocates the stack frame and restores register `sp` by adding `N` to `sp`.
+
+Note that, among all saved registers `sp` is the only one that is not preserved by storing it in the stack frame.
+It is preserved by adding to it the same `N` value that was subtracted at the beginning.
+
+Example of RV32IM assembly code for the `factorial` C function shown in [How to write functions and call them in assembly code?](#how-to-write-functions-and-call-them-in-assembly-code):
+
+```riscv
+# compute and return n! = 1*2*3*...*n
+# n passed in a0, result returned in a0
+factorial:
+  addi sp,sp,-8      # allocate 8 bytes stack frame (2 words)
+  sw   ra,0(sp)      # save ra in stack frame
+  sw   s0,4(sp)      # save s0 in stack frame
+  addi s0,zero,3     # s0 <- 3
+  bltu a0,s0,end     # go to end if a0 (n) unsigned-less than s0 (3)
+  add  s0,zero,a0    # save a0 (n) in s0
+  addi a0,a0,-1      # a0 <- a0-1
+  jal  ra,factorial  # call factorial, a0 <- factorial(n-1)
+  mul  a0,a0,s0      # a0 <- a0*s0 = factorial(n-1)*n
+end:
+  lw   s0,4(sp)      # restore s0 from stack frame
+  lw   ra,0(sp)      # restore ra from stack frame
+  addi sp,sp,8       # deallocate stack frame, restore sp
+  jalr zero,ra,0     # return to caller, the result is in a0
+```
+
 [Git for Windows]: https://gitforwindows.org/
 [MacPorts]: https://www.macports.org/
 [Homebrew]: https://brew.sh/
