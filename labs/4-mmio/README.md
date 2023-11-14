@@ -113,7 +113,7 @@ Launch RARS (just type `rars` in your terminal), open the `Settings` menu and co
 ## Report, add, commit, push
 
 Once you will have written your report do not forget to add, commit and push it in your personal branch.
-Add also the `mmio.s` file.
+Add also the `io.s` file.
 
 [Markdown syntax]: https://www.markdowntutorial.com/
 
