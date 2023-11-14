@@ -1,6 +1,6 @@
 # Factorial
 
-- [ ] :warning: Always double check the settings
+### :warning: Always double check the settings
 
 <img src=images/main-settings.png width="50%" height="50%" > </img>
 
