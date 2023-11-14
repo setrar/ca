@@ -2,7 +2,7 @@
 
 - [ ] :warning: Always double check the settings
 
-<img src=images/main-settings.png width="" height="" > </img>
+<img src=images/main-settings.png width="75%" height="75%" > </img>
 
 # References
 
