@@ -210,3 +210,29 @@ ssubsafe_end:
 
 
 (control again but it should be correct ---> using the blt also the sign is considered, so the condition should be the same as before)
+
+### floating point numbers
+# floating point representation of 1/3 
+0-01111101-01010101010101010101010 (0.3333333)
+
+# floating point representation of 1/2: it will be perfectly represented as it has only a decimal value 
+0-01111110-00000000000000000000000
+
+## floating point instructions
+1) Notice the difference on the last bit: it means that the floating point number is 0.33333334
+U (base 2):   0011 1110 1010 1010 1010 1010 1010 1011 
+U (base 10):  1051372203
+U (base 16):  3EAAAAAB
+SM (base 10): 1051372203
+TC (base 10): 1051372203
+
+2) er initialize the temporary registers and then used the function fmv.s.x for transform the data from integer to floating point representation, into the registers ft2 and ft3.
+NOTE: the values of ft2 and ft3 in hexadecimal notations correspond to the integer ones, not to the floating point ones. Ask if it's correct or not!!!!
+
+## floating point erasure 
+1) we verified that the content of the ft4 register corresponds to the one of ft2.
+2) the obtained result is equal to 0. I think that the explanation is the overflow condition. ASK to check!!! The associativity with the floating point representation does not hold. 
+
+## floating point erasure
+check the assembly code.
+

@@ -75,7 +75,31 @@ ovf_2_s:
 addi t3, zero, 1
 ssubsafe_end:
 # jalr ra, t0, 0
-
-
-
+inv3:
+addi t6, zero, 3
+addi t5, zero, 1
+fmv.s.x ft0, t6
+fmv.s.x ft1, t5
+fdiv.s ft1, ft1, ft0, rne
+finit:
+addi t2, zero, 42
+addi t3, zero, 1
+slli t3, t3, 30
+fmv.s.x ft2, t2  
+fmv.s.x ft3, t3  
+assoc: 
+fsub.s ft5, ft3, ft3, rne 
+fadd.s ft4, ft2, ft5, rne
+assoc2:
+fadd.s ft6, ft2, ft3, rne 
+fsub.s ft5, ft6, ft3, rne
+Nan:
+addi t0, zero, 0
+fmv.s.x ft0, t0
+fdiv.s ft7, ft0, ft0, rne
+pinft:
+fdiv.s ft8, ft4, ft0, rne
+minft:
+fsub.s ft10, ft0, ft4, rne
+fdiv.s ft9, ft10, ft0, rne
 
