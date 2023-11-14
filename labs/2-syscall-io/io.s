@@ -8,9 +8,26 @@ print_char_message:
 .asciz "\nThe character you entered is: "
 bye_message:
 .asciz "\nBye!"
+print_ascii_message:
+.asciz "\nThe ASCII code of the character you entered is: "
 
 # code section
 .text
+
+# function: puti
+# description: print character
+# parameters: integer stored in a0
+# return: none
+# notes: calls PrintInt syscall
+puti:
+    addi  sp,sp,-4    # allocate stack frame (1 register to save = 1*4 = 4 bytes)
+    sw    ra,0(sp)    # save ra on stack
+    addi  a7,zero,1   # syscall code for PrintInt
+    ecall             # call syscall
+    lw    ra,0(sp)    # restore ra from stack
+    addi  sp,sp,4     # deallocate stack frame, restore stack pointer
+    ret               # return to caller
+
 
 # function: getc
 # description: read character from keyboard
@@ -53,11 +70,11 @@ main:
     ecall             # call syscall
     call  getc        # call getc function to read character
     mv    s0,a0       # copy read character in s0
-    la    a0,print_char_message # store address of message in a0
+    la    a0,print_ascii_message # store address of message in a0
     li    a7,4        # store code of PrintString syscall in a7
     ecall             # call syscall
     mv    a0,s0       # copy read character in a0
-    call  putc        # call putc function to print character
+    call  puti        # call putc function to print character
     li    t0,'Q'      # store 'Q' ASCII code in t0
     bne   a0,t0,main  # loop if read character is not 'Q'
     la    a0,bye_message # store address of message in a0
