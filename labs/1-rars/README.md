@@ -92,7 +92,7 @@ Unless otherwise stated use only the temporary registers for your experiments (`
 
 ## Launch RARS, settings, help, registers
 
-Launch RARS (just and type `rars` in your terminal), open the `Settings` menu and configure it according the following picture:
+Launch RARS (just type `rars` in your terminal), open the `Settings` menu and configure it according the following picture:
 
 ![RARS settings](../../doc/data/rars-settings-no-pseudo.png)
 
@@ -211,7 +211,7 @@ Note: you can execute backward step-by-step with `[Run -> Backstep]`.
 
 1. Use `s2i` and note `u(t2)` before and after this sign change.
    Use a calculator to check that the second value, if considered as unsigned, is correct.
-   Because it is, we could recover the value before the sign change by shifting `t2` to the right with the `slli` (shift-left-logical) instruction, which is the same as dividing by 2.
+   Because it is, we could recover the value before the sign change by shifting `t2` to the right with the `srli` (shift-right-logical) instruction, which is the same as dividing by 2.
 
 1. Add `t2` to itself one more time after the sign change.
    Is the new `u(t2)` still correct?
@@ -357,7 +357,7 @@ We will not explore the different rounding modes, always use `rne` (Round to Nea
 ### Floating point erasure
 
 1. Add label `assoc` and instructions to compute `ft2 + (ft3 - ft3)` and store the result in `ft4`, without modifying the content of `ft2` and `ft3`.
-   Assemble, execute and check that the result is exactly `ft3`.
+   Assemble, execute and check that the result is exactly `ft2`.
 
 1. Add instructions to compute `(ft2 + ft3) - ft3` and store the result in `ft5`.
    Assemble, execute and check the result.
