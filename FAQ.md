@@ -157,7 +157,7 @@ Then, open a bash terminal and type the following commands.
 $ git clone git@gitlab.eurecom.fr:renaud.pacalet/ca.git ~/Documents/ca
 $ cd ~/Documents/ca
 $ git checkout shelley
-$ git pull
+$ git pull --no-edit
 $ git merge --no-edit origin/master
 $ git config user.name shelley
 $ git config user.email mary.shelley@eurecom.fr

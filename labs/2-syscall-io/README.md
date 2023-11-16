@@ -54,7 +54,7 @@ The following assumes a student named Mary Shelley.
 1. Pull, merge with `origin/master`, change the working directory to this lab's directory and list the directory's content:
 
     ```bash
-    $ git pull
+    $ git pull --no-edit
     $ git merge --no-edit origin/master
     $ cd labs/2-syscall-io
     $ ls

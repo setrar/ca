@@ -114,7 +114,7 @@ You can check that you are on the correct branch with the `git branch` command.
 From time to time, when new material will be added to it, you will be asked to merge the `master` branch in your personal branch:
 
 ```bash
-$ git pull
+$ git pull --no-edit
 $ git merge --no-edit origin/master
 ```
 
