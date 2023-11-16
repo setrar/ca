@@ -104,10 +104,20 @@ saddsafe:
 	add t1, zero, t0
 	# Add negative numbers!
 	add t2, t0, t1
-	# If the result is greater than than t0 and t1 we know it overflowed
-	slt t3, t1, t2
-	slt t4, t0, t2
-	or t3, t3, t4
+	# We have and overflow when s(t0)*s(t1)*not(s(t2)) + not(s(t0))*not(s(t1))*s(t2)
+	# Compute s(t0)*s(t1)
+	and t4, t0, t1
+	# Compute not(s(t0))*not(s(t1))*s(t2)
+	not t0, t0
+	not t1, t1
+	and t5, t0, t1
+	and t5, t5, t2
+	# Compute s(t0)*s(t1)*not(s(t2))
+	not t3, t2
+	and t4, t4, t3
+	# Store overflow flag in t3
+	or t3, t4, t5
+	srli t3, t3, 3
 	
 ssubsafe:
 	# Load register t0 with value 0x80000000 = -2147483648
@@ -117,8 +127,13 @@ ssubsafe:
 	add t1, zero, t0
 	# Add negative numbers!
 	sub t2, t0, t1
-	# If the result is greater than than t0 or t1 we know it overflowed
-	slt t3, t1, t2
+	# If ((t2 < t0) != (t1 > 0)) then we know it overflowed
+	slt t3, t2, t0
+	sgt t4, t1, zero
+	xor t3, t3, t4
+	not t3, t3
+	slli t3, t3, 31
+	srli t3, t3, 31
 
 # Floating point instructions
 inv3: 
