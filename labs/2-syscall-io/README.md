@@ -55,7 +55,7 @@ The following assumes a student named Mary Shelley.
 
     ```bash
     $ git pull
-    $ git merge origin/master
+    $ git merge --no-edit origin/master
     $ cd labs/2-syscall-io
     $ ls
     README.md

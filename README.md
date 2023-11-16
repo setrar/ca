@@ -115,7 +115,7 @@ From time to time, when new material will be added to it, you will be asked to m
 
 ```bash
 $ git pull
-$ git merge origin/master
+$ git merge --no-edit origin/master
 ```
 
 Do not forget to add, commit and push your own work in your personal branch.
@@ -163,7 +163,8 @@ If there are errors ask for help.
 Let's then try to create a simple example C source file and to compile it:
 
 ```bash
-$ cd /tmp
+$ mkdir -p ~/tmp
+$ cd ~/tmp
 $ echo 'int main(void) {return 0;}' > foo.c
 $ c2rv foo.c
 $ ls foo.s
