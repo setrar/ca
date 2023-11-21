@@ -187,6 +187,9 @@ During all labs it will be convenient to have a RISC-V cheat sheet at hand.
 [Erik Engheim](https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8) designed a nice one (without the M extension).
 A [PDF version](doc/data/RISC-V-cheatsheet.pdf) is available in the `doc/data` subdirectory.
 
+The one-page summary of RV32I instructions binary encoding could also be useful.
+A [PDF version](doc/data/rv32i-binary-encoding.pdf) is available in the `doc/data` subdirectory.
+
 [bootlin]: https://bootlin.com/
 [memento of the most useful GNU/Linux commands]: doc/data/command_memento.pdf
 [French version]: doc/data/command_memento_fr.pdf

@@ -14,7 +14,8 @@ https://cecill.info/licences/Licence_CeCILL_V2.1-en.html
 
 This folder contains documentation resources for the course.
 
-- [The RISC-V assembly cheatsheet](data/RISC-V-cheatsheet.pdf)
+- [RISC-V assembly cheatsheet](data/RISC-V-cheatsheet.pdf)
+- [Binary encoding of RV32I instructions](data/rv32i-binary-encoding.pdf)
 - [One-page memento of the most useful GNU/Linux commands](data/command_memento.pdf)
 - [One-page memento of the most useful GNU/Linux commands (French version)](data/command_memento_fr.pdf)
 
