@@ -1,5 +1,15 @@
 # GCC Compiler for RISC-V
 
+```
+docker image ls 
+```
+> Returns:
+<pre>
+REPOSITORY                            TAG                  IMAGE ID       CREATED        SIZE
+risc-v-toolchain                      1.0                  9eed4029b1d9   2 weeks ago    775MB
+coderitter/pulp-riscv-gnu-toolchain   latest               a694907682c6   9 months ago   1.79GB
+<pre>
+
 
 # References
 
@@ -25,3 +35,9 @@ Now you can use the script as if the compiler itself was installed in your host 
 ```bash
 ./riscv32-unknown-elf-gcc -std=c99 -march=rv32imfdcxpulpv2 src -o build/firmware
 ```
+> Returns:
+<pre>
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+/opt/riscv/lib/gcc/riscv32-unknown-elf/9.2.0/../../../../riscv32-unknown-elf/bin/ld: cannot open output file build/firmware: No such file or directory
+collect2: error: ld returned 1 exit status
+</pre>
