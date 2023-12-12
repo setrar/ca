@@ -114,8 +114,8 @@ You can check that you are on the correct branch with the `git branch` command.
 From time to time, when new material will be added to it, you will be asked to merge the `master` branch in your personal branch:
 
 ```bash
-$ git pull
-$ git merge origin/master
+$ git pull --no-edit
+$ git merge --no-edit origin/master
 ```
 
 Do not forget to add, commit and push your own work in your personal branch.
@@ -163,7 +163,8 @@ If there are errors ask for help.
 Let's then try to create a simple example C source file and to compile it:
 
 ```bash
-$ cd /tmp
+$ mkdir -p ~/tmp
+$ cd ~/tmp
 $ echo 'int main(void) {return 0;}' > foo.c
 $ c2rv foo.c
 $ ls foo.s
@@ -185,6 +186,9 @@ Select `File -> Exit` to quit.
 During all labs it will be convenient to have a RISC-V cheat sheet at hand.
 [Erik Engheim](https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8) designed a nice one (without the M extension).
 A [PDF version](doc/data/RISC-V-cheatsheet.pdf) is available in the `doc/data` subdirectory.
+
+The one-page summary of RV32I instructions binary encoding could also be useful.
+A [PDF version](doc/data/rv32i-binary-encoding.pdf) is available in the `doc/data` subdirectory.
 
 [bootlin]: https://bootlin.com/
 [memento of the most useful GNU/Linux commands]: doc/data/command_memento.pdf
