@@ -54,9 +54,8 @@ getc:
         
     li a0, 5000              # Call set_timer with parameter 5000 (5 seconds)
     call set_timer
-            
-#    la t0, time_out
-#    sw zero, 0(t0)           # Reset the time-out flag to 0
+    la t0, time_out
+    sw zero, 0(t0)           # Reset the time-out flag to 0
         
     li    t0,KCTRL           # t0 <- address of keyboard control register
     li    t1,KDATA           # t1 <- address of keyboard data register
@@ -69,16 +68,28 @@ getc_wait:
     addi  sp,sp,32           # deallocate stack frame, restore stack pointer
     ret                      # return
 
+
 # print character in a0
 putc:
     addi  sp,sp,-32          # allocate stack frame
     sw    ra,0(sp)           # save ra
+    sw    s0,4(sp)           # store to saved register s0 to preserve a0 used by putc
+    mv    s0,a0              # Store s0 <- a0
 
-    li a0, 5000              # Call set_timer with parameter 5000 (5 seconds)
-    call set_timer
+    #############
+    # sw    a0,4(sp)
+    # li    a0, 5000              # Call set_timer with parameter 5000 (5 seconds)
+    # call  set_timer
+    # lw    a0,4(sp)
+    #############
 
-#    la t0, time_out
-#    sw zero, 0(t0)           # Reset the time-out flag to 0
+    li    a0, 5000           # Call set_timer with parameter 5000 (5 seconds)
+    call  set_timer
+    la t0, time_out
+    sw zero, 0(t0)           # Reset the time-out flag to 0
+
+    mv    a0, s0             # move a0 <- s0  to restore the saved a0 registry used by putc
+
 
     li    t0,DCTRL           # t0 <- address of display control register
     li    t1,DDATA           # t1 <- address of display data register
@@ -87,6 +98,7 @@ putc_wait:
     andi  t2,t2,1            # mask all bits except LSB
     beq   zero,t2,putc_wait  # loop if LSB unset (display busy)
     sw    a0,0(t1)           # send character
+    lw    s0,4(sp)
     lw    ra,0(sp)           # restore ra
     addi  sp,sp,32           # deallocate stack frame, restore stack pointer
     ret                      # return
@@ -105,7 +117,7 @@ print_string_loop:
     b     print_string_loop  # goto print_string_loop
 print_string_end:
     lw    ra,0(sp)           # restore ra
-    lw    s0,4(sp)           # restore s0
+    lw    s0,4(sp)           # restore s0 used to save a0
     addi  sp,sp,32           # deallocate stack frame, restore stack pointer
     ret                      # return
 
