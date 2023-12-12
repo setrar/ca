@@ -120,13 +120,13 @@ else
             return 1
         fi
     fi
-    if ! git pull; then
+    if ! git pull --no-edit; then
         printf 'ERROR: Could not pull from remote\n'
         if ! init_yes_or_no 'You should ask for help. Do you want to continue anyway (Y/n)? '; then
             return 1
         fi
     fi
-    if ! git merge origin/master; then
+    if ! git merge --no-edit origin/master; then
         printf 'ERROR: Could not merge origin/master in branch %s\n' "$user"
         if ! init_yes_or_no 'You should ask for help. Do you want to continue anyway (Y/n)? '; then
             return 1
