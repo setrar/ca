@@ -1,11 +1,3 @@
-### LAB3 
-
-when I choose a value on the keybord, the corresponding ascii value is instantely inserted in the address 0xffff0004.
-Then, after some steps, the value of the register 0xffff0000 goes from 1 to 0 and, after some other steps, the value of register 0xffff0008 and 0xffff000c are updated. More precisely, 0xffff0008 goes from 1 to 0, whereas in 0xffff000c the content of 0xffff0004 has been copied.
-Then the values of 0xffff0008 goes back to 1, until the value of 0xffff000c is updated again with value 10 (in that case it goes again to 0). Finally, 0xffff0008 goes again back to 1 and all these values are stored till a new character is inserted from the keybord.
-
-To optimize the code we can create only two different functions, one for the reading operation and the other for the writing one. We can do that because only few lines of code are different between each other.
-
 .text
 .global main
 
@@ -37,6 +29,5 @@ main:
     b main 
 
 
-the last part is missing
-
+    
 

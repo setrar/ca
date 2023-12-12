@@ -37,3 +37,4 @@ wait_for_trans_2:
 end:                                  # never reached
     li    a7,10
     ecall
+    
