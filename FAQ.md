@@ -157,8 +157,8 @@ Then, open a bash terminal and type the following commands.
 $ git clone git@gitlab.eurecom.fr:renaud.pacalet/ca.git ~/Documents/ca
 $ cd ~/Documents/ca
 $ git checkout shelley
-$ git pull
-$ git merge origin/master
+$ git pull --no-edit
+$ git merge --no-edit origin/master
 $ git config user.name shelley
 $ git config user.email mary.shelley@eurecom.fr
 ```
@@ -411,11 +411,11 @@ The ILP32 ABI gives them a second meaningful name corresponding to their given r
 
 | Register  | Name     | Description                          | Saved  |
 | :---      | :---     | :---                                 | :---   |
-| `x0`      | `zero`   | Constant 0                           | -      |
+| `x0`      | `zero`   | Constant 0                           | N/A    |
 | `x1`      | `ra`     | Return address                       | No     |
-| `x2`      | `sp`     | Stack pointer                        | No     |
-| `x3`      | `gp`     | Global pointer (don't touch)         | Yes    |
-| `x4`      | `tp`     | Thread pointer (don't touch)         | Yes    |
+| `x2`      | `sp`     | Stack pointer                        | Yes    |
+| `x3`      | `gp`     | Global pointer (don't touch)         | N/A    |
+| `x4`      | `tp`     | Thread pointer (don't touch)         | N/A    |
 | `x5-x7`   | `t0-t2`  | Temporary registers                  | No     |
 | `x8`      | `s0/fp`  | Saved register or frame pointer      | Yes    |
 | `x9`      | `s1`     | Saved register                       | Yes    |
