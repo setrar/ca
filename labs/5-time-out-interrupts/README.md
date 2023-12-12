@@ -118,7 +118,7 @@ RARS has another companion tool, the `Timer Tool` that emulates a hardware timer
 Its current 32-bits value (`time`) represents the number of milliseconds since the timer started.
 It is a read-only Memory-Mapped IO (MMIO) mapped at address `0xffff0018`.
 The timer counts as soon as the `Timer Tool` is launched, connected to the running program, and the `Play` button is pressed.
-Note: `time` is in fact a 64-bits value and the upper half is mapped at address `0xffff001c` but, as `$2^{32}-1$` milliseconds equals about 50 days, we will never need the upper part (unless the lab lasts more than 50 days).
+Note: `time` is in fact a 64-bits value and the upper half is mapped at address `0xffff001c` but, as $`2^{32}-1`$ milliseconds equals about 50 days, we will never need the upper part (unless the lab lasts more than 50 days).
 
 1. Launch the `Timer Tool`, connect it to the running program, start the timer, wait a few seconds and pause it.
 
