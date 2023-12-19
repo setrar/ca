@@ -13,6 +13,8 @@ print_number_message:
 bye_message:
 .asciz "\nBye!"
 
+.eqv MAX_MULT_10 429496729 # max value prior multiplication by 10
+
 # code section
 .text
 
@@ -108,10 +110,12 @@ geti_loop:
     call getc                  # get character
     beq a0,t2,geti_exit        # if character is new line, exit loop
     call d2i                   # convert character to base 10
-    bnez a1,geti_nad           # if error, then exit with not a digit error
-    mul t4, s1, t3             # multiply previous number by 10 and store it in temporary register to check overflow
-    add t4, t4, a0             # add the new digit
-    blt t4, s1, geti_overflow # if new number is less than the previous, we know it overflowed
+    bnez a1,geti_nad           # if error, then wait for new line but with not a digit error
+    li t4,MAX_MULT_10          # t4 <- MAX_MULT_10
+    bltu t4,s1,geti_overflow   # if current number exceeds the max number we can multiply by 10 then we know it overflowed
+    mul s1, s1, t3             # multiply previous number by 10
+    add t4, s1, a0             # add the new digit and store it in a temporary register to detect overflow
+    bltu t4,s1, geti_overflow  # if after adding the new digit we get a lower number than before we know it overflowed
     addi s1, t4, 0             # save new number
     j geti_loop
 geti_nad:                      # not a digit error: set flag to 1 but continue to wait for new line
@@ -136,11 +140,11 @@ geti_exit:
 # notes: uses a1 as a parameter to call itself (recursion). This parameter is set by default to a0/10
 # notes: register a2 is set to 10 (to divide by 10)
 puti:
-    addi  a1,zero, 0    # set register a1 to 0
-    addi  a2,zero,10    # set a2 to 10 (for base10 division)
+    addi  a1,zero, 0      # set register a1 to 0
+    addi  a2,zero,10      # set a2 to 10 (for base10 division)
 puti_recursion:
-    addi  sp,sp,-12     # allocate stack frame (3 register to save = 3*4 = 12 bytes)
-    sw    ra,0(sp)      # save ra 
+    addi  sp,sp,-12       # allocate stack frame (3 register to save = 3*4 = 12 bytes)
+    sw    ra,0(sp)        # save ra 
     divu a1, a0, a2       # divide number by 10
     sw    a0,4(sp)        # save a0 for future use
     sw    a1,8(sp)        # save a1 for future use
@@ -148,28 +152,26 @@ puti_recursion:
     addi a0, a1, 0        # if we have not yet reached the most significant character, call again this function but with a0=a0/10
     call puti_recursion                           
 puti_print:               # if we reach this point, we can start to print the next characters
-    lw a0,4(sp) # recover original values for a0 and a1 from the stack
+    lw a0,4(sp)           # recover original values for a0 and a1 from the stack
     lw a1,8(sp)
     mul a1, a1, a2        # get least significant digit -> a0 - a1*10
     sub  a0, a0, a1
     addi a0, a0, 48       # convert to ASCII
     call putc		  # print character
-    lw    ra,0(sp)             # restore ra from stack
-    addi  sp,sp,12              # deallocate stack frame, restore stack pointer
-    ret                        # return to caller
+    lw    ra,0(sp)        # restore ra from stack
+    addi  sp,sp,12        # deallocate stack frame, restore stack pointer
+    ret                   # return to caller
 
 
 # function: main
-# description: read character from keyboard, print it to console, goto end if
-#              character is 'Q', else restart from beginning
+# description: read number from keyboard, print it to console, goto end if number is 0, else restart from beginning
 # parameters: none
 # return: none
-# notes: la, li, call, mv are pseudo-instructions
 .global main
 main:
     la    a0,enter_number_message # store address of message in a0
-    call print_string
-    call  geti        # call geti function to read integer
+    call print_string             # print enter a number message
+    call  geti                    # call geti function to read integer
     # check for errors in geti and print messages accordingly
     addi t1, zero, 1
     addi t2, zero, 2
@@ -177,21 +179,21 @@ main:
     beq a1, t2, main_error_overflow
     beq a1, zero, main_puti
 main_error_nad:   
-    la    a0,print_error_nad # store address of message in a0
-    call print_string	     # print error message
-    j main                   # loop again!
+    la    a0,print_error_nad      # store address of message in a0
+    call print_string	          # print error message
+    j main                        # loop again!
 main_error_overflow:
     la    a0,print_error_overflow # store address of message in a0
-    call print_string        # print error message
-    j main                   # loop again!
+    call print_string             # print error message
+    j main                        # loop again!
 main_puti:
-    mv    s0,a0       # copy read integer in s0
+    mv    s0,a0                   # copy read integer in s0
     la    a0,print_number_message # store address of message in a0
     call print_string
-    mv    a0,s0       # copy read integer in a0
-    call  puti        # call puti function to print integer
-    bne   s0,zero,main  # loop if read integer is not 0
-    la    a0,bye_message # store address of message in a0
-    call print_string
-    li    a7,10       # store code of Exit syscall in a7
-    ecall             # call syscall
+    mv    a0,s0                   # copy read integer in a0
+    call  puti                    # call puti function to print integer
+    bne   s0,zero,main            # loop if read integer is not 0
+    la    a0,bye_message          # store address of message in a0
+    call print_string             # print bye message
+    li    a7,10                   # store code of Exit syscall in a7
+    ecall                         # call syscall
