@@ -37,6 +37,12 @@ set_timer:
     addi  sp,sp,-4          # allocate stack frame (1 register to save = 1*4 = 4 bytes)
     sw    ra,0(sp)          # save ra on stack
     
+    li t0, 0xffff0018         # Get the current timestamp on when the number was inputed
+    lw t0, (t0)               # Save the time in t0
+    add a0, a0, t0          # Add timeout to current time
+    li t0, 0xffff0020       # Store the new timeout timestamp into timecmp
+    sw a0, (t0)
+    csrrsi  zero,uie,16      # Enable timer interrupts
     
     lw    ra,0(sp)          # restore ra from stack
     addi  sp,sp,4           # deallocate stack frame, restore stack pointer
@@ -49,11 +55,11 @@ set_timer:
 getc:
     addi  sp,sp,-4          # allocate stack frame (1 register to save = 1*4 = 4 bytes)
     sw    ra,0(sp)          # save ra on stack
-    li t0, 0xffff0000       # Load MMIO base address
     li a0, 5000             # Load 5000ms into a0
     call set_timer          # Call set timer and set the timeout flag to 0
     la t6, time_out
     sw zero, (t6)
+    li t0, 0xffff0000       # Load MMIO base address
 loop_getc: 
     lw t1, (t6)             # If we timeout jump to set flag equal to 4
     bnez t1, timeout_getc
@@ -77,13 +83,13 @@ exit_getc:
 putc:
     addi  sp,sp,-4          # allocate stack frame (1 register to save = 1*4 = 4 bytes)
     sw    ra,0(sp)          # save ra on stack
-    li t0, 0xffff0000       # Load MMIO base address
-    addi a1, a0, 0	    # Load 5000ms into a0
-    li a0, 5000 
+    addi a1, a0, 0	    
+    li a0, 5000             # Load 5000ms into a0
     call set_timer          # Call set timer and set the timeout flag to 0
     la t6, time_out
     sw zero, (t6)
     addi a0, a1, 0          # Move back the original value of a0
+    li t0, 0xffff0000       # Load MMIO base address
 loop_putc: 
     lw t1, (t6)             # If we timeout jump to set flag equal to 4
     bnez t1, timeout_getc
@@ -224,6 +230,10 @@ puti_end:
 # return: none
 .global main
 main:
+    la t0, exception_handler  # Copy interrupt handler address into utvec
+    csrrw zero, utvec, t0
+    csrrsi  zero,ustatus,1  # Enable global interrupts
+
     la    a0,enter_number_message # store address of message in a0
     call print_string             # print enter a number message
     call  geti                    # call geti function to read integer
@@ -251,6 +261,7 @@ main_puti:
     mv    s0,a0                   # copy read integer in s0
     li a0, 0xffff0018         # Get the current timestamp on when the number was inputed
     lw s1, (a0)               # Save the time in s1	
+    csrw s1, uscratch
     la    a0,print_number_message # store address of message in a0
     call print_string
     mv    a0,s0                   # copy read integer into a0
