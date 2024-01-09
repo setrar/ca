@@ -1,4 +1,11 @@
-## Polling - Efrén BOYARIZO GARGALLO
+### Lab 2: Syscall IO - Efrén BOYARIZO GARGALLO
+
+# Summary
+> Overall this lab was very straightforward and the understanding of the different parts can be found below in the answers to the different questions proposed in the `README.md`
+>
+
+
+# Questions
 
 #### 1. Open the `io.s` file with the RARS editor, study the code and try to understand it. In order to understand what the various syscalls are doing and how they are called, you will need the `Syscalls` tab of the help window of RARS.
 

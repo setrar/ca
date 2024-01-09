@@ -1,3 +1,12 @@
+### Lab 1: RARS - Efrén BOYARIZO GARGALLO
+
+# Summary
+> Overall the lab was very straightforward except for the detecting overflows. I've found many difficulties and most probably my implementations are not perfect:
+> 1. `uaddsafe`: if the resulting number is less than any of the two numbers that are being added we can know we have an overflow
+> 2. `usubsafe`: as we are subtracting unsigned numbers (u(t0) - u(t1)), if t0 is less than t1, the resulting number will be negative and so we have an overflow
+> 3. `saddsafe`: I've used the following formula extracted from a truth table of the signs: $sign(t0)*sign(t1)* \neg sign(t2) + \neg sign(t0)*\neg sign(t1) * sign(t2)$
+> 3. `ssubsafe`: We will only have an overflow if: $(t2 < t0) != (t1 > 0)$
+
 # Launch RARS, settings, help, registers
 #### 1. What is the current content of the pc register?
 > When the computer starts, the pc register will always point to the address 0x00400000. This address corresponds to the beginning of our instruction program memory. If we then proceed to assemble the code, we can see that the first instruction is always located at this address and so when we start the machine the CPU will load this instruction. 

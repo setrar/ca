@@ -37,12 +37,12 @@ set_timer:
     addi  sp,sp,-4          # allocate stack frame (1 register to save = 1*4 = 4 bytes)
     sw    ra,0(sp)          # save ra on stack
     
-    li t0, 0xffff0018         # Get the current timestamp on when the number was inputed
-    lw t0, (t0)               # Save the time in t0
+    li t0, 0xffff0018       # Get the current timestamp on when the number was inputed
+    lw t0, (t0)             # Save the time in t0
     add a0, a0, t0          # Add timeout to current time
     li t0, 0xffff0020       # Store the new timeout timestamp into timecmp
     sw a0, (t0)
-    csrrsi  zero,uie,16      # Enable timer interrupts
+    csrrsi  zero,uie,16     # Enable timer interrupts
     
     lw    ra,0(sp)          # restore ra from stack
     addi  sp,sp,4           # deallocate stack frame, restore stack pointer
@@ -134,18 +134,18 @@ string_end:
 d2i:
     addi  sp,sp,-4        # allocate stack frame (1 register to save = 1*4 = 4 bytes)
     sw    ra,0(sp)        # save ra on stack
-    addi t0,zero,'0'    # store limits of the conversion
+    addi t0,zero,'0'      # store limits of the conversion
     addi t1,zero,'9'          
-    bgt a0,t1,d2i_error # if value is not between '0' and '9' set flag to 1
+    bgt a0,t1,d2i_error   # if value is not between '0' and '9' set flag to 1
     blt a0,t0,d2i_error       
-    addi a0,a0,-48      # convert to base 10 (substract 48 which is the value of 0)
+    addi a0,a0,-48        # convert to base 10 (substract 48 which is the value of 0)
     j d2i_no_error        # jump directly to no_error to prevent the flag from being set
 d2i_error: 
-    addi a1,zero,1      # set flag to 1 to indicate error in conversion
-    addi a0,zero,0      # set character to 0 (we don't really care about the value as flag=1)
+    addi a1,zero,1        # set flag to 1 to indicate error in conversion
+    addi a0,zero,0        # set character to 0 (we don't really care about the value as flag=1)
     j d2i_exit            # exit function with flag=1
 d2i_no_error:
-    addi a1,zero,0      # set flag to 0 as conversion was succesful
+    addi a1,zero,0        # set flag to 0 as conversion was succesful
 d2i_exit: 
     lw    ra,0(sp)        # restore ra from stack
     addi  sp,sp,4         # deallocate stack frame, restore stack pointer
@@ -217,7 +217,7 @@ puti_print:               # if we reach this point, we can start to print the ne
     mul a3, a3, a2        # get least significant digit -> a0 - a3*10
     sub  a0, a0, a3
     addi a0, a0, 48       # convert to ASCII
-    call putc		  # print character
+    call putc		      # print character
 puti_end:
     lw    ra,0(sp)        # restore ra from stack
     addi  sp,sp,12        # deallocate stack frame, restore stack pointer
@@ -230,9 +230,9 @@ puti_end:
 # return: none
 .global main
 main:
-    la t0, exception_handler  # Copy interrupt handler address into utvec
+    la t0, exception_handler      # Copy interrupt handler address into utvec
     csrrw zero, utvec, t0
-    csrrsi  zero,ustatus,1  # Enable global interrupts
+    csrrsi  zero,ustatus,1        # Enable global interrupts
 
     la    a0,enter_number_message # store address of message in a0
     call print_string             # print enter a number message
@@ -254,13 +254,13 @@ main_error_overflow:
     call print_string             # print error message
     j main                        # loop again!
 main_error_timeout:
-    la    a0,print_error_timeout # store address of message in a0
+    la    a0,print_error_timeout  # store address of message in a0
     call print_string             # print error message
-    j main_exit                        # loop again!
+    j main_exit                   # loop again!
 main_puti:
     mv    s0,a0                   # copy read integer in s0
-    li a0, 0xffff0018         # Get the current timestamp on when the number was inputed
-    lw s1, (a0)               # Save the time in s1	
+    li a0, 0xffff0018             # Get the current timestamp on when the number was inputed
+    lw s1, (a0)                   # Save the time in s1	
     csrw s1, uscratch
     la    a0,print_number_message # store address of message in a0
     call print_string
