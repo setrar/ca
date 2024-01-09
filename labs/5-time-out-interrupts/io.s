@@ -71,7 +71,7 @@ getc:
     addi  sp,sp,-32          # allocate stack frame
     sw    ra,0(sp)           # save ra
         
-    li a0, 5000              # Call set_timer with parameter 5000 (5 seconds)
+    li a0, 100              # Call set_timer with parameter 5000 (5 seconds)
     call set_timer
     la t0, time_out
     sw zero, 0(t0)           # Reset the time-out flag to 0
@@ -106,7 +106,7 @@ putc:
     # lw    a0,4(sp)
     #############
 
-    li    a0, 5000           # Call set_timer with parameter 5000 (5 seconds)
+    li    a0, 100           # Call set_timer with parameter 5000 (5 seconds)
     call  set_timer
     la t0, time_out
     sw zero, 0(t0)           # Reset the time-out flag to 0
@@ -220,6 +220,10 @@ puti_end:
 # main function, read an integer, print it, goto end if it is 0, else continue
 .global main
 main:
+    
+    csrrsi zero, ustatus, 0x01   # enabling global interrupt 
+    csrrsi zero, uie, 0x10       # enabling timer interrupt
+     
     la    a0,enter_int_message   # print message
     call  print_string
     call  geti                   # read integer
