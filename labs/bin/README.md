@@ -20,6 +20,16 @@ sdk use java 17.0.8.1-tem
 java -jar ./rars1_6.jar 
 ```
 
+- [ ] Run the Execution Environment
+
+```
+EE_HOME=~/Developer/ca/labs/bin
+```
+
+```
+java -jar ${EE_HOME}/rars1_6.jar 
+```
+
 # References
 
 - [ ] [Get Hands-On Experience with RISC-V, Using ESP32-C3!](https://www.espressif.com/en/media_overview/news/risc-v-with-esp32-c3)
