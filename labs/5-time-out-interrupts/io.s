@@ -22,6 +22,8 @@ bye_message:
 .eqv OVERR 2          # error code for overflow
 .eqv NDERR 1          # error code for not-a-digit
 .eqv NOERR 0          # error code for no error
+.eqv TIME  0xffff0018 # TODO add comment
+.eqv COMP  0xffff0020 # TODO add comment
 
 # time-out flag
 .global time_out
@@ -40,12 +42,29 @@ set_timer:
     addi  sp,sp,-32           # allocate stack frame
     sw    ra,0(sp)           # save ra
 
-    la t0, time_out
+    la t0, time_out          # la expects a label
     sw zero, 0(t0)           
+    
+    li t0, TIME              # li (load immediate) expects a value
+    lw t0, 0(t0)
+    add a0, t0, a0
+    li t0, COMP
+    sw a0,0(t0)
 
     lw    ra,0(sp)           # restore ra
     addi  sp,sp,32           # deallocate stack frame, restore stack pointer    
     ret                      # Return
+
+# function: timeout_error
+# description: sets the register a1 to 4
+# parameters: none
+# return: nothing for now
+# notes: ret is a pseudo-instruction
+timeout_error:
+  # Set error code to 4 in a1
+  li a1, 4
+  # Return with error code
+  ret
 
 # read character, return read character in a0
 getc:
@@ -59,15 +78,19 @@ getc:
         
     li    t0,KCTRL           # t0 <- address of keyboard control register
     li    t1,KDATA           # t1 <- address of keyboard data register
+      
 getc_wait:
     lw    t2,0(t0)           # t2 <- value of keyboard control register
     andi  t2,t2,1            # mask all bits except LSB
+      
+    lw a2, time_out          # Load timeout flag
+    bnez a2, timeout_error  # Check the timeout flag
+    
     beq   t2,zero,getc_wait  # loop if LSB unset (no character from keyboard)
     lw    a0,0(t1)           # store received character in a0
     lw    ra,0(sp)           # restore ra
     addi  sp,sp,32           # deallocate stack frame, restore stack pointer
     ret                      # return
-
 
 # print character in a0
 putc:
@@ -96,6 +119,10 @@ putc:
 putc_wait:
     lw    t2,0(t0)           # t2 <- value of display control register
     andi  t2,t2,1            # mask all bits except LSB
+
+    lw    a2, time_out          # Load timeout flag
+    bnez  a2, timeout_error  # Check the timeout flag
+
     beq   zero,t2,putc_wait  # loop if LSB unset (display busy)
     sw    a0,0(t1)           # send character
     lw    s0,4(sp)

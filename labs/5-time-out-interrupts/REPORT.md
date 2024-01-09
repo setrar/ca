@@ -68,3 +68,5 @@ csrrsi t0, csr, 0x01
 ```assembly
 uip # u Interrup Pending registers
 ```
+
+<img src=images/Settings-Assemble-All.png width='' height='' > </img>
