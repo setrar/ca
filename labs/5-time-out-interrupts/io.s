@@ -33,7 +33,7 @@ time_out_error_message:
 .eqv OVERR 2          # error code for overflow
 .eqv NDERR 1          # error code for not-a-digit
 .eqv NOERR 0          # error code for no error
-.eqv TIMEERROR 4
+.eqv TIMEERROR 4      # error code for timeout
 
 # code section
 .text
@@ -42,12 +42,12 @@ time_out_error_message:
 set_timer:
     addi   sp, sp, -4
     sw     ra, 0(sp)
-    
-    lw     t0, TIMERESG
-	add    t0, t0, a0
-	li     t1, TIMECMPRESG
-	sw     t0, 0(t1)
-	csrrsi zero, uie, 16
+
+    li     t0, TIMERESG
+    add    t0, t0, a0
+    li     t1, TIMECMPRESG
+    sw     t0, 0(t1)
+    csrrsi zero, uie, 16     # enable timer interrupts
 
     lw     ra, 0(sp)
     addi   sp, sp, 4
@@ -60,6 +60,7 @@ getc:
     sw    s0, 4(sp)
     sw    s1, 8(sp)
     sw    s2, 12(sp)
+
     li    s0,KCTRL           # t0 <- address of keyboard control register
     li    s1,KDATA           # t1 <- address of keyboard data register
     mv    s2, a0
@@ -76,6 +77,7 @@ getc_wait:
     beq   t2,zero,getc_wait  # loop if LSB unset (no character from keyboard)
     lw    a0,0(s1)           # store received character in a0
     mv    a1, zero
+
     lw    ra,0(sp)           # restore ra
     lw    s0, 4(sp)
     lw    s1, 8(sp)
@@ -90,6 +92,7 @@ putc:
     sw    s0, 4(sp)
     sw    s1, 8(sp)
     sw    s2, 12(sp)
+
     li    s0,DCTRL           # t0 <- address of display control register
     li    s1,DDATA           # t1 <- address of display data register
     mv    s2, a0
@@ -105,6 +108,7 @@ putc_wait:
     andi  t2,t2,1            # mask all bits except LSB
     beq   zero,t2,putc_wait  # loop if LSB unset (display busy)
     sw    a0,0(s1)           # send character
+
     lw    ra,0(sp)           # restore ra
     mv    a1, zero
     lw    s0, 4(sp)
@@ -114,13 +118,13 @@ putc_wait:
     ret                      # return
 
 time_out_error:
-	li    a1, TIMEERROR
-	lw    ra, 0(sp)
+    li    a1, TIMEERROR
+    lw    ra, 0(sp)
     lw    s0, 4(sp)
     lw    s1, 8(sp)
     lw    s2, 12(sp)
-	addi  sp, sp, 32
-	ret
+    addi  sp, sp, 32
+    ret
 
 # print NUL-terminated string stored in memory at address in a0
 print_string:
@@ -214,15 +218,15 @@ puti_end:
 # main function, read an integer, print it, goto end if it is 0, else continue
 .global main
 main:
+    addi   s1, zero, TIMEERROR
+    la     t0, exception_handler  # store address of exception handler
+    csrrw  zero, utvec, t0
+    csrrsi zero, ustatus, 1       # enable all interrupts
+    li     a0, 5000
+    call   set_timer
     la     a0,enter_int_message   # print message
     call   print_string
     call   geti                   # read integer
-    addi   s1, zero, TIMEERROR
-    la     t0, exception_handler
-    csrrw  zero, utvec, t0
-    csrrsi zero, ustatus, 1
-    li     a0, 5000
-    call   set_timer
 
     andi   t0,a1,NDERR            # test error code
     bne    t0,zero,main_nad
@@ -261,7 +265,7 @@ main_ovf:
     call  print_string
     b     main
 main_error_timeout:
-	la    a0, time_out_error_message
-	li    a7, 4
-	ecall
-	b     main_end
+    la    a0, time_out_error_message
+    li    a7, 4
+    ecall
+    b     main_end
