@@ -64,3 +64,7 @@ csrrci t0, csr, 0x11
 csrrsi t0, csr, 0x01
 
 ```
+
+```assembly
+uip # u Interrup Pending registers
+```
