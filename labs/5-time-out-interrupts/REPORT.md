@@ -3,7 +3,7 @@
 ## The time-out flag
 
 
-1. Edit the io.s source file. In the data section add a declaration for a 32-bits word that we will use for the time-out flag, with a global label for easy reference:
+1. Edit the `io.s` source file. In the data section add a declaration for a 32-bits word that we will use for the time-out flag, with a global label for easy reference:
 
 ```asm
 # time-out flag
@@ -12,7 +12,7 @@ time_out:
 .word 0
 ```
 
-2. Add a set_timer function that takes a delay in milliseconds in register a0 but does nothing and returns.
+2. Add a `set_timer` function that takes a delay in milliseconds in register a0 but does nothing and returns.
 Later we will modify it to initialize a timer.
 
 ```asm
@@ -36,7 +36,7 @@ set_timer:
     ret                      # Return
 ```
 
-3. At the beginning of getc and putc functions call set_timer with parameter 5000 (5 seconds) and reset the time-out flag.
+3. At the beginning of `getc` and `putc` functions call `set_timer` with parameter 5000 (5 seconds) and reset the time-out flag.
 
 ```asm
     li a0, 5000              # Call set_timer with parameter 5000 (5 seconds)
@@ -44,6 +44,19 @@ set_timer:
     la t0, time_out
     sw zero, 0(t0)           # Reset the time-out flag to 0
 ```
+
+4. Modify the polling loops of `getc` and `putc` such that they watch the time-out flag and return error code 4 in `a1` if the value of the time-out flag is not 0.
+
+5. Adapt the code of the `print_string`, `geti` and `puti` functions such that they handle this new error code and return it to their own caller functions, still in `a1`.
+For all functions check that they return value 0 in `a1` if there is no error.
+
+6. Adapt the code of the `main` function such that it prints a dedicated error message and exits if there is a time-out error.
+Of course, do not check for another time-out error while printing the dedicated error message.
+Do you understand why we use values 1, 2 and 4 for the error codes, and not 1, 2 and 3?
+
+
+7. Assemble with RARS, launch the `Keyboard and Display MMIO simulator` tool, connect it to the program, simulate, debug if needed and verify that it behaves as expected.
+As we have no way yet to set the time-out flag during the simulation we are not be able to really test the time-out feature; the new version shall behave as the original one.
 
 ## The timer tool
 
@@ -65,20 +78,20 @@ Yes, `5761 ms` seems to match the `00:05.61` value
 
 4. Modify the io.s code
 
-```assembly
+```asm
 # TBD
 ```
 
 5. Assemble with RARS,
 
-```assembly
+```asm
 # TBD
 ```
 
 
 # References
 
-```assembly
+```asm
 csrrw t0, csr, t1    # does:    to <- csr || csr <- t1
 csrrc t0, csr, t1    # does:    to <- csr || csr <- (not t1) and csr
 csrrs t0, csr, t1    # does:    to <- csr || csr <- t1 or csr
