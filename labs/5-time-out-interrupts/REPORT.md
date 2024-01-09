@@ -61,7 +61,7 @@ set_timer:
 
 3. Does it correspond to the current time of the Timer Tool window?
 
-Yes
+Yes, 5761 ms seems to match the 5:61 value 
 
 4. Modify the io.s code
 
