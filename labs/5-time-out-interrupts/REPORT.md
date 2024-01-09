@@ -1,4 +1,3 @@
-
 # Assignments
 
 ## The time-out flag
@@ -55,5 +54,13 @@ set_timer:
 # References
 
 ```assembly
-csrrw t0, csr, t1    to <- || csr <- t1
+csrrw t0, csr, t1    # does:    to <- csr || csr <- t1
+csrrc t0, csr, t1    # does:    to <- csr || csr <- (not t1) and csr
+csrrs t0, csr, t1    # does:    to <- csr || csr <- t1 or csr
+
+# All have immediate 
+csrrwi t0, csr, 0x10
+csrrci t0, csr, 0x11
+csrrsi t0, csr, 0x01
+
 ```
