@@ -1,5 +1,3 @@
-
-
 # Assignments
 
 ## The time-out flag
@@ -52,3 +50,21 @@ set_timer:
 <img src=images/LAB5_TimerTool.png width='30%' height='30%' > </img>
 
 <img src=images/LAB5_TimerTool-reading.png width='' height='' > </img>
+
+# References
+
+```assembly
+csrrw t0, csr, t1    # does:    to <- csr || csr <- t1
+csrrc t0, csr, t1    # does:    to <- csr || csr <- (not t1) and csr
+csrrs t0, csr, t1    # does:    to <- csr || csr <- t1 or csr
+
+# All have immediate 
+csrrwi t0, csr, 0x10
+csrrci t0, csr, 0x11
+csrrsi t0, csr, 0x01
+
+```
+
+```assembly
+uip # u Interrup Pending registers
+```
