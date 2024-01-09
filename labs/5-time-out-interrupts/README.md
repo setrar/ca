@@ -49,8 +49,8 @@ The `.eqv` assembler directive is especially useful in such cases.
 It is a kind of equivalent of the `#define` pre-processor macro of the C langage.
 It allows to give a name to a literal and use the name instead of the literal in the code.
 This reduces the risk of errors and makes it very easy to change the value of a constant: only one line of code must be changed.
-Example: `.eqv TIME 0xffff018` declares name `TIME` as an equivalent of literal `0xffff018`.
-With this declaration we can now write `li t0,TIME` to assign value `0xffff018` to register `t0`.
+Example: `.eqv TIME 0xffff0018` declares name `TIME` as an equivalent of literal `0xffff0018`.
+With this declaration we can now write `li t0,TIME` to assign value `0xffff0018` to register `t0`.
 
 Recommendation: if one of the RARS companion tools does not work as expected reset the simulator, disconnect all tools, reset all tools, reconnect the tools and run the program again.
 
