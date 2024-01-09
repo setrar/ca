@@ -47,30 +47,33 @@ set_timer:
 
 ## The timer tool
 
-&#x1F5E3; Note:
+&#x1F5E3; Answers:
 
 1. Launch the Timer Tool, connect it to the running program, start the timer, wait a few seconds and pause it.
 
 <img src=images/LAB5_TimerTool.png width='30%' height='30%' > </img>
 
 
-1. In the Data Segment sub-window of RARS select the 0xffff0000 (MMIO) memory region and look at the current value of time.
+2. In the Data Segment sub-window of RARS select the 0xffff0000 (MMIO) memory region and look at the current value of time.
 
 <img src=images/LAB5_TimerTool-reading.png width='' height='' > </img>
 
 
-1. Does it correspond to the current time of the Timer Tool window?
+3. Does it correspond to the current time of the Timer Tool window?
 
 Yes
 
-1. Modify the io.s code
+4. Modify the io.s code
 
 ```assembly
 # TBD
 ```
 
-1. Assemble with RARS,
+5. Assemble with RARS,
 
+```assembly
+# TBD
+```
 
 
 # References
