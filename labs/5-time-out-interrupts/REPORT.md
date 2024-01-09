@@ -45,6 +45,8 @@ set_timer:
     sw zero, 0(t0)           # Reset the time-out flag to 0
 ```
 
+## The timer tool
+
 &#x1F5E3; Note:
 
 <img src=images/LAB5_TimerTool.png width='30%' height='30%' > </img>
