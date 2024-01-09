@@ -108,4 +108,8 @@ csrrsi t0, csr, 0x01
 uip # u Interrup Pending registers
 ```
 
+- [ ] Settings
+
+Pay attention to compilation issues when opening multiple files in the editor and setting `Assemble All files currently open`
+
 <img src=images/Settings-Assemble-All.png width='30%' height='30%' > </img>
