@@ -113,3 +113,33 @@ uip # u Interrup Pending registers
 Pay attention to compilation issues when opening multiple files in the editor and setting `Assemble All files currently open`
 
 <img src=images/Settings-Assemble-All.png width='30%' height='30%' > </img>
+
+In RISC-V, `mstatus` and `ustatus` are control and status registers (CSRs) that store information about the processor's operating state. The main difference between them is their scope and the privilege level at which they operate:
+
+1. **`mstatus` (Machine Status Register):**
+   - **Scope:** `mstatus` is a machine-level CSR, meaning it holds information about the entire processor.
+   - **Privilege Level:** It is accessible in machine mode, which is the highest privilege level in RISC-V.
+   - **Usage:** `mstatus` includes bits that control machine-level interrupt enable/disable (`MIE`), machine-level interrupt delegation (`MIDELEG`), machine-level privilege mode (`MPP`), and other machine-level status bits.
+
+2. **`ustatus` (User Status Register):**
+   - **Scope:** `ustatus` is a user-level CSR, and it holds information specific to a user-level (non-privileged) program or task.
+   - **Privilege Level:** It is accessible in user mode, which is the lowest privilege level in RISC-V.
+   - **Usage:** `ustatus` includes bits that control user-level interrupt enable/disable (`UIE`), user-level interrupt delegation (`UIDELEG`), and user-level privilege mode (`UPRIV`).
+
+Here's a brief overview of the key bits in both registers:
+
+- **`mstatus` (Machine Status Register):**
+  - `MIE`: Machine Interrupt Enable
+  - `MPIE`: Machine Previous Interrupt Enable
+  - `MPP`: Machine Previous Privilege Mode
+  - `MIDELEG`: Machine Interrupt Delegation
+  - Other machine-level status and control bits.
+
+- **`ustatus` (User Status Register):**
+  - `UIE`: User Interrupt Enable
+  - `UPIE`: User Previous Interrupt Enable
+  - `UPRIV`: User Privilege Mode
+  - `UIDELEG`: User Interrupt Delegation
+  - Other user-level status and control bits.
+
+In summary, `mstatus` is used to manage the machine-level state and privilege levels of the entire processor, while `ustatus` is specifically for managing the state of a user-level program. The specific bits and their meanings may vary depending on the RISC-V specification version and extensions used. Always refer to the RISC-V architecture manual for precise details.
