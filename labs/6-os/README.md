@@ -71,12 +71,7 @@ Launch RARS (just type `rars` in your terminal), open the `Settings` menu and co
 
 ## Assignments
 
-## Lab material
-
-1. [`taskA.s`](taskA.s) and [`taskB.s`](taskB.s): empty source files in which you will code two simple user tasks.
-1. [`os.s`](os.s): a starting point for our minimal OS.
-
-## User tasks
+### User tasks
 
 1. Open the `taskA.s` file with your favorite editor and code a user task according the following specifications.
    Declare a label `taskA` as global and label the first instruction of the task `taskA`:
@@ -91,23 +86,24 @@ Launch RARS (just type `rars` in your terminal), open the `Settings` menu and co
    The task itself is the top-level, complete, application.
    Do not code it as if it was a function; it is not called by a caller and it does not return to a caller.
    Instead it is launched by our mini-OS and never terminates (we do not have time to implement tasks termination in our mini-OS).
-   Before launching the task the mini-OS will allocate a 1024 bytes stack and store its **higher** address in `sp`.
+   Before launching the task the mini-OS will allocate a 1024 bytes stack and store its **highest** address in `sp` (remember that stasks grow towards low addresses).
    You can use this stack as you wish but remember that its size is limited to 1024 bytes.
 
 1. Assemble `taskA.s` with RARS, simulate, debug if needed and verify that your task behaves as expected.
 
 1. Code a second task in `taskB.s` which is exactly the same as `taskA`, except that it is labeled `taskB`, the maximum value of its counter is `30011` and the character it prints is '`B`'.
    The two tasks are completely independent and they can thus use the same registers.
+   Their stacks (1024 bytes each) are different.
    Code each of them as if it was the only task in the system.
 
 1. Assemble `taskB.s` with RARS, simulate, debug if needed and verify that your task behaves as expected.
 
-## Understanding the starting point of the mini-OS
+### Understanding the starting point of the mini-OS
 
 1. Open the `os.s` file with your favorite editor and study it carefully.
    It first declares a data segment and a text segment for the exception handler (label `exception_handler`), and then a data segment and a text segment for the startup code (label `main`).
 
-1. In the data segment several text messages are declared; they correspond to the various exceptions that RARS supports.
+1. In the data segment of the exception handler several text messages are declared; they correspond to the various exceptions that RARS supports.
    The array of 32 bits words labeled `_excp` gathers the base address of the messages for easier access.
 
 1. All interrupts that RARS supports have an Interrupt Service Routine (ISR) declared (`_isr0`, ...).
@@ -161,7 +157,7 @@ Launch RARS (just type `rars` in your terminal), open the `Settings` menu and co
 
 1. Finally, in this first version, a text message is printed and the `Exit` system call is used to terminate the execution.
 
-## Change the RARS settings
+### Change the RARS settings
 
 Open the `Settings` menu of RARS and configure it according the following picture:
 
@@ -177,7 +173,7 @@ Note: in case there are assembler errors in `os.s` RARS automatically opens it i
 If they are not already, open `taskA.s` and `taskB.s` in the editor, assemble and simulate.
 Is the behavior what you expected?
 
-## Call a user task, test an exception
+### Call a user task, test an exception
 
 1. Create a fresh copy of [`os.s`](os.s):
 
@@ -200,7 +196,7 @@ Is the behavior what you expected?
 
 1. Reset the simulator (`[Run -> Reset]`).
    Set a breakpoint to the faulty jump-and-link instruction you just added.
-   Simulate; on the breakpoint note the content of `sp`, `pc` and the general purpose registers used by the handler.
+   Simulate; on the breakpoint note the content of `sp`, `pc`, the general purpose registers used by the handler, and the `ustatus`, `utvec`, `uepc`, `ucause` CSRs.
    Run step-by-step (`[Run -> Step]`) until we enter the exception handler.
    Observe the content of the `ustatus`, `utvec`, `uepc`, `ucause` CSRs.
    Can you explain their content?
@@ -210,13 +206,14 @@ Is the behavior what you expected?
 
 1. Comment out the erroneous code you added in `taskA.s` (do not delete it).
 
-Note: most of the other exceptions cannot be tested as we did for _instruction address misaligned_ because of the way RARS is designed: the simulator catches them, prints its own error message and stops the simulation before they reach our exception handler.
+Note: most of the other exceptions cannot be tested as we did for _instruction address misaligned_ because of the way RARS is designed: before they reach our exception handler the simulator catches them, prints its own error message and stops the simulation.
 
-## Add a timer ISR
+### Add a timer ISR
 
-**Important**: remember, when modifying the exception handler, that we cannot use any general purpose register.
+**Important**: remember, when modifying the exception handler, that we cannot use any general purpose register, without precaution.
 The interrupted user tasks can use **any** of them when they are interrupted.
 Chose carefully.
+If you want to use more general purpose registers than the ones that are saved in the kernel stack at the beginning, save them too and restore them at the end of the handler.
 
 1. Create a fresh copy of `os_1.s`:
 
@@ -251,7 +248,7 @@ Chose carefully.
 1. Assemble, launch the `Timer Tool`, connect it to the running program, start the timer, and simulate.
    Is the behavior what you expected?
 
-## Context switch
+### Context switch
 
 We will now modify our mini-OS to switch between `taskA` and `taskB` every 100 milliseconds.
 It is the timer ISR that will do most of the job but we will also need to enhance our startup code such that it initializes the _task contexts_ before launching `taskA` and letting the timer ISR do the rest.
