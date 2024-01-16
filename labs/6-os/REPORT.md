@@ -1,6 +1,11 @@
 # 6-os
 
 
+## User tasks
+
+- [x] Task A
+- [x] Task B
+
 # References
 
 - Interrupt or Exception:
