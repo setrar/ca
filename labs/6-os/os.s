@@ -157,7 +157,7 @@ hw: .asciz "\nHello, World!\n"
 # standard startup and termination code
 # should probably be named "_start" or something similar but RARS only
 # supports initialization of PC to global symbol named "main". So we
-# use "main" instead of "_start" and "_main" instead of "main".
+# use "main" instead of "_start".
 .global main
 main:
 # initialize utvec with address of exception handler
