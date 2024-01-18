@@ -109,6 +109,13 @@ _isr3:
 
 # timer
 _isr4:
+  li     a0, '*'
+  li     a7, 11
+  ecall
+  lw     t0, 0xffff0018  # load value of TIMER
+  addi   t0, t0, 100
+  li     t1, 0xffff0020
+  sw     t0, 0(t1)       # store TIMER+100ms in TIMERCMP
   b      ret
 
 # reserved
@@ -143,7 +150,7 @@ skip:
 ret:
   lw     t0,0(sp)              # t0 <- kstack[0]
   lw     t1,4(sp)              # t1 <- kstack[4]
-  lw     a0,8(sp)              # a0 <- kstack[8]
+  lw     a0,8(sp)             # a0 <- kstack[8]
   lw     a7,12(sp)             # a7 <- kstack[12]
   csrrw  sp,uscratch,zero      # restore sp from uscratch
   uret                         # return from exception handler
@@ -163,14 +170,22 @@ main:
 # initialize utvec with address of exception handler
   la     t0,exception_handler  # t0 <- address of exception handler
   csrrw  zero,utvec,t0         # initialize utvec CSR with address of exception handler
+  
+  lw     t0, 0xffff0018  # load value of TIMER
+  addi   t0, t0, 100
+  li     t1, 0xffff0020
+  sw     t0, 0(t1)       # store TIMER+100ms in TIMERCMP
 
 # globally enable interrupts
   csrrsi zero,ustatus,1
+  csrrsi zero, uie, 16
 
 # print hello world message
   li     a7,4                  # a7 <- code of PrintString syscall
   la     a0,hw                 # a0 <- address of hw message
   ecall                        # syscall
+  
+  b taskB
 
 # termination
   li     a7,10                 # a7 <- code of Exit syscall

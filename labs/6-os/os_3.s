@@ -35,6 +35,20 @@ _isrs: .word _isr0, _isr1, _isr2, _isr3, _isr4, _isr5, _isr6, _isr7, _isr8, _isr
 # kernel stack
 kstack: .space 1024
 
+addressA: .word 0
+addressB: .word 0
+commandA: .word 11
+commandB: .word 11
+letterA: .word 65
+letterB: .word 66
+n_loopA: .word 0
+n_loopB: .word 0
+max_loopA: .word 10007
+max_loopB: .word 30011
+.global tasks
+#tasks: .word addressA, n_loopA, max_loopA, commandA, letterA, addressB, n_loopB, max_loopB, commandB, letterB
+tasks: .word 0, 0, 10007, 11, 65, 0, 0, 30011, 11, 66
+
 .text
 
 exception_handler:
@@ -109,6 +123,45 @@ _isr3:
 
 # timer
 _isr4:
+
+  # store context
+  csrr   t0, uepc
+  sw     t0, 0(s2)    # first element is address of instruction
+  sw     s0, 4(s2)    # second is current counter
+  #sw     s1, 8(s2)    # third is max counter value (always 10007 for A and 30011 for B)
+  #sw     a7, 12(s2)   # fourth is command (11 for both)
+  #sw     a0, 16(s2)   # fifth is character to print ('A' for A, and 'B' for B) (and it changed when storing '*')
+  
+  # print '*'
+  li     a0, '*'
+  li     a7, 11
+  ecall
+
+  # change s2 depending on running context
+  beqz   s3, current_context_is_A
+  li     s3, 0        # context is B, so prepare for next timeout
+  addi   s2, s2, -20  # move back the address in s2
+  b restore_previous  # do not set context to B
+current_context_is_A:
+  li     s3, 1
+  addi   s2, s2, 20   # move forward the address in s2
+restore_previous:
+  # restore context
+  lw     t0, 0(s2)
+  csrrw  zero, uepc, t0
+  lw     s0, 4(s2)
+  lw     s1, 8(s2)
+  #lw     a7, 12(s2)  # the same for both, no change needed
+  #lw     a0, 16(s2)
+    # we need to change the value the exception handler will put in a0 when exiting
+  lw     t0, 16(s2)
+  sw     t0, 8(sp)
+  
+
+  lw     t0, 0xffff0018  # load value of TIMER
+  addi   t0, t0, 100
+  li     t1, 0xffff0020
+  sw     t0, 0(t1)       # store TIMER+100ms in TIMERCMP
   b      ret
 
 # reserved
@@ -143,7 +196,7 @@ skip:
 ret:
   lw     t0,0(sp)              # t0 <- kstack[0]
   lw     t1,4(sp)              # t1 <- kstack[4]
-  lw     a0,8(sp)              # a0 <- kstack[8]
+  lw     a0,8(sp)             # a0 <- kstack[8]
   lw     a7,12(sp)             # a7 <- kstack[12]
   csrrw  sp,uscratch,zero      # restore sp from uscratch
   uret                         # return from exception handler
@@ -163,14 +216,28 @@ main:
 # initialize utvec with address of exception handler
   la     t0,exception_handler  # t0 <- address of exception handler
   csrrw  zero,utvec,t0         # initialize utvec CSR with address of exception handler
+  
+  lw     t0, 0xffff0018  # load value of TIMER
+  addi   t0, t0, 100
+  li     t1, 0xffff0020
+  sw     t0, 0(t1)       # store TIMER+100ms in TIMERCMP
 
 # globally enable interrupts
   csrrsi zero,ustatus,1
+  csrrsi zero, uie, 16
 
 # print hello world message
   li     a7,4                  # a7 <- code of PrintString syscall
   la     a0,hw                 # a0 <- address of hw message
   ecall                        # syscall
+
+  la     s2, tasks  # get address of array
+  la     t0, taskA  # store addresses of
+  sw     t0, 0(s2)    # taskA
+  la     t0, taskB    # and
+  sw     t0, 20(s2)   # taskB
+  li     s3, 0      # store first is taskA (1 for taskB)
+  b taskA
 
 # termination
   li     a7,10                 # a7 <- code of Exit syscall
