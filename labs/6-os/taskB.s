@@ -5,7 +5,7 @@ taskB:
 	
 taskB_loop:
 	addi t0, t0, 1          # Increment counter by 1
-	bne t0, t1 taskB_loop   # If we are less than the counter limit loop again
+	bne t0, t1, taskB_loop   # If we are less than the counter limit loop again
 	
 	li a0, 'B'   # Load charatcer to print in the terminal
 	li a7, 11    # Syscall 11 = PrintChar
