@@ -17,6 +17,7 @@ timeout_message:
 
 # symbols
 .eqv MAX   429496729  # max value prior multiplication by 10
+.eqv TIME 0xffff0018  # set the value of the timer up to 5000ms
 .eqv KCTRL 0xffff0000 # address of keyboard control register
 .eqv KDATA 0xffff0004 # address of keyboard data register
 .eqv DCTRL 0xffff0008 # address of display control register
@@ -25,78 +26,77 @@ timeout_message:
 .eqv NDERR 1          # error code for not-a-digit
 .eqv NOERR 0          # error code for no error
 .eqv TMOERR 4          # error code for timeout
-.eqv TIME 5000  # set the value of the timer up to 5000ms
 
 # time-out flag
 .global time_out
 time_out:
 .word 0
 
+# set timer
+.global set_timer
+set_timer:
+	addi sp, sp, -32
+	sw ra,0(sp)
+	lw ra, 0(sp)
+	addi sp, sp, 32
+	ret
+
 # code section
 .text
-
-
-# set_timer function 
-set_timer:
-	#addi sp, sp, -32
-	#sw ra,0(sp)
-	#addi a0,a0,0          # load the value in ms
-	#lw ra, 0(sp)
-	#addi sp, sp, 32
-	ret
-	
-# Reset the timeout flag
-reset_timeout:
-    la    a0, time_out   # Load the address of the time_out flag
-    li    a1, 0          # Set the value to 0
-    sw    a1, 0(a0)      # Store the value at the address
-    ret
 
 # read character, return read character in a0
 getc:
     addi  sp,sp,-32          # allocate stack frame
-    sw    ra,0(sp)           # save ra
-    li    a0,TIME            # store the value 5000 ms into the register
-    call  set_timer          # call the function 
-    call  reset_timeout      # reset the time_out flag 
+    sw    ra,0(sp)  
+    li    a0,TIME           # store the value 5000 ms into the register
+    call  set_timer
+    call  time_out          # reset the time-out flag
+    la    t3, time_out	    # set t3 to the label address
+    sw    zero, 0(t0)       # store the content into zero register
     li    t0,KCTRL           # t0 <- address of keyboard control register
     li    t1,KDATA           # t1 <- address of keyboard data register
 getc_wait:
+    bnez  t3,getc_error      # branch if the time-out flag is not 0
     lw    t2,0(t0)           # t2 <- value of keyboard control register
-    andi  t2,t2,1            # mask all bits except LSB
+    andi  t2,t2,1            # mask all bits except LSB  
     beq   t2,zero,getc_wait  # loop if LSB unset (no character from keyboard)
-    lw    t3,time_out        # load the timeout flag value 
-    bnez  t3,time_out_error   # branch to time_out error if the content of t3 is not equal to 0
     lw    a0,0(t1)           # store received character in a0
+    li    a1,0   
+    j     exit_getc          # jump to the exit
+getc_error:
+    li a1,4                  # error code 4 
+exit_getc:
     lw    ra,0(sp)           # restore ra
     addi  sp,sp,32           # deallocate stack frame, restore stack pointer
     ret                      # return
+
 
 # print character in a0
 putc:
     addi  sp,sp,-32          # allocate stack frame
     sw    ra,0(sp)           # save ra
-    li    a0,TIME            # store the value 5000 ms into the register
-    call  set_timer          # call the function 
-    call  reset_timeout      # reset the time_out flag 
+    sw    a0,4(sp)           # we have to store the value of the register
+    li    a0, 5000
+    call  set_timer
+    call  time_out           # reset the time-out flag 
+    lw    a0,4(sp)           # restore the value of the register
+    la    t3, time_out
+    sw    zero, 0(t0)
     li    t0,DCTRL           # t0 <- address of display control register
     li    t1,DDATA           # t1 <- address of display data register
 putc_wait:
+    bnez  t3, putc_error     # go to the error
     lw    t2,0(t0)           # t2 <- value of display control register
     andi  t2,t2,1            # mask all bits except LSB
     beq   zero,t2,putc_wait  # loop if LSB unset (display busy)
-    lw    t3,time_out        # load the timeout flag value 
-    bnez  t3,time_out_error  # branch to time_out error if the content of t3 is not equal to 0
     sw    a0,0(t1)           # send character
+    j     exit_putc
+putc_error:
+    li    a1,4               # error code 4
+exit_putc:  
     lw    ra,0(sp)           # restore ra
     addi  sp,sp,32           # deallocate stack frame, restore stack pointer
     ret                      # return
-
-time_out_error:
-    li    a1,TMOERR               # load the error value 
-    lw    ra, 0(sp)
-    addi  sp, sp, 32
-    ret
 
 # print NUL-terminated string stored in memory at address in a0
 print_string:
@@ -108,10 +108,10 @@ print_string_loop:
     lbu   a0,0(s0)           # a0 <- next character
     beq   a0,zero,print_string_end  # if NUL character goto print_string_end
     call  putc               # send character to display
+    bne   a1,zero,print_string_end
     addi  s0,s0,1            # s0 <- s0+1 (next character)
     b     print_string_loop  # goto print_string_loop
 print_string_end:
-    li    a1,NOERR           # no error 
     lw    ra,0(sp)           # restore ra
     lw    s0,4(sp)           # restore s0
     addi  sp,sp,32           # deallocate stack frame, restore stack pointer
@@ -147,8 +147,8 @@ geti:
     li    s1,10             # s1 <- 10
 geti_loop:
     call  getc              # get character
+    bne   a1,zero,geti_end
     beq   a0,s1,geti_ok     # if character is newline goto geti_ok
-    bnez  a0,geti_timeout   # branch to timeout if the value in a0 is not equal to 0
     call  d2i               # convert character to integer
     bne   a1,zero,geti_end  # if error goto geti_end
     li    a1,OVERR          # a1 <- overflow error code
@@ -168,12 +168,6 @@ geti_end:
     addi  sp,sp,32          # deallocate stack frame, restore stack pointer
     ret                     # return
 
-geti_timeout:
-    li    a1,TMOERR             # set the contemt of a1 to 4
-    lw    ra, 0(sp)         # restore ra
-    addi  sp, sp, 32        # deallocate stack frame, restore stack pointer
-    ret                     # return
-    
 # print integer in a0
 puti:
     addi  sp,sp,-32         # allocate stack frame
@@ -187,11 +181,11 @@ puti:
 puti_done:
     addi  a0,s0,'0'         # a0 <- s0 + '0' (ASCII code of digit to print)
     call  putc              # print digit
+    bne   a1,zero,puti_end
 puti_end:
     lw    ra,0(sp)          # restore ra
     lw    s0,4(sp)          # restore s0
     addi  sp,sp,32          # deallocate stack frame, restore stack pointer
-    li a1, NOERR
     ret                     # return
 
 # main function, read an integer, print it, goto end if it is 0, else continue
@@ -199,13 +193,11 @@ puti_end:
 main:
     la    a0,enter_int_message   # print message
     call  print_string
-    #andi  t0,a1,TMOERR            # test error code
-    #beq   t0,zero,timeout_end      # if a1 euqal to 4, timeout error message
-    call reset_timeout
+    andi  t0,a1,TMOERR            # test error code
+    beq   t0,zero,timeout_end      # if a1 euqal to 4, timeout error message
     call  geti                   # read integer
-    #andi  t0,a1,TMOERR            # test error code
-    #beq   t0,zero,timeout_end      # if a1 euqal to 4, timeout error message
-    call reset_timeout
+    andi  t0,a1,TMOERR            # test error code
+    beq   t0,zero,timeout_end      # if a1 euqal to 4, timeout error message
     andi  t0,a1,NDERR            # test error code
     bne   t0,zero,main_nad
     andi  t0,a1,OVERR            # test error code
@@ -213,14 +205,14 @@ main:
     mv    s0,a0                  # copy read integer in s0
     la    a0,print_int_message   # print message
     call  print_string
-    andi  t0,a1,TMOERR            # test error code
-    beq   t0,zero,timeout_end      # if a1 euqal to 4, timeout error message
     mv    a0,s0                  # copy read integer in a0
     call  puti                   # print read integer
-    andi  t0,a1,TMOERR            # test error code
-    beq   t0,zero,timeout_end      # if a1 euqal to 4, timeout error message
+    andi  t0,a1,TMOERR           # test error code
+    beq   t0,zero,timeout_end    # if a1 euqal to 4, timeout error message
     li    a0,'\n'                # a0 <- newline
     call  putc
+    andi  t0,a1,TMOERR            # test error code
+    beq   t0,zero,timeout_end      # if a1 euqal to 4, timeout error message
     bne   s0,zero,main           # loop if read integer is not 0
 main_end:
     la    a0,bye_message         # print message
