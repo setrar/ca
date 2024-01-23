@@ -37,7 +37,8 @@ putc:
     addi  a7,zero,11  # syscall code for PrintChar
     ecall             # call syscall
     lw    ra,0(sp)    # restore ra from stack
-    addi  sp,sp,4     # deallocate stack frame, restore stack pointer
+#    addi  sp,sp,4     # deallocate stack frame, restore stack pointer
+    addi  sp,sp,2     # deallocate stack frame, restore stack pointer
     ret               # return to caller
 
 # Used for testing 
