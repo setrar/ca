@@ -1,10 +1,21 @@
 # 6-os
 
+Note: 
+- SW interrupts (uip)
+- Relax constraints (only answer questions no code needed)
+- Reports + Source Code du on 6/2 at 23:59
+
 
 ## User tasks
 
 - [x] Task A
 - [x] Task B
+
+| task context | from | to |
+|--------------|------|----|
+| 1) general purp reg. | | |
+| 2) Stack | | | 
+| 3) PC | | |
 
 # References
 
@@ -23,3 +34,9 @@
     - ------------- <- 0
 	- Jump at `uepc`
 	
+
+- Generate a timer (SW Interrupts) 
+
+```
+csr uip
+```
