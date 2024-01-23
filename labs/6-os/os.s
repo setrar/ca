@@ -143,8 +143,8 @@ skip:
 ret:
   lw     t0,0(sp)              # t0 <- kstack[0]
   lw     t1,4(sp)              # t1 <- kstack[4]
-  lw     a0,16(sp)             # a0 <- kstack[8]
-  lw     a7,20(sp)             # a7 <- kstack[12]
+  lw     a0,8(sp)              # a0 <- kstack[8]
+  lw     a7,12(sp)             # a7 <- kstack[12]
   csrrw  sp,uscratch,zero      # restore sp from uscratch
   uret                         # return from exception handler
 
@@ -157,7 +157,7 @@ hw: .asciz "\nHello, World!\n"
 # standard startup and termination code
 # should probably be named "_start" or something similar but RARS only
 # supports initialization of PC to global symbol named "main". So we
-# use "main" instead of "_start" and "_main" instead of "main".
+# use "main" instead of "_start".
 .global main
 main:
 # initialize utvec with address of exception handler
