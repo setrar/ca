@@ -108,3 +108,79 @@ As for the data structure itself, I think a simple array of 10 continuous elemen
 ### 7
 
 The behaviour is as expected. We get 3 'A' for 1 'B' as B need very close to 3 times the incrementation of A, and a lot of * between each letter, as we switch every 100ms to the other task, we lose time.
+
+## Relaxing the constraints
+
+### 1
+
+In the current version, we keep track of the running task using the value of `s3` (0 for taskA, 1 for taskB). We can use the same thing but with more possible value (as many values as we have tasks we want to run). Of course, this means that it would be a round-robin scheduler (we can't do much else without spending far more time than reasonable).
+
+We can use `t0` as the pointer to the start of the 5 correct value in the memory (`s2` had this function previously, but now `s2` should never change). To get it, we only need to multiply the current value of `s3` by 20 (4 * 5) to get the correct address to store the context.  
+Now, we can add 1 to s3, and either it is equal to the number of task, at which point we did a whole round of tasks (because task 1 is 0, task 2 is 1, etc.) and we set `s3` to 0; or it is not, and we can continue as is.  
+Again we multiply s3 by 20, and we can restore the context of the next task.
+
+However, there is downside to it. Here we can always multiply by 20 because all save and restore 5 different values. But we are not sure if it will always be the case, in a real OS, we may need to restore 4.2 GB of data. The current way would allocate the same size for all tasks (which is vastly overkill for most applications).  
+We could solve it by using different size for apps, along with pointing to some sort of memory inode that would tell us if we should go deeper or not.
+
+We will need to change a little the code that restores the task context, but nothing big. Here is an example with 25 tasks:
+
+```riscv
+  li     t2, 20           # stores 4 * number of word to save and restore (here 5)
+  mul    t0, s3, t2       # get address of first correct value in the list
+  add    t0, s2, t0       # stores in t0 the address of the correct value in the whole memory
+
+    # [stores the values with t0 as the start]
+
+  li     t1, 25           # store number of tasks
+  addi   s3, s3, 1
+  bneq   s3, t1, restore  # if next task is not equal to number of tasks, we can restore as is
+completed_a_round:
+  li     s3, 0
+  b restore
+restore:
+  mul    t0, s3, t2
+  add    t0, s2, t0
+
+    # [restore the value from the saved part (with t0)]
+```
+
+I am not showing the initialization of the `tasks` part, but it is just like in [os_3](./os_3.s) (with 25 part instead of 2).
+
+### 2
+
+We could use a register lets say `a1` we would be 0 when the task in not finished and 1 when it is. (We also need to save and restore it in the context when switching tasks.) We could then create a loop around `addi s3 s3 1` and `add t0, s2, t0` (the second) than would restore the value of `a1` and take decision based on it.  
+If it is zero, continue like before, restore the rest of the registers, return from the exception handler, live a happy life.  
+However, if it is not, we would then go back to before the `addi s3 s3 1` and do the loop until either we find a `a1` that is not 1, or until we tried all the tasks.
+
+```diff
+    # [start like before]
+
++  li     t3, 0
++make_sure_correct
++  bneq   t3, t1, do_not_quit
++  li     a7, 10      # if t3 is equal to number of tasks, then quit
++  ecall
++do_not_quit:
+  addi   s3, s3, 1
+  bneq   s3, t1, restore
+completed_a_round:
+  li     s3, 0
+  b restore
+restore:
+  mul    t0, s3, t2
+  add    t0, s2, t0
++  addi   t3, t3, 1
++  lw     a1, t0
++  bnez   a1, make_sure_correct
+
+    # [continue like before]
+```
+
+In the example, we modified the `tasks` definition such that `a1` is stored in the first position, and not the address of the task.
+
+### 3
+
+In the exception handler, rather than autonomously incrementing the value of `s3` by 1, we could ask the user for an input, and following some rules, stop or start some tasks.  
+For example, we could print the task list and if they are stopped or running. Then the user would either enter the number of a task to launch it, or do the same with a minus (-) sign in front to stop it.
+
+Or during each task iteration, we could raise an interrupt, look if there was a number entered by the user. If yes, we switch to this task, else we continue running the previous one.
