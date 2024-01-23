@@ -35,8 +35,6 @@ _isrs: .word _isr0, _isr1, _isr2, _isr3, _isr4, _isr5, _isr6, _isr7, _isr8, _isr
 # kernel stack
 kstack: .space 1024
 
-# process stack
-pstack:   .space 256    # Task A & B stack space
 
 .text
 
@@ -92,7 +90,7 @@ interrupts:
   add    a0,a0,t1              # a0 <- a0 + t1
   lw     a0,0(a0)              # a0 <- address of ISR
   jalr   zero,0(a0)            # jump at ISR
-  
+
 # ISRs: interrupt-specific code goes here
 # reserved
 _isr0:
@@ -150,35 +148,3 @@ ret:
   lw     a7,12(sp)             # a7 <- kstack[12]
   csrrw  sp,uscratch,zero      # restore sp from uscratch
   uret                         # return from exception handler
-
-.data
-
-hw: .asciz "\nHello, World!\n"
-
-.text
-
-# standard startup and termination code
-# should probably be named "_start" or something similar but RARS only
-# supports initialization of PC to global symbol named "main". So we
-# use "main" instead of "_start".
-.global main
-main:
-# initialize utvec with address of exception handler
-  la     t0,exception_handler  # t0 <- address of exception handler
-  csrrw  zero,utvec,t0         # initialize utvec CSR with address of exception handler
-
-# globally enable interrupts
-  csrrsi zero,ustatus,1
-
-# print hello world message
-#  li     a7,4                  # a7 <- code of PrintString syscall
-#  la     a0,hw                 # a0 <- address of hw message
-#  ecall                        # syscall
-
-# Call Tasks A and B
-#  call   taskA
-  call   taskB
-  
-# termination
-  li     a7,10                 # a7 <- code of Exit syscall
-  ecall                        # syscall

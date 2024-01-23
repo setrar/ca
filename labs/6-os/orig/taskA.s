@@ -42,15 +42,15 @@ putc:
 
 # Used for testing 
 # will be called from os.s
-#.globl main
+.globl main
 
-#main:
+main:
     # Your setup code goes here, if needed
 
-#    call taskA             # Call the taskA function
+    call taskA             # Call the taskA function
 
     # Your cleanup code goes here, if needed
 
     # Terminate the program (optional)
-#    li a7, 10               # syscall code for Exit
-#    ecall
+    li a7, 10               # syscall code for Exit
+    ecall
