@@ -257,17 +257,17 @@ In order to resume a suspended user task, the OS must restore the execution cont
 So, this context must have been saved when the task was last suspended.
 All in all, when the timer interrupt is raised, the timer ISR of our mini-OS must:
 
-- Save the context of the currently running user task.
+- Gather the context of the currently running user task, store it somewhere.
 - Restore the context of the other user task.
 - Re-program the timer.
 - Resume the other user task.
 
 1. First list the registers (and other information, if any) that constitute the context of a running task.
 
-1. Decide where the contexts shall be saved.
+1. For each of them identify where the timer ISR can find it (the _from_) and where it shall store it (the _to_).
 
 1. Imagine the data structure that the OS will use to navigate among the tasks, their saved contexts and to decide which task must be resumed.
-   Decide where this data structure will be saved.
+   Decide where this data structure will be stored.
 
 1. Create a fresh copy of `os_2.s`:
 
@@ -277,8 +277,8 @@ All in all, when the timer interrupt is raised, the timer ISR of our mini-OS mus
 
 1. Edit `os_3.s`:
 
-   - Add the declarations for the data that the mini-OS will use in the data segment of the exception handler.
-   - Adapt the startup code to initialize the data that the mini-OS will use.
+   - If needed update the data segment of the exception handler to add the declarations for the data that your mini-OS will use.
+   - Adapt the startup code to initialize the data that your mini-OS will use.
    - Add the context switching code to the timer ISR.
 
 1. In the RARS `Settings` menu select `Exception Handler...` and replace the `os_2.s` exception handler with `os_3.s`.
@@ -286,8 +286,26 @@ All in all, when the timer interrupt is raised, the timer ISR of our mini-OS mus
 1. Assemble, launch the `Timer Tool`, connect it to the running program, start the timer, and simulate.
    Is the behavior what you expected?
 
+### Relaxing the constraints
+
+You don't have to code anything to answer the following questions, but feel free to do so if you wish.
+If you decide to code, please do not modify `taskA.s`, `taskB.s` and `os_3.s`; create new files.
+
+Consider the limitations we initially introduced to simplify the first version of our mini-OS: there are only two user tasks, they are infinite loops that never terminate.
+
+1. How would you modify your mini-OS to run, e.g., 8 tasks instead of 2?
+
+1. Suppose the user tasks are not infinite loops and they terminate after a while.
+   Suppose also that we want to terminate the RARS simulation when all tasks terminated.
+   How would you modify your mini-OS to let a user task signal that it terminates and to schedule only non-terminated tasks for execution.
+
+1. Suppose we would like to let the person who runs the simulation decide which task to start, which task to terminate, using the _Keyboard and Display MMIO Simulator_ companion tool to display a menu and get user choices.
+   How would you do?
+
 ## Report, add, commit, push
 
-Write your report, add (`REPORT.md`, `taskA.s`, `taskB.s`, `os_1.s`, `os_2.s`, `os_3.s`), commit and push in your personal branch.
+Write your report, add `REPORT.md`, `taskA.s`, `taskB.s`, `os_1.s`, `os_2.s` and `os_3.s`.
+If you created new source files to answer the last part, please add them too.
+Commit and push in your personal branch.
 
 <!-- vim: set tabstop=4 softtabstop=4 shiftwidth=4 expandtab textwidth=0: -->
