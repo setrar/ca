@@ -1,29 +1,49 @@
 ### Lab 6: OS - Efrén BOYARIZO GARGALLO
 
 # Report
-> For this lab, I've decided to take my implementation from lab 4 instead of the `.io.s` given.
-> 
-> This means that my implementation differs both in the text printed in the terminal and the behavior of when an overflow or NaN occurs. It will wait for the user to press enter to show the message of overflow or NaN.
-
-> Implementation wise, looking at the given `.io.s` file I found a couple of errors related to detecting overflows in my program. The solution was to compare with the maximum value allowed previously to the multiplication by 10. If its greater then we know an overflow will occur.
+> To implement the basic function of the OS I've decided to do it the easy way and limit the OS to only have a maximum of two tasks running at the same time. I've also not included the stack pointer in the registers to save as I don't use the stack in any of the two tasks.
 >
-> Regarding the modifications to implement the timer, no problems were found except for some difficulties in the interrupt routine which due to its nature is both hard to implement with new different instructions and also to debug due to not being able to breakpoint inside of it. The solution I found was to print at every step to detect which instruction was being the problem.
+> To do so, I've reserved some space in the kernel stack to store two copies of the registers t0, t1, a0, a7 and pc (the address of the instruction before the interrupt occurred):
+> 1. The slot 1 is to store a copy of the current running task so that it becomes possible to overwrite the current registers with the ones of the next task.
+> 2. The slot 2 is to store the registers of the task that will be executed next
+> 
+> The stack looks like this:
+```
+                ┌───┬───┬───┬───┬───┬───┬───┬───┐
+                │+00│+04│+08│+0c│+10│+14│+18│+1c│
+Registers       ├───┴───┴───┴───┼───┴───┴───┴───┘
+task      ────► │ t0  t1  a0  a7│ t0  t1  a0  a7
+running now     └───┬───────────┴───────┬────────
+                  pc│ t0  t1  a0  a7  pc│
+                ──▲─┴─────────────────▲─┴────────
+                  │                   │
+                  │                   │
+             [slot 1]             [slot 2]
+             Registers            Registers
+               task                 next
+              running               task
+                now
+             (copy+pc)
+```
+> To make it possible to switch between the two tasks, the following steps are required:
+> 1. Copy the registers stored by the interruption (plus the register uepc containing the resume address) into the slot 1
+> 2. Copy the contents of the registers of slot 2 into the ones that will be restored at the end of the interrupt (plus restore the value of uepc)
+> 3. Copy the slot 1 into slot 2 so that the task will be executed in the next interrupt
+>
+
+> The last step to make it work is to initialize the slot 2 with the registers of the taskB (if taskA is the first one to run). To do it, I've copied the address the label taskB into the place in the stack that hold the PC in slot 2, so that it starts executing taskB after the first interrupt.
 
 # Questions
 
-#### Q: Study how the exception handler checks if it is an interrupt or an exception and how it branches to the interrupts label in case of an interrupt (more on this part later).
+#### Q: In our simple handler which of these 3 strategies is used for each type of exception?
+> If the exception type is a breakpoint or some syscall then it will skip the instruction and continue executing.
+> Else it will end the execution of the program and print out the error
+
+#### Q: (os_1.s) Assemble and simulate. Is the behavior what you expected?
+> Yes as we have not implemented yet the code to switch between tasks and taskA runs all the time indefinitely
 
 
-#### Q: In our simple handler which of these 3 strategies is used for each type of exception? Do you understand how these 3 cases are implemented in the handler?
-
-#### Q: The startup code is the piece of code that runs first when we launch the simulation. Its data and text segments are near the end of the os.s source file. Study the text segment and try to understand it.
-
-
-#### Q: Assemble and simulate. Is the behavior what you expected?
-> yes as we have not implemented yet the code to switch between tasks and taskA runs all the time indefinetly
-
-
-#### Q: Assemble and simulate. Is the behavior what you expected?
+#### Q: (Modify the code of taskA.s to cause an instruction address misaligned exception) Assemble and simulate. Is the behavior what you expected?
 > Yes, as the error obtained is:
 ````
 Exception 0 (instruction address misaligned) occurred
@@ -48,16 +68,21 @@ Unrecoverable, aborting
 > utvec	5	0x00400000
 > uepc	65	0x00400122
 > ucause	66	0x00000000
-
-#### Q: Assemble, launch the Timer Tool, connect it to the running program, start the timer, and simulate. Is the behavior what you expected?
-> Yes as the asterisk is being printed every 100ms and also the A's are printed now and then. But not in a predictable way
-> *A**A***A**A***A**A***A**A***A**A***A**A***A**A***A**A***A**A**A***A**A***A**A***A***A
-
-
-#### Q: Assemble, launch the Timer Tool, connect it to the running program, start the timer, and simulate. Is the behavior what you expected?
-> As the taskB counts longer than taskA, more asterisks are printed in between the B's:
-> B*******B********B********B*******B********B*******B*****
 >
+> As explained in the lab 5, they will contain the values to determine what caused the interruption, the type of exception and the value of the PC before it happened.
+
+#### Q: (os_2.s with taskA) Assemble, launch the Timer Tool, connect it to the running program, start the timer, and simulate. Is the behavior what you expected?
+> Yes as the asterisk is being printed every 100ms and also the A's are printed now and then. But not in a predictable way because the timer is interrupting its execution:
+````
+*A**A***A**A***A**A***A**A***A**A***A**A***A**A***A**A***A**A**A***A**A***A**A***A***A
+````
+
+
+#### Q: (os_2.s with taskB) Assemble, launch the Timer Tool, connect it to the running program, start the timer, and simulate. Is the behavior what you expected?
+> As the taskB counts longer than taskA, more asterisks are printed in between the B's:
+````
+B*******B********B********B*******B********B*******B*****
+````
 
 
 #### Q: First list the registers (and other information, if any) that constitute the context of a running task.
