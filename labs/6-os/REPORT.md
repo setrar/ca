@@ -32,6 +32,12 @@ running now     └───┬───────────┴────�
 >
 
 > The last step to make it work is to initialize the slot 2 with the registers of the taskB (if taskA is the first one to run). To do it, I've copied the address the label taskB into the place in the stack that hold the PC in slot 2, so that it starts executing taskB after the first interrupt.
+>
+> After running my OS, the following output is obtained proving that the two tasks are running correctly:
+>
+```
+AAA**AA*B*A**AA*B*AA*B*AA**AA*B*AAA*B*AA*B*A**AA*B*A*B*AA**A*B*AA**AA*B*AA*B*AA**AA*B*AA*B*A*
+```
 
 # Questions
 
