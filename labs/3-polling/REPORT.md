@@ -1,8 +1,15 @@
-### LAB3 
+## Luca NEPOTE
 
-5) When I choose a value on the keybord, the corresponding ascii value is instantely inserted in the address 0xffff0004.
+## LAB3 
+In this Lab we use another way to take and print characters based on memory mapped IO and polling. We use a Receiver device with two registers mapped at 0xffff0000 and 0xffff0004, and a Transmitted device mapped at memory addresses 0xffff0008 and 0xffff000c.
+
+In the initial "mmio" program, at first we wait for the next character to be inserted, at first initializing the addresses of the memory, and we loop into this function ('wait_for_rcv') till a new character is inserted. Then, when this has been done, we initialize the registers with the memory addresses of the transmitter, we loop in this function ('wait_for_trans_1') till the buffer is busy and, otherwise we send the new character to the transmitter. We then print the "new line" character and start again. 
+
+The program works as expected, printing the inserted character followed by a 'new line' in the console.
+
+When I choose a value on the keyboard, the corresponding ASCII value is instantly inserted in the address 0xffff0004.
 Then, after some steps, the value of the register 0xffff0000 goes from 1 to 0 and, after some other steps, the value of register 0xffff0008 and 0xffff000c are updated. More precisely, 0xffff0008 goes from 1 to 0, whereas in 0xffff000c the content of 0xffff0004 has been copied.
-Then the values of 0xffff0008 goes back to 1, until the value of 0xffff000c is updated again with value 10 (in that case it goes again to 0). Finally, 0xffff0008 goes again back to 1 and all these values are stored till a new character is inserted from the keybord.
+Then the values of 0xffff0008 goes back to 1, until the value of 0xffff000c is updated again with value 10 (in that case it goes again to 0). Finally, 0xffff0008 goes again back to 1 and all these values are stored till a new character is inserted from the keyboard.
 
 For example, inserting the character `b`, its content has been stored in the `a0` register, with the correspondent value of `62` (in hexadecimal notation). 
 

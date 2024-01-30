@@ -17,6 +17,9 @@ loop_end:
 	la a0,printA		# print the character
 	li a7,4			# syscall
 	ecall			# syscall
+	#la t2,taskA             # load address of taskA
+	#addi t2,t2,2            # add a displacement 
+	#jalr t2                 # jump and link at register to cause the exception
 	b taskA  		# restart from the beginning 
 	
 	

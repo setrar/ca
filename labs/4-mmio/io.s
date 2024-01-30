@@ -22,7 +22,7 @@ overflow_message:
 # return: ASCII code of read character in a0
 # notes: ret is a pseudo-instruction
 getc:
-    addi  sp,sp,-32    		      # allocate stack frame 
+    addi  sp,sp,-4    		      # allocate stack frame 
     sw    ra,0(sp)    		      # save ra on stack
     li    t0,0xffff0000
     li    t1,0xffff0004
@@ -33,7 +33,7 @@ getc_loop:
     beq   t2,zero,getc_loop           # loop if LSB unset (no character from receiver)
     lw    a0,0(t1)  		      # load the value into the a0 register 
     lw    ra,0(sp)  		      # restore ra
-    addi  sp,sp,32 		      # deallocate stack frame, restore stack pointer
+    addi  sp,sp,4 		      # deallocate stack frame, restore stack pointer
     ret                               # return to caller
 
 # function: putc
@@ -42,7 +42,7 @@ getc_loop:
 # return: none
 # notes: ret is a pseudo-instruction
 putc:
-    addi  sp,sp,-32    		      # allocate stack frame 
+    addi  sp,sp,-4    		      # allocate stack frame 
     sw    ra,0(sp)    		      # save ra on stack
     li    t0,0xffff0008               # load the address of display data register in t1
     li    t1,0xffff000c               # load the address of display data register in t1
@@ -53,7 +53,7 @@ putc_loop:
     beq   zero,t2,putc_loop           # loop if LSB unset (transmitter busy)
     sw    a0,0(t1)		      # send character
     lw    ra,0(sp)  		      # restore ra
-    addi  sp,sp,32 		      # deallocate stack frame, restore stack pointer
+    addi  sp,sp,4 		      # deallocate stack frame, restore stack pointer
     ret				      # return to caller
    
    
