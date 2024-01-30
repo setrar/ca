@@ -117,11 +117,9 @@ _isr4:
   ecall                        # syscall
   
   # read the current time of the Timer Tool
-  lw     t0,0xffff0020         # save the content of the Timer Tool (!!!! I dont know if this register is okay)
-  lw 	 t1,0xffff0018         # save the content of the Time
-  addi   t1,t1,100   
-  
-  
+  lw     t0,0xffff0018         # save the content of the Timer Tool 
+  addi   t0,t0,100   		   		# add 100 ms
+  sw 		 t0,0xffff0020,t1      # store content of t0 using t1 as temporary register
   
   b      ret
 
@@ -178,8 +176,15 @@ main:
   la     t0,exception_handler  # t0 <- address of exception handler
   csrrw  zero,utvec,t0         # initialize utvec CSR with address of exception handler
 
+	lw     t0,0xffff0018         # save the content of the Timer Tool 
+  addi   t0,t0,100   		   		 # add 100 ms
+  sw 		 t0,0xffff0020,t1      # store content of t0 using t1 as temporary register
+
 # globally enable interrupts
   csrrsi zero,ustatus,1
+
+# enable the interrupt of the Timer Tool
+	csrrwi zero,uie,16
 
 # print hello world message
   li     a7,4                  # a7 <- code of PrintString syscall
@@ -187,7 +192,7 @@ main:
   ecall                        # syscall
  
 # call task A
-  jal taskA                    # jump to the task A
+  jal taskB                    # jump to the task A
 
 # termination
   li     a7,10                 # a7 <- code of Exit syscall
