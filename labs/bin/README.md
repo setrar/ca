@@ -30,6 +30,26 @@ EE_HOME=~/Developer/CompArch/labs/bin
 java -jar ${EE_HOME}/rars1_6.jar 
 ```
 
+### :b: Hexa to (whatever) conversion
+
+- The `init.sh` script needs to be sourced in `bash`
+
+```bash
+bash
+```
+
+- Source the `init.sh` source file
+
+```bash
+source init.sh
+```
+
+- Example
+
+```
+s2i 0x0040000
+```
+
 # References
 
 - [ ] [Get Hands-On Experience with RISC-V, Using ESP32-C3!](https://www.espressif.com/en/media_overview/news/risc-v-with-esp32-c3)
