@@ -58,6 +58,9 @@ add t2,t0,t1
 sltu t3,t2,t0 
 ```
 
+### Launch RARS, settings, help, registers
+---
+
 ## 
 
 # References
