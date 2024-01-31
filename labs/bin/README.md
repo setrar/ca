@@ -27,7 +27,7 @@ EE_HOME=~/Developer/CompArch/labs/bin
 ```
 
 ```
-java -jar ${EE_HOME}/rars1_6.jar 
+java -jar ${EE_HOME}/rars1_6.jar  &
 ```
 
 ### :b: Hexa to (whatever) conversion
