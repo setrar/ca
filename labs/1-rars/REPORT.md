@@ -72,6 +72,18 @@ ${\color{Salmon}1.}$ What is the current content of the pc register?
 Some other registers are initialized to non-zero values.
 In your terminal use the s2i bash function to convert the hexadecimal representation of their content to integer values (type s2i 0x...).
 
+```bash
+ s2i 0x00400000
+```
+> Returns:
+```powershell
+U (base 2):   0000 0000 0100 0000 0000 0000 0000 0000 
+U (base 10):  4194304
+U (base 16):  00400000
+SM (base 10): 4194304
+TC (base 10): 4194304
+```
+
 
 Do you understand why all values are positive even when the register content is considered as an integer in sign and magnitude or 2's complement?
 
