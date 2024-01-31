@@ -23,7 +23,7 @@ java -jar ./rars1_6.jar
 - [ ] Run the Execution Environment
 
 ```
-EE_HOME=~/Developer/ca/labs/bin
+EE_HOME=~/Developer/CompArch/labs/bin
 ```
 
 ```
