@@ -1,6 +1,6 @@
 # first program
 
-- [ ] Load 
+Just an `Hello World` example, in `RARS`, `_start` label needs to be replaced by `main`
 
 # References
 
