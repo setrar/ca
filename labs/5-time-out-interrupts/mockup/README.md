@@ -19,6 +19,20 @@ handler: # Just ignore it by moving epc (65) to the next instruction
 	uret
 ```
 
+#### In order to have a working exception handler, the program must:
+- Set utvec to the address of the handler code (the lowest two bits are special)
+- Set the bits corresponding to the handled interrupts in uie
+- Set the interrupt enable (lowest) bit in ustatus to enable the handler
+
+And inside the handler, :
+
+- The exception handler can return control to the program using the uret instruction. This will place the uepc CSR value into the Program Counter, so be sure to increment it by 4 before returning if you want to skip over the instruction that caused the exception. It also resets some other state to before the exception, so jumping to the value in uepc instead is not recommended
+- ucause contains the reason that the exception handler was called.
+- Exception types declared in rars.SimulatorException, but not necessarily implemented, are INSTRUCTION_ADDR_MISALIGNED (0), INSTRUCTION_ACCESS_FAULT (1), ILLEGAL_INSTRUCTION(2), LOAD_ADDRESS_MISALIGNED(4), LOAD_ACCESS_FAULT(5), STORE_ADDRESS_MISALIGNED(6), STORE_ACCESS_FAULT(7), and ENVIRONMENT_CALL(8)
+- When writing a non-trivial exception handler, your handler must first save general purpose register contents, then restore them before returning.
+
+* Other comments retrieved from chatGPT
+
 In RISC-V architecture, the `usstatus`, `ucause`, and `uepc` registers are used to handle exceptions and interrupts. The values you provided represent the state of these registers during an exception or interrupt. Let's break down what each of these registers means in this context:
 
 1. `usstatus` (User Status Register):
