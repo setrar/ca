@@ -58,8 +58,19 @@ add t2,t0,t1
 sltu t3,t2,t0 
 ```
 
+## :b: Report 
+
 ### Launch RARS, settings, help, registers
 ---
+
+${\color{Salmon}1.} What is the current content of the pc register?
+
+
+Some other registers are initialized to non-zero values.
+In your terminal use the s2i bash function to convert the hexadecimal representation of their content to integer values (type s2i 0x...).
+
+
+Do you understand why all values are positive even when the register content is considered as an integer in sign and magnitude or 2's complement?
 
 ## 
 
