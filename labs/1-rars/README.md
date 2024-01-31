@@ -370,7 +370,7 @@ Some critical software do not use floating point numbers at all to avoid issues 
 
 ### Floating point special values
 
-1. Write some assembly code implementing floating point computations which final result is +$`\infty`$, -$`\infty`$ and NaN.
+1. Write some assembly code implementing floating point computations which final result is +$\infty$, -$\infty$ and NaN.
 
 ## Report, add, commit, push
 
