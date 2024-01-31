@@ -65,6 +65,7 @@ sltu t3,t2,t0
 
 ${\color{Salmon}1.}$ What is the current content of the pc register?
 
+<img src=images/pc_register.png width='75%' height='75%' > </img>
 
 Some other registers are initialized to non-zero values.
 In your terminal use the s2i bash function to convert the hexadecimal representation of their content to integer values (type s2i 0x...).
