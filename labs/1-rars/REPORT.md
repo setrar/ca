@@ -69,7 +69,7 @@ ${\color{Salmon}1.}$ What is the current content of the pc register?
 
 > pc = 0x00400000
 
-Some other registers are initialized to non-zero values.
+${\color{Salmon}2.}$ Some other registers are initialized to non-zero values.
 In your terminal use the s2i bash function to convert the hexadecimal representation of their content to integer values (type s2i 0x...).
 
 ```bash
