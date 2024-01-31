@@ -17,15 +17,15 @@ end:
   jalr zero,ra,0     # return to caller, the result is in a0
 
 
-# Function: print_integer
-# Description: Print an integer to the console
-# Parameters: Integer to print in a0
-# Return: None
-
 .data
     buffer: .space 16  # Allocate a 16-byte buffer for storing ASCII characters
 
 .text
+
+# Function: print_integer
+# Description: Print an integer to the console
+# Parameters: Integer to print in a0
+# Return: None
 print_integer:
     addi  sp, sp, -16   # Allocate stack frame (4 registers to save = 4*4 = 16 bytes)
     sw    ra, 0(sp)     # Save ra on stack
@@ -57,7 +57,7 @@ print_integer:
         ecall                 # Print the character
         beqz   s2, print_end  # Exit loop if all digits printed
         addi   s2, s2, -1     # Decrement digit count
-        j      print_integer_reverse_loop
+        b      print_integer_reverse_loop
 
     print_end:
         lw    ra, 0(sp)    # Restore ra from stack
@@ -65,17 +65,13 @@ print_integer:
         lw    s1, 8(sp)    # Restore s1 from stack
         lw    s2, 12(sp)   # Restore s2 from stack
         addi  sp, sp, 16   # Deallocate stack frame
-        ret               # Return to caller
+        ret                # Return to caller
 
     print_zero:
         li    a0, 48        # Load ASCII '0'
         addi  a7, zero, 11  # Syscall code for PrintChar
-        ecall              # Print '0'
-        j     print_end     # Jump to the end
-
-# Example usage:
-# li a0, 12345   # Load the integer to print
-# call print_integer
+        ecall               # Print '0'
+        b      print_end    # Jump to the end
 
 .global main
 
