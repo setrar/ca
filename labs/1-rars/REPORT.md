@@ -63,7 +63,7 @@ sltu t3,t2,t0
 ### Launch RARS, settings, help, registers
 ---
 
-${\color{Salmon}1.} What is the current content of the pc register?
+${\color{Salmon}1.}$ What is the current content of the pc register?
 
 
 Some other registers are initialized to non-zero values.
