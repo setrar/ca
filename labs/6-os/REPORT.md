@@ -90,4 +90,23 @@ ucause:0x00000000
 
 The content of the `ustatus`, `utvec`,`uepc` and `ucause` CSR does not changed till the exception is reached.
 
-At the end, we commented the lines of code involving the exception.
+At the end, I commented the lines of code involving the exception.
+
+# Add a timer ISR
+For this section I followed the procedure given in the assignment, adding the printing of the '*' character after every 100 ms, using the Timer Tool.
+
+The behavior is the one we expected, in both cases, with the program printing the character '*' (interrupting the running task), between the 'A' or 'B' characters, depending if it's running the taskA or the taskB.
+
+# Content switch
+In this section we want to change our program in order to switch between taskA and taskB every 100 ms (Notice that we maintained also the printing of the '*' character). As requested, we start with the taskA.
+The considered registers used for the storing and restoring of the operations executes are respectively 't0', 't1', 'a0', 'a7' and 't2'.
+To this purpose, we use the stack pointer and an offset for each register. In order to accomplish every register we needed in total 52 bytes of offset from the initial value of the stack pointer.
+
+After implementing the code as requested by the assignment, we simulated: the behavior is the expected one, with the taskA and taskB switching between each other. The program indeed prints all the characters 'A','B' and '*'.
+
+# Relaxing the constraints
+1. In order to make our program running on multiple tasks instead of only 2, we should handle the saving and restoring of the registers for the different tasks, and serve each task, for example, with a scheduling algorithm.
+
+2. In order to enable active tasks and not considering the terminated ones, the OS can make use of a flag within each task, controlling if it's terminated or not. In this way, our scheduler can prioritize the tasks that are not terminated, and terminate the program once each task has finished running.
+
+3. In order to make the user choose which task has to start or terminate, we can use the Keyboard and Display MMIO Simulator, making the user insert the number of the task he wants to start and inserting the character 'Q' when he wants to terminate the execution. After the termination of each task, the program could ask again which task has to be run, printing the available options. 

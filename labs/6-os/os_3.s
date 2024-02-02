@@ -111,14 +111,55 @@ _isr3:
 
 # timer
 _isr4:
-  # print asterisk
+# using the sp to save the registers
+# start with task A
+  la sp, kstack
+  lw t0, 0(sp)
+  lw t1, 4(sp)
+  lw a0, 8(sp)
+  lw a7, 12(sp)
+  
+  sw t0, 16(sp)
+  sw t1, 20(sp)
+  sw a0, 24(sp)
+  sw a7, 28(sp)
+
+# to come back later
+  csrrs t2, uepc, zero
+# start with task B
+  sw t2, 32(sp)
+  lw t0, 36(sp)
+  lw t1, 40(sp)
+  lw a0, 44(sp)
+  lw a7, 48(sp)
+  lw t2, 52(sp)
+
+ 	lw t0, 0(sp)
+  lw t1, 4(sp)
+  lw a0, 8(sp)
+  lw a7, 12(sp)
+  csrrw zero, uepc, t2
+# come back to task A  
+  lw t0, 16(sp)
+  lw t1, 20(sp)
+  lw a0, 24(sp)
+  lw a7, 28(sp)
+  lw t2, 32(sp)
+   
+  sw t0, 36(sp)
+  sw t1, 40(sp)
+  sw a0, 44(sp)
+  sw a7, 48(sp)
+  sw t2, 52(sp)
+           
+#print asterisk
   li     a7,4                  # a7 <- code of PrintString syscall
   la     a0,asterisk           # a0 <- address of asterisk
   ecall                        # syscall
   
-  # read the current time of the Timer Tool
+# read the current time of the Timer Tool
   lw     t0,0xffff0018         # save the content of the Timer Tool 
-  addi   t0,t0,100   		   		# add 100 ms
+  addi   t0,t0,100   		   		 # add 100 ms
   sw 		 t0,0xffff0020,t1      # store content of t0 using t1 as temporary register
   
   b      ret
@@ -191,8 +232,13 @@ main:
   la     a0,hw                 # a0 <- address of hw message
   ecall                        # syscall
  
-# call task B
-  jal taskB                    # jump to the task B
+# starting with taskA
+	la  	a0,kstack
+	addi 	a0,a0,52
+	la 		t0,taskB
+	sw 		t0,(a0)
+	
+  jal 	taskA                    # jump to taskA
 
 # termination
   li     a7,10                 # a7 <- code of Exit syscall
