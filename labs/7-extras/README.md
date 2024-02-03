@@ -1,13 +1,9 @@
-# Factorial
+# Extras
 
-### :warning: Always double check the settings
+This folder was created during lab sessions.
 
-<img src=images/main-settings.png width="50%" height="50%" > </img>
-
-Printing an integer in assembly language typically involves converting the integer into its decimal representation and then printing the decimal digits one by one. Here's an example of how to print an integer in RISC-V assembly:
+- [ ] 0-hello
+- [ ] 1-fact
+- [ ] 2-gcc
 
 # References
-
- - [ ] [How to write functions and call them in assembly code?](https://gitlab.eurecom.fr/renaud.pacalet/ca/-/blob/master/FAQ.md?ref_type=heads#how-to-write-functions-and-call-them-in-assembly-code)
-
-
