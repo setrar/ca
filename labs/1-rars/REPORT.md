@@ -104,17 +104,6 @@ ${\color{Salmon}2.}$ Insert a label named init &#x2705;
 
 #### Assembling
 
-Assemble the code ([Run -> Assemble]).
-If there are errors fix them and assemble again until the operation completes successfully.
-The Execute tab of the left panel now shows you a detailed view of the portion of the memory that contains the instructions (the code segment).
-Each line corresponds to one basic RV32IM instruction:
-
-The left column (Bkpt) is for breakpoints (back on this later).
-The Address column shows the address in memory of the instruction.
-The Code column shows the instruction encoding in hexadecimal.
-The Basic column shows the human-readable form of the instruction in RV32IM assembly language.
-The Source column shows the source code you wrote with line numbers on the left.
-
 ${\color{Salmon}1.}$ Assemble the code (`[Run -> Assemble]`).
    If there are errors fix them and assemble again until the operation completes successfully.
    The `Execute` tab of the left panel now shows you a detailed view of the portion of the memory that contains the instructions (the _code segment_).
