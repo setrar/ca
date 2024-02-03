@@ -6,7 +6,7 @@
 
 ---
 
-### Launch RARS, settings, help, registers
+## Launch RARS, settings, help, registers
 ---
 
 ${\color{Salmon}1.}$ What is the current content of the pc register?
