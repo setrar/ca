@@ -83,9 +83,17 @@ TC (base 10): 4194304
 ```
 
 
-Do you understand why all values are positive even when the register content is considered as an integer in sign and magnitude or 2's complement?
+${\color{Salmon}3.}$ Do you understand why all values are positive even when the register content is considered as an integer in sign and magnitude or 2's complement?
 
-## 
+
+### Unsigned and signed integers
+---
+
+#### Coding
+
+${\color{Salmon}1.}$ In the help window search the basic instructions &#x1F4DD;
+
+${\color{Salmon}2.}$ Insert a label named init &#x1F4DD;
 
 # References
 
