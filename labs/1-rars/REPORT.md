@@ -1,5 +1,11 @@
 # &#x1F4DD; Report 
 
+---
+
+[TOC]
+
+---
+
 ### Launch RARS, settings, help, registers
 ---
 
