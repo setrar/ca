@@ -126,21 +126,28 @@ TC (base 10): 126
 
 ### Overflows
 
-As the registers are 32 bits wide they can represent only a subset of the integer numbers of maths.
-Let us observe what happens when we try to exceed this range.
+${\color{Salmon}1.}$ Add label `s23` and instructions to shift register `t2` by 23 positions to the left.
 
-Note: you can execute backward step-by-step with `[Run -> Backstep]`.
+> s2i 0x3f000000
+```powershell
+U (base 2):   0011 1111 0000 0000 0000 0000 0000 0000 
+U (base 10):  1056964608
+U (base 16):  3F000000
+SM (base 10): 1056964608
+TC (base 10): 1056964608
+```
 
-1. Add label `s23` and instructions to shift register `t2` by 23 positions to the left.
-   Assemble, execute.
-   Use `s2i` and note the decimal unsigned number corresponding to the current content of `t2`.
-   Use a calculator to verify that `u(t2)` =  $`126 \times 2^{23}`$.
-   This is what left shifts do to numbers: each shift multiplies by 2, shifting by 23 positions is the same as multiplying by $`2^{23}`$.
-   Right shifts do the opposite: divide by a power of 2.
-
-1. Add label `t2pt2` and instructions to add `t2` to itself and store the result again in `t2`.
+${\color{Salmon}2.}$ Add label `t2pt2` and instructions to add `t2` to itself and store the result again in `t2`.
    Assemble, execute and note `u(t2)`.
-   This is another way to multiply a register by 2 without using the `mul` instruction: add it to itself.
+
+> s2i 0x7e000000
+```powershell
+U (base 2):   0111 1110 0000 0000 0000 0000 0000 0000 
+U (base 10):  2113929216
+U (base 16):  7E000000
+SM (base 10): 2113929216
+TC (base 10): 2113929216
+```
 
 1. Copy several times the instructions you added after label `t2pt2` such that `t2` can be added to itself several times.
    Assemble, put a breakpoint on the first instruction after `t2pt2`, and execute until the breakpoint.
