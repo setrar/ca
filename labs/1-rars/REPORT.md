@@ -90,6 +90,22 @@ They surely are
 
 ${\color{Salmon}2.}$ Predicting next instructions &#x2705;
 
+### Left shifts as a way to multiply by powers of 2
+
+${\color{Salmon}1.}$  Add label `shift1` and instructions to shift `t0` by one position to the left and store the result in register `t1`.
+
+${\color{Salmon}2.}$  Assemble (`[Run -> Assemble]`) and execute your code (`[Run -> Go]`).
+   If considered as an unsigned number what is the final value stored in `t1` (use again the `s2i` function if you are not sure)?
+
+${\color{Salmon}3.}$  Imagine a way to multiply by 3 an unsigned number stored in `t2` without using the `mul` instruction.
+   Add label `mul3` and the corresponding instructions.
+
+${\color{Salmon}4.}$  Assemble but before executing, in the right panel, double-click on the value of `t2` and modify it such that `u(t2)` = 42.
+   Execute your code and check that `u(t2)` = 126.
+
+${\color{Salmon}5.}$  To avoid the manual initialization of `t2` each time we execute, just before label `mul3`, insert label `i42` and instructions to initialize `t2` such that `u(t2)` = 42.
+   Execute and check that the final value in `t2` is correct.
+
 # References
 
 - [ ] [sm: Sign Magnitude notation](https://www.tutorialspoint.com/sign-magnitude-notation)
