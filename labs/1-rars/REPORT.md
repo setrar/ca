@@ -60,10 +60,11 @@ ${\color{Salmon}1.}$ Assemble the code (`[Run -> Assemble]`).
    - The `Basic` column shows the human-readable form of the instruction in RV32IM assembly language.
    - The `Source` column shows the source code you wrote with line numbers on the left.
 
-<img src=images/RARS-init.png width='50%' height='50%' > </img>
+<img src=images/RARS-init.png width='75%' height='75%' > </img>
 
 ${\color{Salmon}2.}$ What is the address of the first instruction?
 
+> 0x00400000
 
 ${\color{Salmon}3.}$ Do you understand why the current content of the pc register is the same?
 
