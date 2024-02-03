@@ -85,6 +85,17 @@ TC (base 10): 4194304
 
 ${\color{Salmon}3.}$ Do you understand why all values are positive even when the register content is considered as an integer in sign and magnitude or 2's complement?
 
+```
+s2i 0x80000000
+```
+> Returns:
+```powershell
+U (base 2):   1000 0000 0000 0000 0000 0000 0000 0000 
+U (base 10):  2147483648
+U (base 16):  80000000
+SM (base 10): 0
+TC (base 10): -2147483648
+```
 
 ### Unsigned and signed integers
 ---
