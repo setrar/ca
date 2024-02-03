@@ -48,13 +48,13 @@ TC (base 10): -2147483648
 ### Unsigned and signed integers
 ---
 
-#### Coding
+### Coding
 
 ${\color{Salmon}1.}$ In the help window search the basic instructions &#x2705;
 
 ${\color{Salmon}2.}$ Insert a label named init &#x2705;
 
-#### Assembling
+### Assembling
 
 ${\color{Salmon}1.}$ Assemble the code (`[Run -> Assemble]`).
    If there are errors fix them and assemble again until the operation completes successfully.
