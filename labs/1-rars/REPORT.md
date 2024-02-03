@@ -1,6 +1,6 @@
 # Report
 
-## :gear: Install RARS
+## :gear: Launch RARS, settings, help, registers
 
 <img src=images/java-rars.png width='75%' height='75%' > </img>
 
@@ -58,7 +58,7 @@ add t2,t0,t1
 sltu t3,t2,t0 
 ```
 
-## :b: Report 
+## &#x1F4DD; Report 
 
 ### Launch RARS, settings, help, registers
 ---
