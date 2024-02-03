@@ -91,9 +91,9 @@ ${\color{Salmon}3.}$ Do you understand why all values are positive even when the
 
 #### Coding
 
-${\color{Salmon}1.}$ In the help window search the basic instructions &#x1F4DD;
+${\color{Salmon}1.}$ In the help window search the basic instructions &#x2705;
 
-${\color{Salmon}2.}$ Insert a label named init &#x1F4DD;
+${\color{Salmon}2.}$ Insert a label named init &#x2705;
 
 # References
 
