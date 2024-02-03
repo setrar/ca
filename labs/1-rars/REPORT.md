@@ -70,10 +70,24 @@ ${\color{Salmon}1.}$ Assemble the code (`[Run -> Assemble]`).
 
 ${\color{Salmon}2.}$ What is the address of the first instruction?
 
+<img src=images/RARS-init_address.png width='25%' height='25%' > </img>
+
 > 0x00400000
 
 ${\color{Salmon}3.}$ Do you understand why the current content of the pc register is the same?
 
+Yes, the current content seems to the PC's address and derive all other addresses from there
+
+### Simulation
+
+It's time to test your code step-by-step.
+
+${\color{Salmon}1.}$ Execute only the first instruction (`[Run -> Step]`) and observe the changes in the registers.
+   - What registers changed?
+
+   - Are these changes consistent with what you imagined?
+
+${\color{Salmon}2.}$ Predicting next instructions &#x2705;
 
 # References
 
