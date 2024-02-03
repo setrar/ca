@@ -107,13 +107,13 @@ TC (base 10): 2
 ```
 
 ${\color{Salmon}3.}$  Imagine a way to multiply by 3 an unsigned number stored in `t2` without using the `mul` instruction.
-   Add label `mul3` and the corresponding instructions.
+   Add label `mul3` and the corresponding instructions. &#x2705;
 
 ${\color{Salmon}4.}$  Assemble but before executing, in the right panel, double-click on the value of `t2` and modify it such that `u(t2)` = 42.
-   Execute your code and check that `u(t2)` = 126.
+   Execute your code and check that `u(t2)` = 126. &#x2705;
 
 ${\color{Salmon}5.}$  To avoid the manual initialization of `t2` each time we execute, just before label `mul3`, insert label `i42` and instructions to initialize `t2` such that `u(t2)` = 42.
-   Execute and check that the final value in `t2` is correct.
+   Execute and check that the final value in `t2` is correct. &#x2705;
 
 # References
 
