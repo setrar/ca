@@ -1,9 +1,5 @@
 # Report
 
-#### :gear: Running RARS
-
-<img src=images/java-rars.png width='75%' height='75%' > </img>
-
 #### :bulb: Number representations
 
 ```math
@@ -105,6 +101,28 @@ TC (base 10): -2147483648
 ${\color{Salmon}1.}$ In the help window search the basic instructions &#x2705;
 
 ${\color{Salmon}2.}$ Insert a label named init &#x2705;
+
+#### Assembling
+
+Assemble the code ([Run -> Assemble]).
+If there are errors fix them and assemble again until the operation completes successfully.
+The Execute tab of the left panel now shows you a detailed view of the portion of the memory that contains the instructions (the code segment).
+Each line corresponds to one basic RV32IM instruction:
+
+The left column (Bkpt) is for breakpoints (back on this later).
+The Address column shows the address in memory of the instruction.
+The Code column shows the instruction encoding in hexadecimal.
+The Basic column shows the human-readable form of the instruction in RV32IM assembly language.
+The Source column shows the source code you wrote with line numbers on the left.
+
+<img src=images/java-rars.png width='75%' height='75%' > </img>
+
+
+
+${\color{Salmon}1.}$ What is the address of the first instruction?
+
+
+${\color{Salmon}2.}$ Do you understand why the current content of the pc register is the same?
 
 # References
 
