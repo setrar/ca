@@ -116,11 +116,3 @@ ${\color{Salmon}3.}$ Do you understand why the current content of the pc registe
 \end{gather}
 ```
 
-```assembly
-# addition
-add t2,t0,t1
-
-# set if less than unsigned compare between registerrs1 and registerrs2
-sltu t3,t2,t0 
-```
-
