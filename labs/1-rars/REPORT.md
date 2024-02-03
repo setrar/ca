@@ -1,10 +1,10 @@
 # Report
 
-## :gear: Launch RARS, settings, help, registers
+#### :gear: Running RARS
 
 <img src=images/java-rars.png width='75%' height='75%' > </img>
 
-## :bulb: Number representations
+#### :bulb: Number representations
 
 ```math
 \begin{gather}
@@ -18,8 +18,6 @@
 {\color{Orange}tc} = -a_{31} * 2^{31} + \sum_{i=0}^{30} a_i * 2^i \quad \left.\in[ -2^{31}, \dots, 0, \dots, 2^{31}-1 ]\right|2^{32}
 \end{gather}
 ```
-
-## :a: Number representations
 
 - [ ] Overflow
 
