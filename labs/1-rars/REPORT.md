@@ -76,7 +76,7 @@ ${\color{Salmon}2.}$ What is the address of the first instruction?
 
 ${\color{Salmon}3.}$ Do you understand why the current content of the pc register is the same?
 
-Yes, the current content seems to the PC's address and derive all other addresses from there
+Yes, the current content seems to follow the Program Counter's address and derive all other addresses from there.
 
 ### Simulation
 
@@ -84,8 +84,9 @@ It's time to test your code step-by-step.
 
 ${\color{Salmon}1.}$ Execute only the first instruction (`[Run -> Step]`) and observe the changes in the registers.
    - What registers changed?
-
+The PC has changed incrementing by `x04`
    - Are these changes consistent with what you imagined?
+They surely are
 
 ${\color{Salmon}2.}$ Predicting next instructions &#x2705;
 
