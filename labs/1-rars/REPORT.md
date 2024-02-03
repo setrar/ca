@@ -74,6 +74,7 @@ ${\color{Salmon}2.}$ What is the address of the first instruction?
 
 ${\color{Salmon}3.}$ Do you understand why the current content of the pc register is the same?
 
+
 # References
 
 - [ ] [sm: Sign Magnitude notation](https://www.tutorialspoint.com/sign-magnitude-notation)
