@@ -1,3 +1,10 @@
+# Lab reports
+
+Each lab folder should have:
+
+- a `REPORT.md` file in `markdown` format to answer the lab's questions
+- an optional `Jupyter NoteBook` to illustrate the lab's questions.
+
 | Labs | Completion | Comments |
 |-|-|-|
 | [1-rars](1-rars)                               | :x:  |
