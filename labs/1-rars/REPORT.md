@@ -115,6 +115,15 @@ ${\color{Salmon}4.}$  Assemble but before executing, in the right panel, double-
 ${\color{Salmon}5.}$  To avoid the manual initialization of `t2` each time we execute, just before label `mul3`, insert label `i42` and instructions to initialize `t2` such that `u(t2)` = 42.
    Execute and check that the final value in `t2` is correct. &#x2705;
 
+> s2i 0x0000007e
+```powershell
+U (base 2):   0000 0000 0000 0000 0000 0000 0111 1110 
+U (base 10):  126
+U (base 16):  0000007E
+SM (base 10): 126
+TC (base 10): 126
+```
+
 # References
 
 - [ ] [sm: Sign Magnitude notation](https://www.tutorialspoint.com/sign-magnitude-notation)
