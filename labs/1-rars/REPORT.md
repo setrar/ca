@@ -114,8 +114,7 @@ ${\color{Salmon}1.}$ Assemble the code (`[Run -> Assemble]`).
    - The `Basic` column shows the human-readable form of the instruction in RV32IM assembly language.
    - The `Source` column shows the source code you wrote with line numbers on the left.
 
-<img src=images/java-rars.png width='75%' height='75%' > </img>
-
+<img src=images/RARS_init.png width='25%' height='25%' > </img>
 
 ${\color{Salmon}2.}$ What is the address of the first instruction?
 
