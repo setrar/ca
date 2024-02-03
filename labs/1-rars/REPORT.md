@@ -70,7 +70,7 @@ ${\color{Salmon}1.}$ Assemble the code (`[Run -> Assemble]`).
 
 ${\color{Salmon}2.}$ What is the address of the first instruction?
 
-<img src=images/RARS-init_address.png width='25%' height='25%' > </img>
+<img src=images/RARS-init-address.png width='25%' height='25%' > </img>
 
 > 0x00400000
 
