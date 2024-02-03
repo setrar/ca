@@ -23,3 +23,9 @@ mul3:
 	# Add t3 to t2 to get 3 * t2
 	add t2, t2, t3
 
+s23:
+        # shift register t2 by 23 positions to the left
+        slli t2, t2, 23
+        
+t2pt2:
+         add t2, t2, t2
