@@ -92,10 +92,19 @@ ${\color{Salmon}2.}$ Predicting next instructions &#x2705;
 
 ### Left shifts as a way to multiply by powers of 2
 
-${\color{Salmon}1.}$  Add label `shift1` and instructions to shift `t0` by one position to the left and store the result in register `t1`.
+${\color{Salmon}1.}$  Add label `shift1` and instructions to shift `t0` by one position to the left and store the result in register `t1`. &#x2705;
 
 ${\color{Salmon}2.}$  Assemble (`[Run -> Assemble]`) and execute your code (`[Run -> Go]`).
    If considered as an unsigned number what is the final value stored in `t1` (use again the `s2i` function if you are not sure)?
+
+> s2i 0x00000002
+```powershell
+U (base 2):   0000 0000 0000 0000 0000 0000 0000 0010 
+U (base 10):  2
+U (base 16):  00000002
+SM (base 10): 2
+TC (base 10): 2
+```
 
 ${\color{Salmon}3.}$  Imagine a way to multiply by 3 an unsigned number stored in `t2` without using the `mul` instruction.
    Add label `mul3` and the corresponding instructions.
