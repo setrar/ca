@@ -454,7 +454,7 @@ We will not explore the different rounding modes, always use `rne` (Round to Nea
 ${\color{Salmon}1.}$ Add label `inv3` at the end of your source file, instructions to initialize `ft0` with value `3`, compute the inverse and store the result in `ft1`.
    Assemble, execute and check that the final content of `ft1` is the same as the one you found with the floating point companion tool.
 
-   <img src=images/floating_one-third_calculation.png  width='50%' height='50%' > </img>
+   <img src=images/floating_one-third_calculation.png  width='25%' height='25%' > </img>
 
 ${\color{Salmon}2.}$ Thanks to the variable exponent of the floating point representation we can represent very small and very large numbers.
    Use the companion tool to find the hexadecimal representation of 42, and $`2^{30}`$.
