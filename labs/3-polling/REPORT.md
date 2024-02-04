@@ -11,12 +11,22 @@
 ${\color{Salmon}1.}$ In the RARS `Tools` menu select `Keyboard and Display MMIO simulator`.
    A new window appears; click its `Help` button and read the 4 first paragraphs.
 
+  Done &#x2705;
+
 ${\color{Salmon}2.}$ Study the code in `mmio.s` and try to understand it.
+
+This code exemplifies basic I/O handling in assembly for scenarios where direct hardware access is required, and it demonstrates polling as a method to synchronize with device readiness without relying on interrupts or operating system services.
 
 ${\color{Salmon}3.}$ Load `mmio.s` in RARS and assemble it.
 
+ Done &#x2705;
+
 ${\color{Salmon}4.}$ In the `Keyboard and Display MMIO simulator` window click the `Connect to Program` button.
    Execute the `mmio.s` application, enter characters and check your understanding.
+
+<img src=images/mmio-typing.png width='25%' height='25%' > </img>
+
+Lower part of the screen is used for input and upper part for Display
 
 ${\color{Salmon}5.}$ Pause the execution (`[Run -> Pause]`).
    In the `Data Segment` sub-window select the `0xffff0000 (MMIO)` region to observe the Receiver and Transmitter registers.
