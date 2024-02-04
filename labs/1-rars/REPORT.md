@@ -256,7 +256,7 @@ ${\color{Salmon}1.}$ Imagine a way to compute the modulo 128 of an unsigned numb
    Add label `mod128`, instructions to initialize `t3` with 1547, and your instructions.
    Assemble, execute and check that `u(t4)` = 11.
 
-<img src=images/mod128.png  width='75%' height='75%' > </img>
+<img src=images/mod128.png  width='25%' height='25%' > </img>
 
 ${\color{Salmon}2.}$  Would it work with negative numbers?
 
