@@ -41,3 +41,20 @@ lw t1,0(t0)    # t2 <- value of receiver control register
 
 #### Q: How do you know this was an interrupt and not an exception with the same code?
 > Bit 31 in ucause indicated weather is an interrupt or an exception (1 for interrupts and 0 for exceptions) we can check it within our code to determine the type.
+
+#### Q: How would you modify your mini-OS to run, e.g., 8 tasks instead of 2?
+> My implementation is limited to only two tasks and would scale very badly with more tasks. 
+> 
+> To make it more easy to understand and implement I would store a counter in the kernel stack that indicates which task is running at the moment and by incrementing by 1 and doing modulo the number of tasks, it would indicate the next task
+> 
+> This counter would serve as the index on the kernel stack on where the current task's and next task's registers are stored
+
+#### Q: Suppose the user tasks are not infinite loops and they terminate after a while. Suppose also that we want to terminate the RARS simulation when all tasks terminated. How would you modify your mini-OS to let a user task signal that it terminates and to schedule only non-terminated tasks for execution.
+> By copying for example a value to a certain register so that it can indicate that it has finished or that it will continue execution. That way the kernel can read this value (saved with the register in the kernel stack) and decide which tasks to skip or continue executing the task
+>
+> If all the tasks have finished (after a complete loop in which no task is found to be executable), the kernel can then exit the execution
+
+#### Q: Suppose we would like to let the person who runs the simulation decide which task to start, which task to terminate, using the Keyboard and Display MMIO Simulator companion tool to display a menu and get user choices. How would you do?
+> We will need to execute a task that interacts with the keyboard MMIO. This task can then interact with the user by reading and displaying information. To execute a new task or to terminate it, we can use certain registers that will signal to the kernel that we want to start or end a task indicated by another register. 
+> 
+> It is really important in this case to first set the register that points to the task we want to change and then change the register with the action. That way if the interruption happens in between these two changes nothing will happen until the keyboard task is executed again
