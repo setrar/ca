@@ -63,3 +63,43 @@ rs:
     srli t2, t2, 1     # Shift right logically by 1 position
     li t2, 0x80000000  # Load the smallest negative number into t2
     srai t2, t2, 1     # Shift right arithmetic immediate by 1 position
+    
+uaddsafe:
+  # li t0, 0xFFFFFFFF  # Manually set Max to unsigned 32-bit value
+  # li t1, 0x1         # Manually add 1 to cause overflow
+    add t2, t0, t1     # t2 <- t0 + t1 Perform the addition
+    sltu t3, t2, t0    # Set t3 to 1 if t2 < t0 (overflow detection)
+    sltu t4, t2, t1    # Set t4 to 1 if t2 < t1 (overflow detection)
+    or t3, t3, t4      # If either condition is true, t3 is set to 1
+
+
+    # Example initialization (These values should be replaced with your test values)
+
+usubsafe:
+  # li t0, 0x1         # Manually set a smaller value
+  # li t1, 0x2         # Manually set a larger value, causes underflow when subtracted from t0
+    sltu t3, t0, t1      # If t0 < t1, then set t3 to 1 (underflow detection)
+    sub t2, t0, t1       # Perform the subtraction t0 - t1 and store the result in t2
+
+saddsafe:
+  # li t0, 0x7FFFFFFF  # Manually set largest positive 32-bit signed integer
+  # li t1, 0x1         # Manually add 1 to cause overflow
+    add t2, t0, t1       # Add t0 and t1, result in t2
+    
+    # Check for overflow
+    # Overflow if (t0 > 0 and t1 > 0 and t2 < 0) or (t0 < 0 and t1 < 0 and t2 >= 0)
+    slt t4, t0, zero     # t4 = 1 if t0 < 0 else 0
+    slt t5, t1, zero     # t5 = 1 if t1 < 0 else 0
+    slt t6, t2, zero     # t6 = 1 if t2 < 0 else 0
+    xor t4, t4, t5       # t4 = 0 if t0 and t1 have the same sign
+    not t4, t4           # Invert t4; t4 = 1 if t0 and t1 have the same sign
+    xor t5, t6, t5       # Check if result sign is different from t1's sign
+    and t3, t4, t5       # t3 = 1 if overflow occurred
+
+ssubsafe:
+  # li t0, 0x80000000  # Manually set smallest 32-bit signed integer
+  # li t1, 1           # Manually set by subtracting 1 which should cause overflow
+    sub t2, t0, t1         # Perform the signed subtraction t0 - t1
+    xor t4, t0, t1         # t4 = 1 (true) if signs of t0 and t1 are different
+    xor t5, t0, t2         # t5 = 1 (true) if signs of t0 and result are different
+    and t3, t4, t5         # Overflow occurs if t0 and t1 had different signs AND t0 and result have different signs
