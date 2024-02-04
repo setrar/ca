@@ -154,7 +154,7 @@ TC (base 10): 2113929216
    Continue the execution step-by-step and observe the evolution of `u(t2)`, `sm(t2)` and `tc(t2)`.
    After how many additions `sm(t2)` and `tc(t2)` become negative?
 
-- [ ] At the third iteration
+- [x] At the third iteration
 
 <img src=images/becomes-negative.png  width='75%' height='75%' > </img>
 
