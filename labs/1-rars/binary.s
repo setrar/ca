@@ -31,3 +31,5 @@ t2pt2:
          add t2, t2, t2
          add t2, t2, t2 # Set breakpoint
          add t2, t2, t2 # Becomes Negative at third iteration
+         srli t2, t2, 1
+         add t2, t2, t2 # Recovery
