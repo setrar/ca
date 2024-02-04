@@ -153,11 +153,36 @@ TC (base 10): 2113929216
    Assemble, put a breakpoint on the first instruction after `t2pt2`, and execute until the breakpoint.
    Continue the execution step-by-step and observe the evolution of `u(t2)`, `sm(t2)` and `tc(t2)`.
    After how many additions `sm(t2)` and `tc(t2)` become negative?
+
+<img src=images/becomes-negative.png  width='75%' height='75%' > </img>
+
    This is a first kind of overflow situation: the addition of two positive numbers gives a negative one.
 
 1. Use `s2i` and note `u(t2)` before and after this sign change.
    Use a calculator to check that the second value, if considered as unsigned, is correct.
    Because it is, we could recover the value before the sign change by shifting `t2` to the right with the `srli` (shift-right-logical) instruction, which is the same as dividing by 2.
+
+- [ ] Before
+
+> s2i 0x7e000000
+```powershell
+U (base 2):   0111 1110 0000 0000 0000 0000 0000 0000 
+U (base 10):  2113929216
+U (base 16):  7E000000
+SM (base 10): 2113929216
+TC (base 10): 2113929216
+```
+
+- [ ] After
+
+> s2i 0xfc000000
+```powershell
+U (base 2):   1111 1100 0000 0000 0000 0000 0000 0000 
+U (base 10):  4227858432
+U (base 16):  FC000000
+SM (base 10): -2080374784
+TC (base 10): -67108864
+```
 
 1. Add `t2` to itself one more time after the sign change.
    Is the new `u(t2)` still correct?
