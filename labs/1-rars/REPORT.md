@@ -312,16 +312,42 @@ TC (base 10): 2147483647
 
 ### Right shifts as a way to divide by powers of 2
 
-1. Add label `rs` and instructions to store again the smallest negative number in `t2`, and shift it to the right by one position with the `srli` instruction to divide it by 2.
+${\color{Salmon}1.}$ Add label `rs` and instructions to store again the smallest negative number in `t2`, and shift it to the right by one position with the `srli` instruction to divide it by 2.
    Assemble and execute.
    What is the new `tc(t2)`?
+
+> s2i 0x40000000
+```powershell
+U (base 2):   0100 0000 0000 0000 0000 0000 0000 0000 
+U (base 10):  1073741824
+U (base 16):  40000000
+SM (base 10): 1073741824
+TC (base 10): 1073741824
+```
+
    Is it half the smallest negative number?
+
+> No, it is half of the maximum positive number
+
    This is another situation were the numeric result is not the expected one while the computation could be exact (the original number is even) and its result could fit on 32 bits.
 
-1. Repeat the instructions you added in the previous question but replace `srli` with `srai`.
+
+${\color{Salmon}2.}$ Repeat the instructions you added in the previous question but replace `srli` with `srai`.
    Assemble and execute.
    What is the new `tc(t2)`?
+
+> s2i 0xc0000000
+```powershell
+U (base 2):   1100 0000 0000 0000 0000 0000 0000 0000 
+U (base 10):  3221225472
+U (base 16):  C0000000
+SM (base 10): -1073741824
+TC (base 10): -1073741824
+```
+
    Is it half the smallest negative number?
+
+> Yes, it is
 
 `srli` means Shift-Right-Logical by Immediate shift amount.
 The bits entering on the left are zeros.
@@ -338,18 +364,18 @@ In the first part about integer computations we saw several overflow situations.
 Some ISA specify that these situations shall raise exceptions (we will see later in the course what hardware exceptions are and how they are handled).
 RV32IM does not raise exceptions on integer overflows.
 
-1. Find a way to compute additions of unsigned numbers and to detect overflows, for instance by setting a second result register to a non-zero value.
+${\color{Salmon}1.}$  Find a way to compute additions of unsigned numbers and to detect overflows, for instance by setting a second result register to a non-zero value.
    Add label `uaddsafe` and the instructions to safely add the unsigned numbers in `t0` and `t1`, store the result in `t2` and store zero in `t3` if there was no overflow, that is, if `u(t2) = u(t0) + u(t1)`, else store one in `t3`.
    Use as few instructions as possible.
    Assemble, put a breakpoint on the first instruction after label `uaddsafe`, execute, use the register panel to force test values in `t0` and `t1`, continue the execution and check that your safe addition works as expected.
 
-1. Add label `usubsafe` and the instructions to safely subtract the unsigned number in `t1` from the unsigned number in `t0`, store the result in `t2` and store zero in `t3` if there was no overflow, that is, if `u(t2) = u(t0) - u(t1)`, else store one in `t3`.
+${\color{Salmon}2.}$  Add label `usubsafe` and the instructions to safely subtract the unsigned number in `t1` from the unsigned number in `t0`, store the result in `t2` and store zero in `t3` if there was no overflow, that is, if `u(t2) = u(t0) - u(t1)`, else store one in `t3`.
    Use as few instructions as possible.
    Assemble, and test.
 
-1. Do the same and with additions of signed numbers after label `saddsafe`.
+${\color{Salmon}3.}$  Do the same and with additions of signed numbers after label `saddsafe`.
 
-1. Do the same and with subtractions of signed numbers after label `ssubsafe`.
+${\color{Salmon}4.}$  Do the same and with subtractions of signed numbers after label `ssubsafe`.
 
 ## Floating point numbers
 
