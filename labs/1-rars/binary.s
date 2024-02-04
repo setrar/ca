@@ -29,3 +29,5 @@ s23:
         
 t2pt2:
          add t2, t2, t2
+         add t2, t2, t2 # Set breakpoint
+         add t2, t2, t2 # Becomes Negative at third iteration
