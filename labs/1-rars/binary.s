@@ -41,3 +41,12 @@ mod128:
     li t3, 1547        # Initialize t3 with the value 1547
     li t4, 127         # Load the value 127 into t4 (0x7F in hexadecimal, 01111111 in binary)
     and t4, t3, t4     # t4 = t3 AND 127, effectively computing t3 mod 128
+
+mod2powern:
+    li t3, 260         # Load the number into t3, 260 mod 2^8 should give 4 back
+    li t5, 8           # Load modulo value (8) into t5
+    li t6, 1
+    sll t6, t6, t5     # t6 = 1 << n, shifting 1 left by n bits
+    sub t4, t6, t6     # Ensure t4 is zero before subtraction to avoid register misuse
+    addi t4, t6, -1    # t4 = 2^n - 1 = (1 << n) - 1
+    and t4, t3, t4     # Perform AND operation, t4 = t3 mod 2^n
