@@ -116,11 +116,9 @@ inv3:
 
 finit:
     # Initialize ft2 to 42
-    # li t0, 0x42280000                # Load 42 into t0
     li t0, 42                # Load 42 into t0
-    fcvt.s.w ft2, t0                 # Convert and move the integer in t0 to floating-point in ft2
+    fcvt.s.w ft2, t0         # Convert and move the integer in t0 to floating-point in ft2
 
     # Initialize ft3 to 2^30 = 1073741824
-    # li t1, 0x4E800000                # Load 2^30 into t1
-    li t1, 1073741824                # Load 2^30 into t1
-    fcvt.s.w ft3, t1                 # Convert and move the integer in t1 to floating-point in ft3
+    li t1, 1073741824        # Load 2^30 into t1
+    fcvt.s.w ft3, t1         # Convert and move the integer in t1 to floating-point in ft3
