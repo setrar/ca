@@ -162,7 +162,6 @@ TC (base 10): 2113929216
 
 1. Use `s2i` and note `u(t2)` before and after this sign change.
    Use a calculator to check that the second value, if considered as unsigned, is correct.
-   Because it is, we could recover the value before the sign change by shifting `t2` to the right with the `srli` (shift-right-logical) instruction, which is the same as dividing by 2.
 
 - [ ] Before
 
@@ -186,14 +185,30 @@ SM (base 10): -2080374784
 TC (base 10): -67108864
 ```
 
-1. Add `t2` to itself one more time after the sign change.
+   Because it is, we could recover the value before the sign change by shifting `t2` to the right with the `srli` (shift-right-logical) instruction, which is the same as dividing by 2.
+
+- [ ] After `srli`
+
+> s2i 0x7c000000
+```powershell
+U (base 2):   0111 1100 0000 0000 0000 0000 0000 0000 
+U (base 10):  2080374784
+U (base 16):  7C000000
+SM (base 10): 2080374784
+TC (base 10): 2080374784
+```
+
+${\color{Salmon}3.}$  Add `t2` to itself one more time after the sign change.
    Is the new `u(t2)` still correct?
+
+> No, it is back to negative
+
    With this last addition we lost information and we could not recover it.
    This is a second kind of overflow situation: even if considered as unsigned the result of the addition of large unsigned numbers is wrong because it does not fit in 32 bits.
 
 ### Sign and magnitude or 2's complement
 
-1. Imagine a way to discover if, in the RV32IM Instruction Set Architecture, signed numbers are represented in sign and magnitude or in 2's complement.
+${\color{Salmon}1.}$  Imagine a way to discover if, in the RV32IM Instruction Set Architecture, signed numbers are represented in sign and magnitude or in 2's complement.
    Add label `tc` and the corresponding instructions, assemble, execute.
    What do you conclude?
    Why?
