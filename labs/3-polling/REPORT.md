@@ -1,3 +1,11 @@
+# &#x1F4DD; Report 
+
+---
+
+[TOC]
+
+---
+
 ## Assignments
 
 1. In the RARS `Tools` menu select `Keyboard and Display MMIO simulator`.
