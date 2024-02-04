@@ -24,7 +24,7 @@ ${\color{Salmon}3.}$ Load `mmio.s` in RARS and assemble it.
 ${\color{Salmon}4.}$ In the `Keyboard and Display MMIO simulator` window click the `Connect to Program` button.
    Execute the `mmio.s` application, enter characters and check your understanding.
 
-<img src=images/mmio-typing.png width='25%' height='25%' > </img>
+<img src=images/mmio-typing.png width='40%' height='40%' > </img>
 
 Lower part of the screen is used for input and upper part for Display
 
