@@ -59,6 +59,8 @@ ${\color{Salmon}8.}$ Once you are done with your experiments click the `Disconne
 1. This program could be slightly optimized for speed (number of executed instructions) and footprint (total number of instructions).
    Do you see how?
 
+By removing the duplicated code `wait_for_trans_2`, it will lighten the code 
+
 ```diff
 -wait_for_trans_2:
 -    # initialize CPU registers with addresses of transmitter interface registers
