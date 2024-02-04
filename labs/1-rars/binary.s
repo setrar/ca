@@ -93,7 +93,7 @@ saddsafe:
     slt t6, t2, zero     # t6 = 1 if t2 < 0 else 0
     xor t4, t4, t5       # t4 = 0 if t0 and t1 have the same sign
     not t4, t4           # Invert t4; t4 = 1 if t0 and t1 have the same sign
-    xor t5, t6, t5       # Check if result sign is different from t1's sign
+    xor t5, t6, t5       # Check if result sign is different from t1s sign
     and t3, t4, t5       # t3 = 1 if overflow occurred
 
 ssubsafe:
