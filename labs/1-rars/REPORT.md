@@ -461,6 +461,10 @@ ${\color{Salmon}2.}$ Thanks to the variable exponent of the floating point repre
    Add label `finit` and instructions to initialize `ft2` to $`42`$, and `ft3` to $`2^{30} = 1073741824`$ (hint: you can initialize a general purpose register and copy its content as is to a floating point register with instruction `fmv.s.x` or after conversion to a real value with `fcvt.s.w`).
    Assemble, execute and check the content of `ft2` and `ft3` (use the `Hexadecimal Values` radio button to display their content in hexadecimal or in decimal scientific notation).
 
+| | |
+|-|-|
+| <img src=images/floating_finit-dec.png  width='' height='' > </img> | <img src=images/floating_finit-hex.png  width='' height='' > </img> |
+
 ### Floating point erasure
 
 1. Add label `assoc` and instructions to compute `ft2 + (ft3 - ft3)` and store the result in `ft4`, without modifying the content of `ft2` and `ft3`.
