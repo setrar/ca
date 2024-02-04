@@ -431,9 +431,15 @@ ${\color{Salmon}2.}$   Modify the binary representation to represent as accurate
    Note the binary representation you obtained.
    As you can see the floating point representation does not allow the accurate representation of all real numbers, even simple and small rational numbers.
 
+   <img src=images/floating_one-third.png  width='50%' height='50%' > </img>
+
 ${\color{Salmon}3.}$   Do you think $`1/2`$ can be represented accurately?
    Why?
    Check with the floating point companion tool.
+
+   <img src=images/floating_one-half.png  width='50%' height='50%' > </img>
+
+ In binary, $\frac{1}{2}$ is `0.1` (just as it is 0.5 in decimal), and this representation fits perfectly within both single and double precision formats without any need for approximation.
 
 ### Floating point instructions
 
