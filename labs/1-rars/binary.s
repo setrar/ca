@@ -35,7 +35,7 @@ t2pt2:
          add t2, t2, t2 # Recovery
 
 tc:
-         sub t2, t0, t2 # 2's complement
+         sub t2, t0, t2 # 2s complement
          
 mod128:
     li t3, 1547        # Initialize t3 with the value 1547
