@@ -33,3 +33,11 @@ t2pt2:
          add t2, t2, t2 # Becomes Negative at third iteration
          srli t2, t2, 1
          add t2, t2, t2 # Recovery
+
+tc:
+         sub t2, t0, t2 # 2's complement
+         
+mod128:
+    li t3, 1547        # Initialize t3 with the value 1547
+    li t4, 127         # Load the value 127 into t4 (0x7F in hexadecimal, 01111111 in binary)
+    and t4, t3, t4     # t4 = t3 AND 127, effectively computing t3 mod 128
