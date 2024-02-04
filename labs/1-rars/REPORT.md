@@ -262,6 +262,8 @@ ${\color{Salmon}2.}$  Would it work with negative numbers?
 
    Why?
 
+> No, The direct method using AND with 127 for computing modulo 128 is not suitable for negative numbers when interpreted in a mathematical sense. 
+
 ${\color{Salmon}3.}$ How would you compute the modulo $`2^n`$ with $`1 \le n \le 31`$?
 
 ### Underflow
