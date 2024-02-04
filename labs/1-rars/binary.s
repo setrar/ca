@@ -55,3 +55,5 @@ min:
     li t2, -1              # Load -1 into t2
     slli t2, t2, 31        # Shift left by 31 bits, resulting in 0x80000000 in t2
 
+m1:
+    addi t2, t2, -1        # Subtract 1 from t2 by adding -1
