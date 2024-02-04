@@ -52,8 +52,14 @@ mod2powern:
     and t4, t3, t4     # Perform AND operation, t4 = t3 mod 2^n
     
 min:
-    li t2, -1              # Load -1 into t2
-    slli t2, t2, 31        # Shift left by 31 bits, resulting in 0x80000000 in t2
+    li t2, -1          # Load -1 into t2
+    slli t2, t2, 31    # Shift left by 31 bits, resulting in 0x80000000 in t2
 
 m1:
-    addi t2, t2, -1        # Subtract 1 from t2 by adding -1
+    addi t2, t2, -1    # Subtract 1 from t2 by adding -1
+    
+rs:
+    li t2, 0x80000000  # Load the smallest negative number into t2
+    srli t2, t2, 1     # Shift right logically by 1 position
+    li t2, 0x80000000  # Load the smallest negative number into t2
+    srai t2, t2, 1     # Shift right arithmetic immediate by 1 position
