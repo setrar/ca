@@ -58,10 +58,14 @@ ${\color{Salmon}3.}$ Assemble `io.s` and simulate.
    Before each step, try to understand what instruction will be executed and what its effect should be.
    Cross-check your guessing by looking at the content of the registers (including the Program Counter - PC) before and after the step.
 
+   Done &#x2705;
+
 ${\color{Salmon}4.}$ Edit `io.s` and modify the code to add a `puti` function that prints the integer in register `a0`.
    Also add a `print_ascii_message` in the `data` segment with value `\nThe ASCII code of the character you entered is: `.
    Modify the `main` function to print `print_ascii_message` instead of `print_char_message`, and to use `puti` instead of `putc` to print the ASCII code of the entered character instead of the character itself.
    Test your modification.
+
+   Done &#x2705;
 
 ${\color{Salmon}5.}$ Use your application to find the ASCII codes of characters `#`, `u` and `$`.
 
