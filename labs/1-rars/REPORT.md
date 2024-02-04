@@ -266,6 +266,21 @@ ${\color{Salmon}2.}$  Would it work with negative numbers?
 
 ${\color{Salmon}3.}$ How would you compute the modulo $`2^n`$ with $`1 \le n \le 31`$?
 
+```assembly
+mod2powern:
+    li t3, 260         # Load the number into t3, 260 mod 2^8 should give 4 back
+    li t5, 8           # Load modulo value (8) into t5
+    li t6, 1
+    sll t6, t6, t5     # t6 = 1 << n, shifting 1 left by n bits
+    sub t4, t6, t6     # Ensure t4 is zero before subtraction to avoid register misuse
+    addi t4, t6, -1    # t4 = 2^n - 1 = (1 << n) - 1
+    and t4, t3, t4     # Perform AND operation, t4 = t3 mod 2^n
+```
+
+$260 mod 2^8 = 4$
+
+<img src=images/2mod8.png  width='25%' height='25%' > </img>
+
 ### Underflow
 
 1. What is the smallest negative number that can be represented on 32 bits?
