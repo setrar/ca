@@ -503,6 +503,8 @@ Some critical software do not use floating point numbers at all to avoid issues 
 
 1. Write some assembly code implementing floating point computations which final result is +$\infty$, -$\infty$ and NaN.
 
+<img src=images/floating_special.png  width='50%' height='50%' > </img> 
+
 # References
 
 - [ ] [sm: Sign Magnitude notation](https://www.tutorialspoint.com/sign-magnitude-notation)
