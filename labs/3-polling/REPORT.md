@@ -32,14 +32,27 @@ ${\color{Salmon}5.}$ Pause the execution (`[Run -> Pause]`).
    In the `Data Segment` sub-window select the `0xffff0000 (MMIO)` region to observe the Receiver and Transmitter registers.
    Enter a character and continue executing step by step.
    Do you understand what happens?
+
+>The MMIO acts like an input output device and allow development access to its memory.
+Each time a character is entered, it is stored in a specific address and saved in the `u(t2)` register
+
    What is the ASCII code of the character you typed?
+
+ASCII: `0` 
+
    In which register is it stored?
+
+`u(t2)`
 
 ${\color{Salmon}6.}$ If you continue executing step by step you should see the sending of the character you typed to the transmitter.
    Then, you should enter the `wait_for_trans_2` loop that waits until the transmitter is ready again to receive a character.
    Instead of stepping until it is, set a breakpoint on the first instruction after the loop and let the execution continue.
 
+ Done &#x2705;
+
 ${\color{Salmon}7.}$ After exiting the `wait_for_trans_2` loop, continue step-by-step, observe the printing of the newline character and the branching to the beginning of the program for the next iteration.
+
+ Done &#x2705;
 
 ${\color{Salmon}8.}$ Once you are done with your experiments click the `Disconnect from Program` and `Reset` buttons of the `Keyboard and Display MMIO simulator` window.
 
