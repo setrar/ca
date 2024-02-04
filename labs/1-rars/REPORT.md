@@ -210,8 +210,39 @@ ${\color{Salmon}3.}$  Add `t2` to itself one more time after the sign change.
 
 ${\color{Salmon}1.}$  Imagine a way to discover if, in the RV32IM Instruction Set Architecture, signed numbers are represented in sign and magnitude or in 2's complement.
    Add label `tc` and the corresponding instructions, assemble, execute.
+
+```assembly
+tc:
+         sub t2, t0, t2 # 2's complement   
+```
+
    What do you conclude?
+
+- [ ] Before
+
+> s2i 0xf8000000
+```powershell
+U (base 2):   1111 1000 0000 0000 0000 0000 0000 0000 
+U (base 10):  4160749568
+U (base 16):  F8000000
+SM (base 10): -2013265920
+TC (base 10): -134217728
+```
+
+- [ ] After
+
+>  s2i 0x08000001
+```powershell
+U (base 2):   0000 1000 0000 0000 0000 0000 0000 0001 
+U (base 10):  134217729
+U (base 16):  08000001
+SM (base 10): 134217729
+TC (base 10): 134217729
+```
+
    Why?
+
+because only in 2's complement arithmetic does adding a number and its negation yield zero, in our case it adds +1 by converting to positive number
 
 Note: near the bottom of the `Execute` tab of the left panel, a radio button (`Hexadecimal Values`) selects how the content of the registers is displayed.
 This is another way to convert their content to numbers but only to hexadecimal or decimal, and only by considering the content as an integer number in 2's complement representation.
@@ -221,14 +252,17 @@ Note: when coding immediate operands in your code you can also use the decimal f
 
 ### Modulo a power of 2
 
-1. Imagine a way to compute the modulo 128 of an unsigned number stored in `t3` without the multiplication, division or remainder instructions, and store it in register `t4`.
+${\color{Salmon}1.}$ Imagine a way to compute the modulo 128 of an unsigned number stored in `t3` without the multiplication, division or remainder instructions, and store it in register `t4`.
    Add label `mod128`, instructions to initialize `t3` with 1547, and your instructions.
    Assemble, execute and check that `u(t4)` = 11.
 
-1. Would it work with negative numbers?
+<img src=images/mod128.png  width='75%' height='75%' > </img>
+
+${\color{Salmon}2.}$  Would it work with negative numbers?
+
    Why?
 
-1. How would you compute the modulo $`2^n`$ with $`1 \le n \le 31`$?
+${\color{Salmon}3.}$ How would you compute the modulo $`2^n`$ with $`1 \le n \le 31`$?
 
 ### Underflow
 
