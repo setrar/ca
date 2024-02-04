@@ -103,3 +103,14 @@ ssubsafe:
     xor t4, t0, t1         # t4 = 1 (true) if signs of t0 and t1 are different
     xor t5, t0, t2         # t5 = 1 (true) if signs of t0 and result are different
     and t3, t4, t5         # Overflow occurs if t0 and t1 had different signs AND t0 and result have different signs
+
+inv3:
+    # Load 1.0 into ft0 (using the immediate representation of 1.0 in floating-point)
+    li t0, 0x3F800000  # 1.0 in single-precision floating-point hex representation
+    fmv.w.x ft0, t0    # Move the hex representation of 1.0 into the floating-point register ft0
+    # Load 3.0 into ft2 (using the immediate representation of 3.0 in floating-point)
+    li t1, 0x40400000  # 3.0 in single-precision floating-point hex representation
+    fmv.w.x ft2, t1    # Move the hex representation of 3.0 into the floating-point register ft2
+    # Compute the inverse of 3 by dividing 1.0 by 3.0
+    fdiv.s ft1, ft0, ft2   # ft1 = ft0 / ft2, which computes 1/3
+
