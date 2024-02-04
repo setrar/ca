@@ -59,5 +59,18 @@ ${\color{Salmon}8.}$ Once you are done with your experiments click the `Disconne
 1. This program could be slightly optimized for speed (number of executed instructions) and footprint (total number of instructions).
    Do you see how?
 
+```gitdiff
+-wait_for_trans_2:
+-    # initialize CPU registers with addresses of transmitter interface registers
+-    li    t0,0xffff0008               # t0 <- 0xffff_0008 (address of transmitter control register)
+-    li    t1,0xffff000c               # t1 <- 0xffff_000c (address of transmitter data register)
+-    lw    t2,0(t0)                    # t2 <- value of transmitter control register
+-    andi  t2,t2,1                     # mask all bits except LSB
+-    beq   zero,t2,wait_for_trans_2    # loop if LSB unset (transmitter busy)
+-    li    t3,10                       # ASCII code of newline
+-    sw    t3,0(t1)                    # send newline character to transmitter
+-
+```
+
 1. Edit `mmio.s` to implement your optimizations.
    Assemble `mmio.s`, click the `Connect to Program` button of the `Keyboard and Display MMIO simulator` window, test your optimized version. 
