@@ -283,12 +283,31 @@ $260 mod 2^8 = 4$
 
 ### Underflow
 
-1. What is the smallest negative number that can be represented on 32 bits?
+${\color{Salmon}1.}$ What is the smallest negative number that can be represented on 32 bits?
    Add label `min` and instructions to store this value in `t2`, assemble, execute and check that `t2` indeed contains the smallest negative number.
 
-1. Add label `m1` and instructions to subtract 1 from `t2` (add -1).
+> s2i 0x80000000
+```powershell
+U (base 2):   1000 0000 0000 0000 0000 0000 0000 0000 
+U (base 10):  2147483648
+U (base 16):  80000000
+SM (base 10): 0
+TC (base 10): -2147483648
+```
+
+${\color{Salmon}2.}$  Add label `m1` and instructions to subtract 1 from `t2` (add -1).
    Assemble and execute.
    What is the new `tc(t2)`?
+
+> s2i 0x7fffffff
+```powershell
+U (base 2):   0111 1111 1111 1111 1111 1111 1111 1111 
+U (base 10):  2147483647
+U (base 16):  7FFFFFFF
+SM (base 10): 2147483647
+TC (base 10): 2147483647
+```
+
    This is another kind of overflow situation: the result of the addition of 2 negative numbers is positive because it does not fit on 32 bits.
 
 ### Right shifts as a way to divide by powers of 2
