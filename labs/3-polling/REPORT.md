@@ -59,7 +59,7 @@ ${\color{Salmon}8.}$ Once you are done with your experiments click the `Disconne
 1. This program could be slightly optimized for speed (number of executed instructions) and footprint (total number of instructions).
    Do you see how?
 
-```gitdiff
+```git
 -wait_for_trans_2:
 -    # initialize CPU registers with addresses of transmitter interface registers
 -    li    t0,0xffff0008               # t0 <- 0xffff_0008 (address of transmitter control register)
