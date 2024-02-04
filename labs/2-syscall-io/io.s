@@ -68,11 +68,6 @@ main:
     ecall             # call syscall
     call  getc        # call getc function to read character
     mv    s0,a0       # copy read character in s0
-    la    a0,print_char_message # store address of message in a0
-    li    a7,4        # store code of PrintString syscall in a7
-    ecall             # call syscall
-    mv    a0,s0       # copy read character in a0
-    call  putc        # call putc function to print character
     la    a0, print_ascii_message
     li    a7, 4
     ecall
