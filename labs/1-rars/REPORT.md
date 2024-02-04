@@ -420,11 +420,12 @@ ${\color{Salmon}1.}$  Open the floating point companion tool of RARS (`[Tools ->
    Modify the binary representation to represent successively + and - 0, + and - $`\infty`$, and any NaN.
    After each value change hit the <kbd>Enter</kbd> key to display the floating point value.
 
-<img src=images/floating_-0.png  width='25%' height='25%' > </img>
-<img src=images/floating_0.png  width='25%' height='25%' > </img>
-<img src=images/floating_NaN.png  width='25%' height='25%' > </img>
-<img src=images/floating_-Infinity.png  width='25%' height='25%' > </img>
-<img src=images/floating_Infinity.png  width='25%' height='25%' > </img>
+| | |
+|-|-|
+| <img src=images/floating_-0.png  width='' height='' > </img> | <img src=images/floating_0.png  width='' height='' > </img> |
+| <img src=images/floating_-Infinity.png  width='' height='' > </img> | <img src=images/floating_Infinity.png  width='' height='' > </img> |
+| <img src=images/floating_NaN.png  width='' height='' > </img> | |
+ 
 
 ${\color{Salmon}2.}$   Modify the binary representation to represent as accurately as possible the real number $`1/3`$.
    Note the binary representation you obtained.
