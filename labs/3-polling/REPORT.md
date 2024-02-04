@@ -76,3 +76,5 @@ By removing the duplicated code `wait_for_trans_2`, it will lighten the code
 
 1. Edit `mmio.s` to implement your optimizations.
    Assemble `mmio.s`, click the `Connect to Program` button of the `Keyboard and Display MMIO simulator` window, test your optimized version. 
+
+Done &#x2705;
