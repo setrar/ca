@@ -122,3 +122,29 @@ finit:
     # Initialize ft3 to 2^30 = 1073741824
     li t1, 1073741824        # Load 2^30 into t1
     fcvt.s.w ft3, t1         # Convert and move the integer in t1 to floating-point in ft3
+
+assoc:
+    fsub.s ft5, ft3, ft3   # Subtract ft3 from itself and store the result in ft5 (ft5 = 0)
+    fadd.s ft4, ft2, ft5   # Add ft2 and ft5 (which is 42.0), and store the result in ft4 (ft4 = ft2)
+    fadd.s ft5, ft2, ft3   # Add ft2 and ft3, store the result in ft5 (temporary storage)
+    fsub.s ft5, ft5, ft3   # Subtract ft3 from the result stored in ft5, storing back in ft5
+
+
+special:
+    # Setup for generating +∞: Divide a positive number by 0
+    li t0, 0x3F800000  # Load 1.0 (hex representation) into t0
+    fmv.w.x ft0, t0    # Move 1.0 into ft0
+    li t1, 0           # Load 0 into t1
+    fmv.w.x ft1, t1    # Move 0 into ft1
+    fdiv.s ft2, ft0, ft1   # ft2 = ft0 / ft1 = 1.0 / 0 = +∞
+
+    # Setup for generating -∞: Divide a negative number by 0
+    li t2, 0xBF800000  # Load -1.0 (hex representation) into t2
+    fmv.w.x ft3, t2    # Move -1.0 into ft3
+    # Reuse ft1 (0) from previous operation
+    fdiv.s ft4, ft3, ft1   # ft4 = ft3 / ft1 = -1.0 / 0 = -∞
+
+    # Setup for generating NaN: 0/0 or ∞ - ∞
+    fdiv.s ft5, ft1, ft1   # ft5 = ft1 / ft1 = 0 / 0 = NaN
+    # Alternatively, subtract +∞ from +∞ for NaN (if needed)
+    # fsub.s ft6, ft2, ft2   # ft6 = ft2 - ft2 = ∞ - ∞ = NaN
