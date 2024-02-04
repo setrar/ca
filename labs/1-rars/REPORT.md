@@ -416,15 +416,21 @@ There are 5 special values:
   NaN is a way to represent the result of invalid computations (e.g., the square root of a negative number).
   `M` can be used to provide information about what was wrong (kind of error codes).
 
-1. Open the floating point companion tool of RARS (`[Tools -> Floating Point Representation]`).
+${\color{Salmon}1.}$  Open the floating point companion tool of RARS (`[Tools -> Floating Point Representation]`).
    Modify the binary representation to represent successively + and - 0, + and - $`\infty`$, and any NaN.
    After each value change hit the <kbd>Enter</kbd> key to display the floating point value.
 
-1. Modify the binary representation to represent as accurately as possible the real number $`1/3`$.
+<img src=images/floating_-0.png  width='25%' height='25%' > </img>
+<img src=images/floating_0.png  width='25%' height='25%' > </img>
+<img src=images/floating_NaN.png  width='25%' height='25%' > </img>
+<img src=images/floating_-Infinity.png  width='25%' height='25%' > </img>
+<img src=images/floating_Infinity.png  width='25%' height='25%' > </img>
+
+${\color{Salmon}2.}$   Modify the binary representation to represent as accurately as possible the real number $`1/3`$.
    Note the binary representation you obtained.
    As you can see the floating point representation does not allow the accurate representation of all real numbers, even simple and small rational numbers.
 
-1. Do you think $`1/2`$ can be represented accurately?
+${\color{Salmon}3.}$   Do you think $`1/2`$ can be represented accurately?
    Why?
    Check with the floating point companion tool.
 
