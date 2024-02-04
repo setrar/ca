@@ -369,13 +369,21 @@ ${\color{Salmon}1.}$  Find a way to compute additions of unsigned numbers and to
    Use as few instructions as possible.
    Assemble, put a breakpoint on the first instruction after label `uaddsafe`, execute, use the register panel to force test values in `t0` and `t1`, continue the execution and check that your safe addition works as expected.
 
+Done &#x2705;
+
 ${\color{Salmon}2.}$  Add label `usubsafe` and the instructions to safely subtract the unsigned number in `t1` from the unsigned number in `t0`, store the result in `t2` and store zero in `t3` if there was no overflow, that is, if `u(t2) = u(t0) - u(t1)`, else store one in `t3`.
    Use as few instructions as possible.
    Assemble, and test.
 
+Done &#x2705;
+
 ${\color{Salmon}3.}$  Do the same and with additions of signed numbers after label `saddsafe`.
 
+Done &#x2705; Not the best code, too long
+
 ${\color{Salmon}4.}$  Do the same and with subtractions of signed numbers after label `ssubsafe`.
+
+Done &#x2705; Not the best code, couldn't make t3 set to 1 but overflows
 
 ## Floating point numbers
 
