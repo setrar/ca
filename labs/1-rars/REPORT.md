@@ -467,12 +467,32 @@ ${\color{Salmon}2.}$ Thanks to the variable exponent of the floating point repre
 
 ### Floating point erasure
 
-1. Add label `assoc` and instructions to compute `ft2 + (ft3 - ft3)` and store the result in `ft4`, without modifying the content of `ft2` and `ft3`.
+${\color{Salmon}1.}$  Add label `assoc` and instructions to compute `ft2 + (ft3 - ft3)` and store the result in `ft4`, without modifying the content of `ft2` and `ft3`.
    Assemble, execute and check that the result is exactly `ft2`.
 
-1. Add instructions to compute `(ft2 + ft3) - ft3` and store the result in `ft5`.
+Checked, ft2 == ft4 (42.0) &#x2705;
+
+1${\color{Salmon}2.}$  Add instructions to compute `(ft2 + ft3) - ft3` and store the result in `ft5`.
    Assemble, execute and check the result.
    Can you explain what happened?
+
+With the values:
+- ft2 = 42.0
+- ft3 = 1.07374182E9
+
+I added ft5 <- (ft2 + ft3) : 
+
+```assembly
+fadd.s ft5, ft2, ft3
+```
+
+ft5 took ft3 value 1.07374182E9 `without adding ft2 value`
+
+```assembly
+fsub.s ft5, ft5, ft3   # Subtract ft3 from the result stored in ft5, storing back in ft5
+```
+
+Then substracting ft5 (1.07374182E9) by ft3 (1.07374182E9) gave 0.0
 
 Controlling the accuracy of floating point computations is complicated
 Among the various aspects that must absolutely be considered there is this surprising fact that the associativity of addition does not hold.
