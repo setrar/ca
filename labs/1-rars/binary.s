@@ -50,3 +50,8 @@ mod2powern:
     sub t4, t6, t6     # Ensure t4 is zero before subtraction to avoid register misuse
     addi t4, t6, -1    # t4 = 2^n - 1 = (1 << n) - 1
     and t4, t3, t4     # Perform AND operation, t4 = t3 mod 2^n
+    
+min:
+    li t2, -1              # Load -1 into t2
+    slli t2, t2, 31        # Shift left by 31 bits, resulting in 0x80000000 in t2
+
