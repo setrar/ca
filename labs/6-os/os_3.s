@@ -134,10 +134,10 @@ _isr4:
   lw a7, 48(sp)
   lw t2, 52(sp)
 
- 	lw t0, 0(sp)
-  lw t1, 4(sp)
-  lw a0, 8(sp)
-  lw a7, 12(sp)
+ 	sw t0, 0(sp)
+  sw t1, 4(sp)
+  sw a0, 8(sp)
+  sw a7, 12(sp)
   csrrw zero, uepc, t2
 # come back to task A  
   lw t0, 16(sp)

@@ -2,33 +2,33 @@
 
 ## lab 6
 
-# User tasks
+## User tasks
 Following the instructions given in the assignment, we wrote the "taskA.s" program, and verified that it worked correctly.
 
 We also built the "taskB.s" one, according to the specifications given. Also in this case the correct behavior of the program has been verified.
 
-# Understanding the starting point of the mini-OS
+## Understanding the starting point of the mini-OS
 Considering the first instruction of the exception handler, the `uscratch` is the CSR from which the actual value is read and to which the new value will be written. With the instruction "csrrw  zero,uscratch,sp" we are reading the current value from `uscratch`, writing this the new value of the stack pointer and storing the old value of `uscratch` into register `zero`. In this way we'll be able to restore the content of the stack pointer when we finish the execution of the exception handler. After that we load the address of the kernel stack pointer into `sp`. We can use this to save more registers adding offset to `sp`. At the end, in the "ret" function, we restored the registers in the opposite way.
 
 The instruction for checking if we are dealing with 'n' interrupt or an exception is "csrrsi t0,ucause,0", with which we read the current value from `ucause`, perform a bitwise OR operation with `0` in order to check the first bit (and the corresponding interrupt/exception), we set that bits in `ucause` and store the old value of that into `t0`. Using the syscall is then possible to print the error message corresponding to the different exceptions. 
 Moreover we use `uepc` and `uret` respectively to store and to return to the address of the operation that has been interrupted by the exception handler.
 
-8) We check for the exception code in order to recognize the different types of exception. We saved the exception code in `t0`, and check with '3', corresponding to the breakpoint. If it is, we branch to skip, when we return back to the main program but we skip the instruction in order to avoid infinite loop. The same holds for the case of an environmental code exception. If instead, we are not dealing with these two types of exceptions, the program is restored from where it has been interrupted. (check with Vlad)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+8) We check for the exception code in order to recognize the different types of exception. We saved the exception code in `t0`, and check with '3', corresponding to the breakpoint. If it is, we branch to skip, when we return back to the main program but we skip the instruction in order to avoid infinite loop. The same holds for the case of an environmental code exception. If instead, we are not dealing with these two types of exceptions, we end the execution.
 
 9) When the event is an interrupt, in order to choose the correct interrupt service routine, the program stores in `t1` the correct offset of the interrupt code, then it loads into `a0` the base address of the ISR and add the correct offset. We load the address and jump to the correct interrupt service routine.
 
 10) Considering the startup code, we initially load the address of the exception handler, then initialize the `utvec` CSR with its address. We the globally enable the interrupts by setting a '1' in the LSB of the `ustatus` CSR. At the end, a text message is printed and it exits.
 
-# Change the RARS settings
+## Change the RARS settings
 Simulating the behavior of the program "os.s" we obtained what we expected, with the program printing the string "Hello, world!" and exiting. 
 
-# Call a user task, test an exception
+## Call a user task, test an exception
 
 After following the procedure in the assignment, the system is working as expected, printing at first the sentence "Hello world!" and then printing the character `A` in loop.
 
 According to the instructions, we modified the code in the "taskA.s" in order to cause an exception: we stored the value of the taskA address, add a displacement of '2' and then try to jump at the general purpose register. Doing this the program causes an exception: at first it prints "Hello world!", and `A` and then it stops. The behavior is the one that we expected, with the program stopping because of the type of exception.
 
-starting point
+0) starting point
 
 sp: 0x7fffeffc
 
@@ -43,7 +43,7 @@ uepc:0x00000000
 ucause:0x00000000
 
 
-step1
+1) step1
 
 sp: 0x7fffeffc
 
@@ -58,7 +58,7 @@ uepc:0x00000000
 ucause:0x00000000 (no exception or interrupt has occurred yet)
  
 
-step2
+2) step2
 
 sp: 0x7fffeffc
 
@@ -73,7 +73,7 @@ uepc:0x0040122 (changed) (the value represents the memory address where the `pc`
 ucause:0x00000000
 
 
-step3(uscratch changed, saving the content of sp)
+3) step3(uscratch changed, saving the content of sp)
 
 sp: 0x7fffeffc
 
@@ -92,19 +92,19 @@ The content of the `ustatus`, `utvec`,`uepc` and `ucause` CSR does not changed t
 
 At the end, I commented the lines of code involving the exception.
 
-# Add a timer ISR
+## Add a timer ISR
 For this section I followed the procedure given in the assignment, adding the printing of the '*' character after every 100 ms, using the Timer Tool.
 
 The behavior is the one we expected, in both cases, with the program printing the character '*' (interrupting the running task), between the 'A' or 'B' characters, depending if it's running the taskA or the taskB.
 
-# Content switch
+## Content switch
 In this section we want to change our program in order to switch between taskA and taskB every 100 ms (Notice that we maintained also the printing of the '*' character). As requested, we start with the taskA.
 The considered registers used for the storing and restoring of the operations executes are respectively 't0', 't1', 'a0', 'a7' and 't2'.
 To this purpose, we use the stack pointer and an offset for each register. In order to accomplish every register we needed in total 52 bytes of offset from the initial value of the stack pointer.
 
 After implementing the code as requested by the assignment, we simulated: the behavior is the expected one, with the taskA and taskB switching between each other. The program indeed prints all the characters 'A','B' and '*'.
 
-# Relaxing the constraints
+## Relaxing the constraints
 1. In order to make our program running on multiple tasks instead of only 2, we should handle the saving and restoring of the registers for the different tasks, and serve each task, for example, with a scheduling algorithm.
 
 2. In order to enable active tasks and not considering the terminated ones, the OS can make use of a flag within each task, controlling if it's terminated or not. In this way, our scheduler can prioritize the tasks that are not terminated, and terminate the program once each task has finished running.
