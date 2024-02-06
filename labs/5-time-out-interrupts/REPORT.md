@@ -12,7 +12,7 @@
 
 
 
-${\color{Blue} 1.}$ Edit the `io.s` source file. In the data section add a declaration for a 32-bits word that we will use for the time-out flag, with a global label for easy reference:
+${\color{Salmon} 1.}$ Edit the `io.s` source file. In the data section add a declaration for a 32-bits word that we will use for the time-out flag, with a global label for easy reference:
 
 ```asm
 # time-out flag
@@ -21,7 +21,7 @@ time_out:
 .word 0
 ```
 
-2. Add a `set_timer` function that takes a delay in milliseconds in register a0 but does nothing and returns.
+${\color{Salmon} 2.}$ Add a `set_timer` function that takes a delay in milliseconds in register a0 but does nothing and returns.
 Later we will modify it to initialize a timer.
 
 ```asm
@@ -45,7 +45,7 @@ set_timer:
     ret                      # Return
 ```
 
-3. At the beginning of `getc` and `putc` functions call `set_timer` with parameter 5000 (5 seconds) and reset the time-out flag.
+${\color{Salmon} 3.}$ At the beginning of `getc` and `putc` functions call `set_timer` with parameter 5000 (5 seconds) and reset the time-out flag.
 
 ```asm
     li a0, 5000              # Call set_timer with parameter 5000 (5 seconds)
