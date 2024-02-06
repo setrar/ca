@@ -10,6 +10,10 @@ overflow_message:
 .asciz "\nThe integer you entered is too large to fit on 32 bits!\n"
 print_int_message:
 .asciz "\nYou entered integer "
+print_at:
+.asciz " at "
+print_milliseconds:
+.asciz " milliseconds."
 bye_message:
 .asciz "\nBye!"
 
@@ -225,7 +229,7 @@ main:
     csrrw  zero, utvec, t0       # Set the User Trap Vector (utvec) CSR with the base address of the exception handler
     csrrsi zero, ustatus, 0x01   # Enable Supervisor User Interrupts (SUIE) by setting the ustatus CSR's "UIE" bit (bit 1) to 1
     
-    csrrsi zero, uie, 0x10       # enabling timer interrupt by setting the uie bit
+    # csrrsi zero, uie, 0x10       # enabling timer interrupt by setting the uie bit
      
     la    a0,enter_int_message   # print message
     call  print_string
@@ -238,7 +242,14 @@ main:
     la    a0,print_int_message   # print message
     call  print_string
     mv    a0,s0                  # copy read integer in a0
-    call  puti                   # print read integer
+    call  puti                   # print integer
+    la    a0,print_at 		
+    call  print_string           # print at
+    lw    a0, TIME               # Load a value from TIME memory address into register a0
+    csrrw t1, uscratch, a0       # Store the value from a0 into the uscratch CSR and save the previous value in t1
+    call  puti                   # print integer
+    la    a0, print_milliseconds # Load the address of the "print_milliseconds" string into a0
+    call  print_string           # Call the print_string function to print the string
     li    a0,'\n'                # a0 <- newline
     call  putc
     bne   s0,zero,main           # loop if read integer is not 0
