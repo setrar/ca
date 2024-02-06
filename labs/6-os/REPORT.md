@@ -1,5 +1,7 @@
 # 6-os
 
+Started but unfinished :x:
+
 Note: 
 - SW interrupts (uip)
 - Relax constraints (only answer questions no code needed)
