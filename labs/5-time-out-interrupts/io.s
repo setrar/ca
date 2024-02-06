@@ -221,8 +221,11 @@ puti_end:
 .global main
 main:
     
-    csrrsi zero, ustatus, 0x01   # enabling global interrupt 
-    csrrsi zero, uie, 0x10       # enabling timer interrupt
+    la     t0, exception_handler # Load the address of the exception_handler    
+    csrrw  zero, utvec, t0       # Set the User Trap Vector (utvec) CSR with the base address of the exception handler
+    csrrsi zero, ustatus, 0x01   # Enable Supervisor User Interrupts (SUIE) by setting the ustatus CSR's "UIE" bit (bit 1) to 1
+    
+    csrrsi zero, uie, 0x10       # enabling timer interrupt by setting the uie bit
      
     la    a0,enter_int_message   # print message
     call  print_string
