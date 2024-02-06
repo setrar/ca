@@ -98,6 +98,36 @@ Yes, `5761 ms` seems to match the `00:05.61` value
 ```
 
 
+First exception handler, numeric code of timer interrupt
+
+1. Open the empty assembly source file named `exception_handler.s` and add a 1KiB software stack in the data segment, labeled kstack (k for kernel):
+
+ Done &#x2705;
+
+2. Add a code segment starting with a exception_handler global label:
+
+ Done &#x2705;
+
+3. Use the `csrrw` instruction to save register sp in uscratch.
+
+ Done &#x2705;
+
+4. Set sp to `kstack` and use it to save `t0, t1, t2, t3, a0 and a7`
+
+ Done &#x2705;
+
+5. Code also the end of the exception handler
+
+ Done &#x2705;
+
+6. Between the introduction and conclusion 
+
+Not Done :x:
+
+7. Save the file, in the Settings menu of RARS select Exception Handler... 
+
+ Done &#x2705;
+
 # References
 
 ```asm
