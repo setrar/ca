@@ -76,10 +76,10 @@ getc:
     addi  sp,sp,-32          # allocate stack frame
     sw    ra,0(sp)           # save ra
         
-    li a0, 100              # Call set_timer with parameter 5000 (5 seconds)
-    call set_timer
-    la t0, time_out
-    sw zero, 0(t0)           # Reset the time-out flag to 0
+    li    a0, TIME           # Call set_timer with parameter 5000 (5 seconds)
+    call  set_timer
+    la    t0, time_out
+    sw    zero, 0(t0)        # Reset the time-out flag to 0
         
     li    t0,KCTRL           # t0 <- address of keyboard control register
     li    t1,KDATA           # t1 <- address of keyboard data register
@@ -111,10 +111,10 @@ putc:
     # lw    a0,4(sp)
     #############
 
-    li    a0, 100           # Call set_timer with parameter 5000 (5 seconds)
+    li    a0, TIME           # Call set_timer with parameter 5000 (5 seconds)
     call  set_timer
-    la t0, time_out
-    sw zero, 0(t0)           # Reset the time-out flag to 0
+    la    t0, time_out
+    sw    zero, 0(t0)        # Reset the time-out flag to 0
 
     mv    a0, s0             # move a0 <- s0  to restore the saved a0 registry used by putc
 
