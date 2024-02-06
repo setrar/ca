@@ -1,4 +1,12 @@
-# Assignments
+# &#x1F4DD; Report 
+
+---
+
+[TOC]
+
+---
+
+## Assignments
 
 ## The time-out flag
 
