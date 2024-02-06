@@ -46,10 +46,23 @@ time_out:
 set_timer:
     addi  sp,sp,-32           # allocate stack frame
     sw    ra,0(sp)           # save ra
+   
+    # Load memory address 0xffff0018 into t0 and read its value
+    li t0, TDATA
+    lw t0, (t0)
 
-    la t0, time_out          # la expects a label
-    sw zero, 0(t0)           
+    # Calculate the new timer value by adding a0 to the loaded value from 0xffff0018
+    add t1, t0, a0
+
+    # Store the new timer value into memory address 0xffff0020
+    li t2, 0xffff0020
+    sw t1, (t2)
+
+    # Enable user-level interrupts by setting bit 16 in uie CSR
+    csrrsi zero, uie, 16
     
+#    la t0, time_out          # la expects a label
+#    sw zero, 0(t0)           
 #    li t0, 5000              # li (load immediate) expects a value
 #    lw t0, 0(t0)
 #    add a0, t0, a0
@@ -59,6 +72,8 @@ set_timer:
     lw    ra,0(sp)           # restore ra
     addi  sp,sp,32           # deallocate stack frame, restore stack pointer    
     ret                      # Return
+    
+    
 
 # function: timeout_error
 # description: sets the register a1 to 4
