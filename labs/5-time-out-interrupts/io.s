@@ -23,10 +23,11 @@ bye_message:
 .eqv KDATA 0xffff0004 # address of keyboard data register
 .eqv DCTRL 0xffff0008 # address of display control register
 .eqv DDATA 0xffff000c # address of display data register
+.eqv TDATA 0xffff0018 # address of timer data register
 .eqv OVERR 2          # error code for overflow
 .eqv NDERR 1          # error code for not-a-digit
 .eqv NOERR 0          # error code for no error
-.eqv TIME  0xffff0018 # TODO add comment
+.eqv TIME  5000       # TODO add comment
 .eqv COMP  0xffff0020 # TODO add comment
 
 # time-out flag
@@ -49,11 +50,11 @@ set_timer:
     la t0, time_out          # la expects a label
     sw zero, 0(t0)           
     
-    li t0, TIME              # li (load immediate) expects a value
-    lw t0, 0(t0)
-    add a0, t0, a0
-    li t0, COMP
-    sw a0,0(t0)
+#    li t0, 5000              # li (load immediate) expects a value
+#    lw t0, 0(t0)
+#    add a0, t0, a0
+#    li t0, COMP
+#    sw a0,0(t0)
 
     lw    ra,0(sp)           # restore ra
     addi  sp,sp,32           # deallocate stack frame, restore stack pointer    
@@ -245,7 +246,7 @@ main:
     call  puti                   # print integer
     la    a0,print_at 		
     call  print_string           # print at
-    lw    a0, TIME               # Load a value from TIME memory address into register a0
+    lw    a0, TDATA              # Load a value from TIME memory address into register a0
     csrrw t1, uscratch, a0       # Store the value from a0 into the uscratch CSR and save the previous value in t1
     call  puti                   # print integer
     la    a0, print_milliseconds # Load the address of the "print_milliseconds" string into a0
