@@ -180,4 +180,3 @@ Here's a brief overview of the key bits in both registers:
   - `UIDELEG`: User Interrupt Delegation
   - Other user-level status and control bits.
 
-In summary, `mstatus` is used to manage the machine-level state and privilege levels of the entire processor, while `ustatus` is specifically for managing the state of a user-level program. The specific bits and their meanings may vary depending on the RISC-V specification version and extensions used. Always refer to the RISC-V architecture manual for precise details.
